@@ -58,15 +58,6 @@
         </dependency>
         
         
-        <!--
-        https://mvnrepository.com/artifact/org.eclipse.equinox/org.apache.log4j
-        -->
-        <dependency>
-          <groupId>org.eclipse.equinox</groupId>
-          <artifactId>org.apache.log4j</artifactId>
-          <version>1.2.13.v200706111418</version>
-        </dependency>
-                    
 		<!-- https://mvnrepository.com/artifact/org.eclipse.ecf/org.apache.log4j -->
 		<dependency>
 	      <groupId>org.eclipse.ecf</groupId>
