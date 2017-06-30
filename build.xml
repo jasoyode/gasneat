@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="default" name="gasneat" xmlns:sonar="antlib:org.sonar.ant">
+<project basedir="." default="default" name="gasneat" >
 
 	<!-- 
   ########################################################################################
@@ -21,7 +21,6 @@
 	<property name="src" value="${code-root}/src" />
 	<property name="lib" value="${code-root}/lib" />
 
-	<property name="emma.dir" value="${lib}" />
 	<property name="dist.tests.dir" value="${dist}/tests" />
 	<property name="tests.data.dir" value="${dist.tests.dir}/data" />
 	<property name="tests.classes.instr.dir" value="${dist.tests.dir}/classes-instr" />
@@ -31,32 +30,19 @@
 		<isset property="awt.toolkit" />
 	</condition>
 	
-	<!--  clover  -->
-	
-	<property name="clover.jar" location="${clover.home}/lib/clover.jar"/>
-	<taskdef resource="cloverlib.xml" classpath="${clover.jar}"/>
-
 	<!-- 
   ########################################################################################
   Classpaths used throughout the different targets.
   ########################################################################################-->
-	<path id="emma.lib">
-		<pathelement location="${emma.dir}/emma.jar" />
-		<pathelement location="${emma.dir}/emma_ant.jar" />
-		<pathelement path="${clover.jar}"/>
-	</path>
-
 	<path id="test.classpath">
 		<pathelement location="${tests.classes.instr.dir}" />
 		<path refid="compile.classpath" />
 		<pathelement location="${testclasses}" />
 		<pathelement location="${classes}" />
-		<pathelement location="${clover.jar}" />
 	</path>
 
 	<path id="compile.classpath">
 		<fileset dir="${lib}" includes="**/*.jar" />
-		<pathelement location="${clover.jar}" />
 	</path>
 
 	<!-- 
@@ -64,6 +50,7 @@
   Basic targets for clean-up and compilation.
   ########################################################################################-->
 	<target name="default" depends="all" />
+	
 	<target name="all" depends="compile" description="Build everything" />
 
 	<target name="compile" depends="init">
@@ -124,7 +111,6 @@
 		<path id="instr.path">
 			<pathelement location="${classes}" />
 			<pathelement location="${testclasses}" />
-			<pathelement path="${clover.jar}"/>
 		</path>
 
 		<junit printsummary="on" haltonfailure="false" fork="true" clonevm="true">
@@ -139,41 +125,15 @@
 			</batchtest>
 
 			<jvmarg value="-XX:-UseSplitVerifier" />
-			<jvmarg value="-Demma.coverage.out.merge=true" />
-			<jvmarg value="-Demma.report.out.encoding=UTF-8" />
 			<jvmarg value="-Djava.awt.headless=${java.awt.headless}" />
 			<jvmarg value="-D${awt.toolkit.property}=${awt.toolkit}" />
 		</junit>
 		
 		<junit fork="true" forkmode="once">
-		  <classpath>
-		      <pathelement location="${clover.jar}"/>
-		  </classpath>
 		  <formatter type="xml"/>
 		</junit>
 	</target>
 
-	<target name="with.clover">
-	    <clover-setup/>
-	</target>
-	
-	<target name="clover.html">
-	    <clover-html-report outdir="coverage"/>
-	</target>
-	
-	<target name="clover.report">
-	   <clover-html-report outdir="clover_html" title="Clover Demo"/>
-	</target>
-	
-	<target name="clover.xml">
-    		<clover-report>
-       			<current outfile="clover/coverage.xml">
-          			<format type="xml"/>
-       			</current>
-    		</clover-report>
-	</target>
-	
-	
 	<!-- 
   ########################################################################################
   Bamboo compile targets. Bamboo automatically executes the deploy-all target on the server.
@@ -204,23 +164,14 @@
 
 	<target name="run-tests" depends="init, compile-tests" description="runs the tests">
 		<echo level="info">Running tests...</echo>
-		<property name="emma.enabled" value="true" />
-		<property name="emma.encoding" value="UTF-8" />
-		<taskdef resource="emma_ant.properties" classpathref="emma.lib" />
 
 		<mkdir dir="${dist.tests.dir}" />
 		<mkdir dir="${tests.data.dir}" />
 
 		<path id="instr.path">
-			<pathelement location="${clover.jar}" />
 			<pathelement location="${classes}" />
 			<pathelement location="${testclasses}" />
 		</path>
-
-		<emma>
-			<instr instrpathref="instr.path" destdir="${tests.classes.instr.dir}" metadatafile="${dist.coverage.dir}/metadata.emma" merge="true">
-			</instr>
-		</emma>
 
 		<junit printsummary="on" haltonfailure="false" fork="true" clonevm="true">
 			<classpath refid="test.classpath" />
@@ -234,9 +185,6 @@
 			</batchtest>
 			
  			<jvmarg value="-XX:-UseSplitVerifier" />
-			<jvmarg value="-Demma.coverage.out.file=${dist.coverage.dir}/coverage.emma" />
-			<jvmarg value="-Demma.coverage.out.merge=true" />
-			<jvmarg value="-Demma.report.out.encoding=UTF-8" />
 			<jvmarg value="-Djava.awt.headless=${java.awt.headless}" />
 			<jvmarg value="-D${awt.toolkit.property}=${awt.toolkit}" />
 		</junit>
@@ -248,19 +196,7 @@
 			<report format="frames" todir="${dist.tests.dir}" />
 		</junitreport>
 
-		<emma>
-			<report sourcepath="${src},${test}">
-				<fileset dir="${dist.coverage.dir}">
-					<include name="*.emma" />
-				</fileset>
-				<txt outfile="${dist.coverage.dir}/index.txt" />
-				<html outfile="${dist.coverage.dir}/index.html" />
-			</report>
-		</emma>
-
 	</target>
-	
-	
 	
 </project>
  
