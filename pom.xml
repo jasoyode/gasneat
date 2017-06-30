@@ -23,11 +23,29 @@
 
 	<build>
 		
-		<testSourceDirectory> src/test/	</testSourceDirectory>
+		<testSourceDirectory>src/test/</testSourceDirectory>
 		
 		
 		<plugins>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.18.1</version>
+				<configuration>
+				<excludes>
+				<!-- exclude file tests from travis-ci.org execution
+					<exclude>**/FileTest.java</exclude>
+					<exclude>**/FileExercisesTest.java</exclude>
+					<exclude>**/PropertiesTest.java</exclude>
+					<exclude>**/PropertyExercisesTest.java</exclude>  -->
+				</excludes>
+				</configuration>
+			</plugin>
+			
+			
+			
+			
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
