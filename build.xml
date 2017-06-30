@@ -184,7 +184,7 @@
   2. Building the webstart app: 
   		noop => clean => compile => build-webstart => deploy-webstart
   ########################################################################################-->
-	<target name='deploy-all' depends='run-tests, deploy-webstart' />
+	<target name='main' depends='run-tests' />
 
 	<!--
   ########################################
