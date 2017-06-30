@@ -51,15 +51,15 @@
           <systemPath>${basedir}/lib/jmagick.jar</systemPath>
         </dependency>
 
-<!--
 		<dependency>
-          <groupId>org.apache.log4j</groupId>
-          <artifactId>log4j</artifactId>
-          <version>1.2.4</version>
+          <groupId>jfreechart</groupId>
+          <artifactId>jfreechart</artifactId>
+          <version>1.0.0</version>
           <scope>system</scope>
-          <systemPath>${basedir}/lib/log4j.jar</systemPath>
+          <systemPath>${basedir}/lib/jfreechart.jar</systemPath>
         </dependency>
 
+<!--
 		<dependency>
           <groupId>org.apache.log4j</groupId>
           <artifactId>log4j</artifactId>
