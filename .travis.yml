@@ -3,9 +3,9 @@ jdk:
  - oraclejdk8
 # no ant defaults to maven
 #script: ant main
-script:
-  - ./mvnw clean install
-  - bash <(curl -s https://codecov.io/bash)
+#script:
+#  - ./mvnw clean install
+#  - bash <(curl -s https://codecov.io/bash)
 
 cache:
   directories:
