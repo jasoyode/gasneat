@@ -99,15 +99,15 @@
           <systemPath>${basedir}/lib/jcommon.jar</systemPath>
         </dependency>
 
-<!--
 		<dependency>
-          <groupId> __</groupId>
-          <artifactId> __</artifactId>
+          <groupId>mockito-all</groupId>
+          <artifactId>mockito-all</artifactId>
           <version>1.0.0</version>
           <scope>system</scope>
-          <systemPath>${basedir}/lib/__.jar</systemPath>
+          <systemPath>${basedir}/lib/mockito-all-1.9.5.jar</systemPath>
         </dependency>
-
+        
+<!--
 		<dependency>
           <groupId> __</groupId>
           <artifactId> __</artifactId>
