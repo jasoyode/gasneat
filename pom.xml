@@ -59,15 +59,16 @@
           <systemPath>${basedir}/lib/jfreechart.jar</systemPath>
         </dependency>
 
-<!--
 		<dependency>
-          <groupId>org.apache.log4j</groupId>
-          <artifactId>log4j</artifactId>
-          <version>1.2.4</version>
+          <groupId>poi</groupId>
+          <artifactId>poi</artifactId>
+          <version>1.0.0</version>
           <scope>system</scope>
-          <systemPath>${basedir}/lib/log4j.jar</systemPath>
+          <systemPath>${basedir}/lib/poi-3.11-20141221.jar</systemPath>
         </dependency>
-
+        
+        
+<!--
 		<dependency>
           <groupId>org.apache.log4j</groupId>
           <artifactId>log4j</artifactId>
