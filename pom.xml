@@ -66,24 +66,57 @@
           <scope>system</scope>
           <systemPath>${basedir}/lib/poi-3.11-20141221.jar</systemPath>
         </dependency>
+
+
+
         
-        
-<!--
 		<dependency>
-          <groupId>org.apache.log4j</groupId>
-          <artifactId>log4j</artifactId>
-          <version>1.2.4</version>
+          <groupId>poi-excelant</groupId>
+          <artifactId>poi-excelant</artifactId>
+          <version>1.0.0</version>
           <scope>system</scope>
-          <systemPath>${basedir}/lib/log4j.jar</systemPath>
+          <systemPath>${basedir}/lib/poi-excelant-3.11-20141221.jar</systemPath>
         </dependency>
 
 		<dependency>
-          <groupId>org.apache.log4j</groupId>
-          <artifactId>log4j</artifactId>
-          <version>1.2.4</version>
+          <groupId>poi-ooxml</groupId>
+          <artifactId>poi-ooxml</artifactId>
+          <version>1.0.0</version>
           <scope>system</scope>
-          <systemPath>${basedir}/lib/log4j.jar</systemPath>
-        </dependency>	
+          <systemPath>${basedir}/lib/poi-ooxml-3.11-20141221.jar</systemPath>
+        </dependency>
+
+		<dependency>
+          <groupId>poi-ooxml-schemas</groupId>
+          <artifactId>poi-ooxml-schemas</artifactId>
+          <version>1.0.0</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/poi-ooxml-schemas-3.11-20141221.jar</systemPath>
+        </dependency>
+<!--
+		<dependency>
+          <groupId> __</groupId>
+          <artifactId> __</artifactId>
+          <version>1.0.0</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/__.jar</systemPath>
+        </dependency>
+
+		<dependency>
+          <groupId> __</groupId>
+          <artifactId> __</artifactId>
+          <version>1.0.0</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/__.jar</systemPath>
+        </dependency>
+
+		<dependency>
+          <groupId> __</groupId>
+          <artifactId> __</artifactId>
+          <version>1.0.0</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/__.jar</systemPath>
+        </dependency>
 	
 	-->
 	
