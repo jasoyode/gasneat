@@ -80,36 +80,6 @@ public double[] next() {
 	return next( (double[]) null );
 }
 
-public void printState() {
-	
-	System.out.println(  " print state1"   );
-	for (Object o:  net.getAllNeurons() ) {
-		Neuron n = (Neuron)o;
-		if (n.getId() == 7) {
-			double value = n.getValueSafe();
-			System.out.println( "  AnjiActivator "+ n.getId() +" "+ value +" applyFunc: "+ n.getFunc().apply(value)   );
-			for (Object oo: n.getIncomingConns() ) {
-				Connection c = (Connection) oo;
-				System.out.println( "        N7  " +c.toString() + " value: "+ c.readSafe() + " class: "+ c.getClass()  );
-			}
-		}
-		//System.out.println( "  "+ n.getId() +" "+ n.getValueSafe() +" applyFunc: "+ n.getFunc().apply(n.getValueSafe())   );
-	}
-	System.out.println(  " print state2"   );
-	
-	
-	for ( Object o:  net.getRecurrentConns() ) {
-		NeuronConnection c = (NeuronConnection)o;
-		System.out.println( "    " +c.toString() + " value: "+ c.readSafe()  );
-	}
-	System.out.print( "inputPatterns "   );
-	for ( double d:  inputPattern.values ) {
-		System.out.print( d + "  "   );
-		
-	}
-	System.out.println( " ]"   );
-	
-}
 
 
 /**

@@ -36,13 +36,6 @@ public interface Connection {
 	 */
 	public double read();
 	
-	
-	public double readSafe() {
-		System.out.println(  "default readSafe called exiting!"  );
-		System.exit(-1);
-		
-		return -10.0; 
-		}
 
 	/**
 	 * @return String representation of object

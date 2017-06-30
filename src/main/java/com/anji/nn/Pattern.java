@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2004 Derek James and Philip Tucker
  * 
@@ -58,11 +59,6 @@ public double read() {
 	return values[ idx ];
 }
 
-
-@Override
-public double readSafe() {
-	return values[ idx ];
-}
 
 
 /**

@@ -179,31 +179,6 @@ public String getName() {
 }
 
 
-public void printState() {
-	return;
-	/*
-	for (Object o:  getAllNeurons() ) {
-		Neuron n = (Neuron)o;
-		
-		if (n.getId() == 7) {
-			System.out.println( "  AnjiNet "+ n.getId() +" "+ n.getValueSafe() +" applyFunc: "+ n.getFunc().apply(n.getValueSafe())   );
-			for (Object oo: n.getIncomingConns() ) {
-				Connection c = (Connection) oo;
-				System.out.println( "        N7  " +c.toString() + " value: "+ c.readSafe()  );
-			}
-		}
-	}
-	
-	for ( Object o:  getRecurrentConns() ) {
-		CacheNeuronConnection c = (CacheNeuronConnection)o;
-		System.out.println( "    " +c.toString() + " value: "+ c.readSafe()  );
-	}
-	*/
-	
-}
-
-
-
 
 
 

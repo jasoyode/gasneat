@@ -52,9 +52,6 @@ public class CacheNeuronConnection extends NeuronConnection {
 		return value;
 	}
 	
-	public double readSafe() {
-		return value;
-	}
 
 	/**
 	 * update value

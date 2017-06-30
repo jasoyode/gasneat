@@ -248,20 +248,6 @@ public double getValue() {
 
 
 
-public double getValueSafe() {
-	double sum = 0.0f;
-	Iterator it = incomingConns.iterator();
-	while ( it.hasNext() ) {
-		Connection conn = (Connection) it.next();
-		sum += conn.readSafe();
-	}
-	value = Math.min( Math.max( func.apply( sum ), -Double.MAX_VALUE ), Double.MAX_VALUE );
-	return sum;
-}
-
-
-
-
 
 
 /**

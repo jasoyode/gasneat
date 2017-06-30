@@ -75,15 +75,6 @@ public double read() {
 	return weight * incomingNode.getValue();
 }
 
-@Override
-public double readSafe() {
-	//if ( incomingNode.getValueSafe() != 0.0)
-	//System.out.println( "               readSafe()->NeuronCOnnection["+ this.getId() +"]:   activation:"
-	//		+ incomingNode.getValueSafe() + "  weight: " + weight);
-	return weight * incomingNode.getValueSafe();
-}
-
-
 
 /**
  * @see Object#toString()

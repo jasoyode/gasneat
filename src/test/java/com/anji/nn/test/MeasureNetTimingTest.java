@@ -76,10 +76,6 @@ public double read() {
 	return value;
 }
 
-public double readSafe() {
-	return value;
-}
-
 /**
  * @see com.anji.nn.Connection#toXml()
  */
