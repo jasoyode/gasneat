@@ -32,7 +32,7 @@
           <artifactId>log4j</artifactId>
           <version>1.5.0</version>
           <scope>system</scope>
-          <systemPath>lib/log4j.jar</systemPath>
+          <systemPath>${java.home}/lib/log4j.jar</systemPath>
         </dependency>
 	
 	
