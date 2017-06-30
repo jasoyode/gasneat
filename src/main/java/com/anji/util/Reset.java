@@ -37,7 +37,6 @@ import com.anji.imaging.ImageFileFilter;
 import com.anji.neat.NeatConfiguration;
 import com.anji.neat.NeatIdMap;
 import com.anji.persistence.Persistence;
-import com.sun.istack.internal.logging.Logger;
 
 /**
  * Utility class to clear all persisted data, including chromosomes and runs in DB, innovation
