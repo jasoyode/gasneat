@@ -67,9 +67,6 @@
           <systemPath>${basedir}/lib/poi-3.11-20141221.jar</systemPath>
         </dependency>
 
-
-
-        
 		<dependency>
           <groupId>poi-excelant</groupId>
           <artifactId>poi-excelant</artifactId>
@@ -93,15 +90,16 @@
           <scope>system</scope>
           <systemPath>${basedir}/lib/poi-ooxml-schemas-3.11-20141221.jar</systemPath>
         </dependency>
-<!--
+
 		<dependency>
-          <groupId> __</groupId>
-          <artifactId> __</artifactId>
+          <groupId>jcommon</groupId>
+          <artifactId>jcommon</artifactId>
           <version>1.0.0</version>
           <scope>system</scope>
-          <systemPath>${basedir}/lib/__.jar</systemPath>
+          <systemPath>${basedir}/lib/jcommon.jar</systemPath>
         </dependency>
 
+<!--
 		<dependency>
           <groupId> __</groupId>
           <artifactId> __</artifactId>
