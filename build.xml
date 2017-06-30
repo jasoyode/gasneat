@@ -7,7 +7,7 @@
   ########################################################################################-->
 
 	<!-- Base properties that will likely need to be changed when using this template for a different project -->
-	<property name="base.project.name" value="" /> 
+	<property name="base.project.name" value="gasneat" /> 
 	<property name="base.project.name.friendly" value="GasNEAT Project" />
 	<property name="code-root" value="." />
 	
@@ -68,6 +68,7 @@
 
 	<target name="compile" depends="init">
 		<mkdir dir="${classes}" />
+		<mkdir dir="lib" />
 		<javac debug="true" deprecation="true" destdir="${classes}" srcdir="${src}" fork="yes">
 			<classpath refid="compile.classpath" />
 		</javac>
