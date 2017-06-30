@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="default" name="${base.project.name}" xmlns:sonar="antlib:org.sonar.ant">
+<project basedir="." default="default" name="gasneat" xmlns:sonar="antlib:org.sonar.ant">
 
 	<!-- 
   ########################################################################################
@@ -7,21 +7,12 @@
   ########################################################################################-->
 
 	<!-- Base properties that will likely need to be changed when using this template for a different project -->
-	<property name="base.project.name" value="jason" /> 
-	<property name="base.project.name.friendly" value="Jasons Project" />
-	<property name="assignment.name" value="fall2015/project" />
+	<property name="base.project.name" value="gasneat" /> 
+	<property name="base.project.name.friendly" value="GasNEAT Project" />
 	<property name="code-root" value="." />
-	<property name="wwwroot" value="/u/kspace/www/fluency" />
 	
-	<property name="clover.home" value="/u/kspace/local/clover-ant-4.0.4" />
 
 	<!-- Properties derived from the base properties above. Unlikely to change. -->
-	<property name="webstart.location" value="${wwwroot}/student-files/${assignment.name}/${base.project.name}/" />
-	<property name="dist.coverage.dir" value="${wwwroot}/coverage/${assignment.name}/${base.project.name}" />
-	
-	<property name="key.alias" value="fluencykey" />
-	<property name="key.pass" value="fluency" />
-	
 	<property name="project.build.home" value="${code-root}/bin" />
 	<property name="dist" value="${code-root}/dist" />
 	<property name="test" value="${code-root}/test" />
@@ -29,8 +20,6 @@
 	<property name="classes" value="${code-root}/bin" />
 	<property name="src" value="${code-root}/src" />
 	<property name="lib" value="${code-root}/lib" />
-	<property name="webstart.home" value="${code-root}/webstart" />
-	<property name="key.store" value="${webstart.home}/projectKeystore" />
 
 	<property name="emma.dir" value="${lib}" />
 	<property name="dist.tests.dir" value="${dist}/tests" />
@@ -199,35 +188,6 @@
 
 	<!--
   ########################################
-  Webstart targets.
-  ########################################-->
-	<target name="deploy-webstart" depends="build-webstart" description="Deploy the webstart jar and jnlp to tintin. Called by tintin during automated build.">
-		<copy file="${base.project.name}.jar" toDir="${webstart.location}" />
-		<copy file="${webstart.home}/project.jnlp" toDir="${webstart.location}" />
-	</target>
-
-	<target name="build-webstart" depends="compile" description="Create a webstartable jar file">
-		<delete file="${base.project.name}.jar" />
-		<unzip src="${lib}/junit-4.8.2.jar" dest="${project.build.home}" />
-
-		<copy todir="${project.build.home}" flatten="false">
-			<fileset dir="${src}">
-				<include name="**/*.gif" />
-				<include name="**/*.jpg" />
-				<include name="**/*.png" />
-				<include name="**/*.wav" />
-			</fileset>
-		</copy>
-
-		<jar basedir="${project.build.home}" manifest="${webstart.home}/project.mf" compress="true" jarfile="${base.project.name}.jar" />
-
-		<signjar keystore="${key.store}" alias="${key.alias}" storepass="${key.pass}">
-			<fileset dir=".">
-				<include name="${base.project.name}.jar" />
-			</fileset>
-		</signjar>
-	</target>
-
 	<!--
   ########################################
   JUnit and Emma targets.
@@ -300,40 +260,6 @@
 		</emma>
 
 	</target>
-	
-	
-	<!-- Define the SonarQube global properties (the most usual way is to pass these properties via the command line) -->
-	<!--  <property name="sonar.jdbc.url" value="jdbc:mysql://tintin.cs.indiana.edu:8099/sonar" />
-	<property name="sonar.jdbc.username" value="sonarqube" />
-	<property name="sonar.jdbc.password" value="sonar" />  -->
-
-	<!-- Define the SonarQube project properties -->
-	<!-- <property name="sonar.projectKey" value="${base.project.name}" />
-	<property name="sonar.projectName" value="${base.project.name.friendly}" />
-	<property name="sonar.projectVersion" value="1.0" />
-	<property name="sonar.language" value="java" />
-	<property name="sonar.sources" value="src" />
-	<property name="sonar.binaries" value="${code-root}/bin" /> -->
-	
-	<!-- Define the SonarQube target -->
-	<!-- <target name="sonar" depends="compile">
-	    <taskdef uri="antlib:org.sonar.ant" resource="org/sonar/ant/antlib.xml"> -->
-	        <!-- Update the following line, or put the "sonar-ant-task-*.jar" file in your "$HOME/.ant/lib" folder -->
-	        <!-- <classpath path="${lib}/sonar-ant-task-2.3.jar" />
-	    </taskdef> -->
-	 
-	    <!-- Execute the SonarQube analysis -->
-	    <!-- <sonar:sonar />
-	</target> -->
-	
-	<!--	<target name="doc" depends="compile"> -->
-<!--	    <javadoc packagenames="src" sourcepath="${src.dir}" destdir="docs"> -->
-	      <!-- Define which files / directory should get included, we include all -->
-<!--<fileset dir="${src}"> -->
-<!--	                <include name="**" /> -->
-<!--	           </fileset> -->
-<!--	    </javadoc> -->
-<!--	  </target>	-->
 	
 	
 	
