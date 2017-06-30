@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Appenders>
+    <File name="artificial_neural_network_config" fileName="artificial_neural_network_config.log" append="false">
+      <PatternLayout pattern="%t %-5p %c{2} - %m%n"/>
+    </File>
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <PatternLayout pattern="%p\t%C{1} \t\t%m%n"/>
+      <!--
+              <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+       -->
+      
+      
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Logger name="org.apache.log4j.xml" level="INFO">
+      <AppenderRef ref="artificial_neural_network_config"></AppenderRef>
+    </Logger>
+    <Root level="debug">
+      <AppenderRef ref="STDOUT"></AppenderRef>
+    </Root>
+  </Loggers>
+</Configuration>

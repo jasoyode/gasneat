@@ -1,0 +1,14 @@
+package gasNEAT;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class SimpleExperimentTest {
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+}
