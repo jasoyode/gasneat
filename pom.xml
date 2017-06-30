@@ -26,7 +26,6 @@
 	<dependencies>
 	
 	
-	
 		<dependency>
           <groupId>org.apache.log4j</groupId>
           <artifactId>log4j</artifactId>
@@ -35,7 +34,56 @@
           <systemPath>${basedir}/lib/log4j.jar</systemPath>
         </dependency>
 	
+
+		<dependency>
+          <groupId>org.apache.regexp</groupId>
+          <artifactId>regexp</artifactId>
+          <version>1.3</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/jakarta-regex-1.3.jar</systemPath>
+        </dependency>
+<!--
+		<dependency>
+          <groupId>org.apache.log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.4</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/log4j.jar</systemPath>
+        </dependency>
+
+		<dependency>
+          <groupId>org.apache.log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.4</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/log4j.jar</systemPath>
+        </dependency>
+
+		<dependency>
+          <groupId>org.apache.log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.4</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/log4j.jar</systemPath>
+        </dependency>
+
+		<dependency>
+          <groupId>org.apache.log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.4</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/log4j.jar</systemPath>
+        </dependency>
+
+		<dependency>
+          <groupId>org.apache.log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.4</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/log4j.jar</systemPath>
+        </dependency>	
 	
+	-->
 	
 	
 	
