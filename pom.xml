@@ -24,6 +24,21 @@
 	<url>http://cobertura.github.io/cobertura/</url>
 
 	<dependencies>
+	
+	
+	
+		<dependency>
+          <groupId>sun.jdk</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.5.0</version>
+          <scope>system</scope>
+          <systemPath>lib/log4j.jar</systemPath>
+        </dependency>
+	
+	
+	
+	
+	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
