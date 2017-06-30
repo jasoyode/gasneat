@@ -28,11 +28,11 @@
 	
 	
 		<dependency>
-          <groupId>sun.jdk</groupId>
+          <groupId>org.apache.log4j</groupId>
           <artifactId>log4j</artifactId>
-          <version>1.5.0</version>
+          <version>1.2.4</version>
           <scope>system</scope>
-          <systemPath>${java.home}/lib/log4j.jar</systemPath>
+          <systemPath>${basedir}/lib/log4j.jar</systemPath>
         </dependency>
 	
 	
