@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2004 Derek James and Philip Tucker
  * 
@@ -58,7 +57,6 @@ public PatternConnection( int anIdx ) {
 public double read() {
 	return values[ idx ];
 }
-
 
 
 /**

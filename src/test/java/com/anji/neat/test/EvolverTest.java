@@ -68,12 +68,12 @@ public void testEvolver() throws Exception {
 		}
 		else if ( uut.getChampAdjustedFitness() < uut.getThresholdFitness() ) {
 			logText.append( i ).append( ": fitness < threshold: " ).append(
-					uut.getChampAdjustedFitness() ).append( "\n" );
+					uut.getChampAdjustedFitness() ).append("" + uut.getThresholdFitness() ).append( "\n" );
 			++failCount;
 		}
 		else if ( uut.getChampAdjustedFitness() < uut.getTargetFitness() ) {
 			logText.append( i ).append( ": fitness < target: " ).append(
-					uut.getChampAdjustedFitness() ).append( "\n" );
+					uut.getChampAdjustedFitness() ).append("" + uut.getTargetFitness() ).append( "\n" );
 		}
 	}
 

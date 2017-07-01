@@ -81,7 +81,6 @@ public double[] next() {
 }
 
 
-
 /**
  * @param newInputValues input activation pattern to be "shown" to network; if null, uses
  * previous values
@@ -126,9 +125,6 @@ public double[] next( double[] newInputValues ) {
 	double[] result = new double[ outputDimension ];
 	for ( int idx = 0; idx < outputDimension; ++idx ) {
 		Neuron n = net.getOutputNeuron( idx );
-		
-		//System.out.println( "    output= "+ n.getValueSafe()  );
-		
 		result[ idx ] = n.getValue();
 		
 	}

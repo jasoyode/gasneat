@@ -52,19 +52,13 @@ public class CacheNeuronConnection extends NeuronConnection {
 		return value;
 	}
 	
-
 	/**
 	 * update value
 	 */
 	public void step() {
-		//System.out.println( "    Cached neuron  -- activation: "+ getIncomingNode().getValueSafe() + 
-		//		"  weight" +  getWeight() );
-		//System.out.println( " UMM??  "+ this.getId()   );
 		value = Math.min(
 				Math.max( getWeight() * getIncomingNode().getValue(), -Double.MAX_VALUE ),
 				Double.MAX_VALUE );
-		//System.out.println( " UMM22??  "+ this.getId()   );
-		
 	}
 
 	/**

@@ -76,6 +76,7 @@ public double read() {
 	return value;
 }
 
+
 /**
  * @see com.anji.nn.Connection#toXml()
  */

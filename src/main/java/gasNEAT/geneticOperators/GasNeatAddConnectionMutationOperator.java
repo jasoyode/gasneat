@@ -285,6 +285,7 @@ private boolean connectionAllowed( NeuronAllele src, NeuronAllele dest, SortedMa
 	}
 	
 	return nonlinear;
+	//THIS WILL ALLOW BAD THINGS TO HAPPEN!
 	//return true;
 }
 

@@ -250,6 +250,7 @@ public double getValue() {
 
 
 
+
 /**
  * clear current value
  */

@@ -38,6 +38,7 @@ import com.anji.neat.NeatConfiguration;
 import com.anji.neat.NeatIdMap;
 import com.anji.persistence.Persistence;
 
+
 /**
  * Utility class to clear all persisted data, including chromosomes and runs in DB, innovation
  * ID data, and log.
