@@ -20,6 +20,7 @@ import com.anji.nn.ActivationFunctionType;
 import com.anji.nn.RecurrencyPolicy;
 import com.anji.util.Properties;
 import com.anji.util.Reset;
+
 import gasNEAT.builders.GasNeatTranscriber;
 import gasNEAT.configurations.GasNeatConfiguration;
 import gasNEAT.geneticOperators.GasNeatAddConnectionMutationOperator;
@@ -67,6 +68,12 @@ protected void initUut() throws Exception {
  * @see org.jgap.test.MutationOperatorTest#initConfig()
  */
 protected void initConfig() throws Exception {
+	// clear previous stored configs and populations
+	Reset reset = new Reset( props );
+	reset.setUserInteraction( false );
+	reset.reset();
+
+	
 	props.loadFromResource( PROP_FILE_NAME );
 	
 	props.setProperty( NeatConfiguration.STIMULUS_SIZE_KEY, "" + DIM_INPUTS );
@@ -78,10 +85,7 @@ protected void initConfig() throws Exception {
 		props.setProperty( NeatConfiguration.INITIAL_TOPOLOGY_ACTIVATION_INPUT_KEY,
 				ActivationFunctionType.LINEAR.toString() );
 
-	// clear previous stored configs and populations
-	Reset reset = new Reset( props );
-	reset.setUserInteraction( false );
-	reset.reset();
+	
 
 	// config
 	config = new GasNeatConfiguration( props );
