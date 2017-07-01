@@ -27,7 +27,7 @@ import gasNEAT.geneticOperators.GasNeatAddConnectionMutationOperator;
 
 public class GasNeatAddConnectionMutationOperatorTest extends MutationOperatorTest {
 
-private final static String PROP_FILE_NAME = "properties/gasneat_test.properties";
+private final static String PROP_FILE_NAME = "properties/gasneat_add_connection_test.properties";
 
 private final static int POPULATION_SIZE = 100;
 private final static int PRE_MUTANTS_SIZE = 60;

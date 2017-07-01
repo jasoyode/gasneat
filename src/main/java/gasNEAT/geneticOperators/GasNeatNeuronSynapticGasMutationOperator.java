@@ -121,6 +121,15 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 	//System.out.println("SYNP GAS MUTATION OCCURED");
 	//System.out.println(genesToAdd);
 	//System.out.println(genesToRemove);
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 /**
