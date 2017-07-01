@@ -122,6 +122,23 @@
           <systemPath>${basedir}/lib/mockito-all-1.9.5.jar</systemPath>
         </dependency>
         
+        
+        <dependency>
+          <groupId>jai_imageio</groupId>
+          <artifactId>jai_imageio</artifactId>
+          <version>1.0.0</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/jai_imageio.jar</systemPath>
+        </dependency>
+        
+        <dependency>
+          <groupId>hb16</groupId>
+          <artifactId>hb16</artifactId>
+          <version>1.0.0</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/lib/hb16.jar</systemPath>
+        </dependency>
+        
 <!--
 		<dependency>
           <groupId> __</groupId>
