@@ -1,2 +1,0 @@
-This experiment shows that a timing delayed learning, followed by another learning signal, 
-but then shortly thereafter BLOCKED another signal will allow only the first part to adjust weights
