@@ -38,9 +38,9 @@ import junit.framework.TestCase;
  */
 public class ImageNormalizerTest extends TestCase {
 
-private final static String ORIG_DIR = "test/images";
+private final static String ORIG_DIR = "src/test/java/images";
 
-private final static String RESULT_DIR = "test/images/image-normalizer";
+private final static String RESULT_DIR = "src/test/java/images/image-normalizer";
 
 private File origDir;
 

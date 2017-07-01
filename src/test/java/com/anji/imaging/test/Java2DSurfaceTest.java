@@ -23,11 +23,11 @@ public class Java2DSurfaceTest extends TestCase {
 
 private final static String PROP_PATH = "properties/test_eye.properties";
 
-private final static File SMALL_IMG_FILE = new File( "test/images/test_sm.jpg" );
+private final static File SMALL_IMG_FILE = new File( "src/test/java/images/test_sm.jpg" );
 
-private final static File MEDIUM_IMG_FILE = new File( "test/images/test.jpg" );
+private final static File MEDIUM_IMG_FILE = new File( "src/test/java/images/test.jpg" );
 
-private final static File LARGE_IMG_FILE = new File( "test/images/test_lg.jpg" );
+private final static File LARGE_IMG_FILE = new File( "src/test/java/images/test_lg.jpg" );
 
 private final static BufferedImage SMALL_IMG = readImage( SMALL_IMG_FILE );
 

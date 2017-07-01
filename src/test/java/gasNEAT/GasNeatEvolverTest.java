@@ -55,7 +55,7 @@ public GasNeatEvolverTest( String name ) {
 	
 	
 	//GETTING OVER 100 VALUES
-	//experimentsToRun.add("experiments/sanity_tests/gas_synaptic_plasticity/task_gas_synaptic_plasticity.properties");
+	/*/experimentsToRun.add("experiments/sanity_tests/gas_synaptic_plasticity/task_gas_synaptic_plasticity.properties");
 	
 	
 	experimentsToRun.add("experiments/sanity_tests/multi_output/multi_output.properties");

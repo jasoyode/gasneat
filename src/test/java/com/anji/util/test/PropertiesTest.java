@@ -85,11 +85,11 @@ private final static Float FLOAT_VAL = new Float( 2.3f );
 
 private final static Double DOUBLE_VAL = new Double( 23232323.32323232 );
 
-private final static File DIR_VAL = new File( "./test/images" );
+private final static File DIR_VAL = new File( "./src/test/java/images" );
 
-private final static File IN_FILE_VAL = new File( "./test/images/test.jpg" );
+private final static File IN_FILE_VAL = new File( "./src/test/java/images/test.jpg" );
 
-private final static File OUT_FILE_VAL = new File( "./test/images/another_test.jpg" );
+private final static File OUT_FILE_VAL = new File( "./src/test/java/images/another_test.jpg" );
 
 private final static String RSRC_VAL = "properties/test.properties";
 

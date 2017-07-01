@@ -40,7 +40,7 @@ import junit.framework.TestCase;
  */
 public class AnjiNetFloatingEyeTest extends TestCase {
 
-private final static String TEST_IMAGE_FILE_PATH = "test/images/test.tif";
+private final static String TEST_IMAGE_FILE_PATH = "src/test/java/images/test.tif";
 
 /**
  * ctor
