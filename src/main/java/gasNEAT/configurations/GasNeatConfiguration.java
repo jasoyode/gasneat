@@ -748,7 +748,8 @@ private void parameterSanityCheck( ) {
  */
 private void init( Properties newProps ) throws InvalidConfigurationException {
 	
-	
+	//always reset to start
+	resetReceptorMap();
 	
 	props = newProps;
 	
@@ -921,7 +922,7 @@ public void initializeAlleles( SortedSet alleles ) {
 			///for now all neurons have standard receptors
 			neuronAllele.setReceptorTypeToDefault();
 			
-			//ULTRATODO
+			//#ULTRATODO
 			neuronAllele.setReceptorType(  getReceptorMap().get(0)   );
 			
 			if (  neuronAllele.getReceptorType().trim().equals("")) {

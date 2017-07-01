@@ -85,6 +85,7 @@ protected void initConfig() throws Exception {
 
 	// config
 	config = new GasNeatConfiguration( props );
+	
 	config.getRandomGenerator().setSeed( 0 );
 	config.setFitnessFunction( new DummyFitnessFunction( config.getRandomGenerator() ) );
 	config.setPopulationSize( POPULATION_SIZE );

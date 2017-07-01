@@ -331,7 +331,7 @@ public class ExperimentCreatorFitnessFunction implements BulkFitnessFunction, Co
 	private int singleTrial( Activator activator ) {
 		ParametersCalculator.reset();
 		
-		//ULTRATODO embed this in the environment somehow!
+		//TODO embed this in the environment somehow!
 		if (visibleMode) {
 			logger.info( "Trial : " + gridView.getCellGrid().getTrialNumber() );
 			gridView.getCellGrid().restartExperiment();

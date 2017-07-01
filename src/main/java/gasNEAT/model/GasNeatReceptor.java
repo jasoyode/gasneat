@@ -350,11 +350,11 @@ public class GasNeatReceptor {
 				System.err.println("activationLevelPreSquash is NaN in Receptor");
 				System.err.println( act );
 				throw new Exception("value is NaN");
-			} else if (act > 1000 || act < -1000) {
+			} else if (act > 10000 || act < -10000) {
 				System.err.println("modulateActivationLevelFromConcentrations");
 				System.err.println("activationLevelPreSquash is NaN in Receptor");
 				System.err.println( act );
-				throw new Exception("value is >1000 or < -1000");
+				throw new Exception("value is >10000 or < -10000");
 			}
 		
 		} catch (Exception e) {
