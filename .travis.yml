@@ -6,7 +6,7 @@ jdk:
 # - oraclejdk7
 # - openjdk6
 
-script: "mvn cobertura:cobertura"
+script: "mvn -e cobertura:cobertura"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
