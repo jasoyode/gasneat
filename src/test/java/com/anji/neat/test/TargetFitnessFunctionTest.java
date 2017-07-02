@@ -159,7 +159,7 @@ private void doTestXor( boolean exponentialFitness, short recurrentCycles )
 	assertEquals( "bad fitness 3",
 			exponentialFitness ? TestChromosomeFactory.EXPONENTIAL_XOR_FITNESS_RECURRENT
 					: TestChromosomeFactory.NEAT_XOR_FITNESS_RECURRENT, c.getFitnessValue() );
-*/
+	//*/
 }
 
 }

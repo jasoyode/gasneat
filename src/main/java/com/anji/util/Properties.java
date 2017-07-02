@@ -109,15 +109,11 @@ public void loadFromResourceWithoutLogging( String resource ) throws IOException
     //String propertiesPath=jarPath.getParentFile().getAbsolutePath();
     ////System.out.println(" propertiesPath= "+propertiesPath);
    // System.out.println(" fullpath= "+propertiesPath+"/"+resource);
-	
     //InputStream in = ClassLoader.getSystemResourceAsStream(propertiesPath+"/" + resource );	
     //InputStream in = this.getClass().getResourceAsStream(propertiesPath+"/" + resource );
     //FileInputStream in = new FileInputStream( propertiesPath+"/" + resource );
-    
     //FileInputStream in = new FileInputStream(  resource );
-    
     //InputStream in = ClassLoader.getSystemResourceAsStream(  resource );
-	
 	//InputStream in = ClassLoader.getSystemResourceAsStream(  resource );
 	
 	InputStream in = new FileInputStream( resource );
@@ -481,11 +477,16 @@ public FileOutputStream getFileOutputProperty( String key ) throws FileNotFoundE
  * to <code>key</code>; throws runtime exception if key not found
  */
 public InputStream getResourceProperty( String key ) {
+	
+	
 	String value = super.getProperty( key );
 	if ( value == null )
 		throw new IllegalArgumentException( "no value for " + key );
 	log( key, value, null );
-	return ClassLoader.getSystemResourceAsStream( value );
+	System.err.println("VALUE= " +  value );
+	//return getClass().getResourceAsStream(value);
+	return getClass().getResourceAsStream( value);
+	//return ClassLoader.getSystemResourceAsStream( value );
 }
 
 /**
@@ -666,10 +667,10 @@ public static double[][] loadArrayFromFile( String in ) throws FileNotFoundExcep
  */
 public static double[][] loadArrayFromFile( InputStream in ) throws FileNotFoundException,
 		IOException {
+	
 	// better class for this? combine w/ getProperty
 	List rows = new ArrayList();
-	
-	
+
 	BufferedReader reader = new BufferedReader( new InputStreamReader( in ) );
 	
 	for ( String line = reader.readLine(); line != null; line = reader.readLine() ) {

@@ -61,8 +61,12 @@ public class ExponentialTargetFitnessFunction extends TargetFitnessFunction {
 			setMaxFitnessValue( MAX_FITNESS );
 		}
 		catch ( Exception e ) {
+			
+			e.printStackTrace();
+			
 			throw new IllegalArgumentException( "invalid properties: " + e.getClass().toString()
 					+ ": " + e.getMessage() );
+			
 		}
 	}
 

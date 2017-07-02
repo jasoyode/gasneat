@@ -83,16 +83,18 @@ private Randomizer randomizer;
  */
 public void init( Properties props ) {
 	try {
+		
 		randomizer = (Randomizer) props.singletonObjectProperty( Randomizer.class );
 		activatorFactory = (ActivatorTranscriber) props
 				.singletonObjectProperty( ActivatorTranscriber.class );
 
 		stimuli = Properties.loadArrayFromFile( props.getResourceProperty( STIMULI_FILE_NAME_KEY ) );
 		targets = Properties.loadArrayFromFile( props.getResourceProperty( TARGETS_FILE_NAME_KEY ) );
+		
 		targetRange = props.getDoubleProperty( TARGETS_RANGE_KEY, 0.0d );
 		adjustForNetworkSizeFactor = props.getFloatProperty( ADJUST_FOR_NETWORK_SIZE_FACTOR_KEY,
 				0.0f );
-
+		
 		if ( stimuli.length == 0 || targets.length == 0 )
 			throw new IllegalArgumentException( "require at least 1 training set for stimuli ["
 					+ stimuli.length + "] and targets [" + targets.length + "]" );

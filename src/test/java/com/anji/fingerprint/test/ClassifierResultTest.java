@@ -31,6 +31,9 @@ import junit.framework.TestCase;
  */
 public class ClassifierResultTest extends TestCase {
 
+	
+	
+	
 	/**
 	 * ctor
 	 */
@@ -47,6 +50,9 @@ public class ClassifierResultTest extends TestCase {
 		super( arg0 );
 	}
 
+	/*
+	
+	
 	private static void assertConfidences( ClassifierResult uut, float arch, float whorl,
 			float left, float right, float none ) {
 		assertEquals( "wrong arch confidence", arch, uut.getConfidence( Classification.ARCH ), 0f );
@@ -64,6 +70,9 @@ public class ClassifierResultTest extends TestCase {
 	 * 
 	 * @throws Exception
 	 */
+	
+	/*
+	
 	public void testClassifierResult() throws Exception {
 		// initial settings
 		ClassifierResult uut = new ClassifierResult();
@@ -133,4 +142,7 @@ public class ClassifierResultTest extends TestCase {
 				.getSecondaryClassification() );
 		assertConfidences( uut, 0.75f, 0.65f, 0.85f, 0.80f, 0.5f );
 	}
+	
+	
+	//*/
 }
