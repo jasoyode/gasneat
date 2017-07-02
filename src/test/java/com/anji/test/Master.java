@@ -87,7 +87,7 @@ public static TestSuite suite() {
 	TestSuite suite = new TestSuite();
 
 	// fingerprint
-	suite.addTest( new TestSuite( ClassifierResultTest.class ) );
+	//suite.addTest( new TestSuite( ClassifierResultTest.class ) );
 
 	// floating eye
 	suite.addTest( new TestSuite( AnjiNetFloatingEyeTest.class ) );
@@ -100,7 +100,8 @@ public static TestSuite suite() {
 	suite.addTest( new TestSuite( Java2DSurfaceTest.class ) );
 
 	// integration
-	suite.addTest( new TestSuite( ActivatorTest.class ) );
+	//suite.addTest( new TestSuite( ActivatorTest.class ) );
+	
 	suite.addTest( new TestSuite( ConsoleLogEventListenerTest.class ) );
 	suite.addTest( new TestSuite( PersistenceEventListenerTest.class ) );
 	suite.addTest( new TestSuite( SimpleSelectorTest.class ) );
@@ -118,7 +119,8 @@ public static TestSuite suite() {
 	suite.addTest( new TestSuite( RemoveConnectionMutationOperatorSmallTest.class ) );
 	suite.addTest( new TestSuite( RemoveConnectionMutationOperatorAllTest.class ) );
 	suite.addTest( new TestSuite( RemoveConnectionMutationOperatorSkewedTest.class ) );
-	suite.addTest( new TestSuite( TargetFitnessFunctionTest.class ) );
+
+	//suite.addTest( new TestSuite( TargetFitnessFunctionTest.class ) );
 	suite.addTest( new TestSuite( TranscriberTest.class ) );
 	suite.addTest( new TestSuite( WeightMutationOperatorTest.class ) );
 
@@ -158,7 +160,7 @@ public static TestSuite suite() {
 	suite.addTest( new TestSuite( PropertiesTest.class ) );
 
 	// run this one last since it takes so long
-	suite.addTest( new TestSuite( EvolverTest.class ) );
+	//suite.addTest( new TestSuite( EvolverTest.class ) );
 
 	return suite;
 }
