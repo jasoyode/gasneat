@@ -44,7 +44,7 @@ import com.anji.neat.test.PruneMutationOperatorTest;
 import com.anji.neat.test.RemoveConnectionMutationOperatorAllTest;
 import com.anji.neat.test.RemoveConnectionMutationOperatorSkewedTest;
 import com.anji.neat.test.RemoveConnectionMutationOperatorSmallTest;
-import com.anji.neat.test.TargetFitnessFunctionTest;
+
 import com.anji.neat.test.TranscriberTest;
 import com.anji.neat.test.WeightMutationOperatorTest;
 import com.anji.nn.test.AnjiActivatorTest;
