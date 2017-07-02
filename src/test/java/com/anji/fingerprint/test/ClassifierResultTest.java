@@ -50,6 +50,11 @@ public class ClassifierResultTest extends TestCase {
 		super( arg0 );
 	}
 
+	public void testClassifierResult() {
+		assertEquals(true, true);	
+	}
+	
+	
 	/*
 	
 	
