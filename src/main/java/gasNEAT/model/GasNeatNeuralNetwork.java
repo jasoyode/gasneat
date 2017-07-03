@@ -40,6 +40,8 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	private Properties props;
 	private int RECURRENT_STEPS;
 	
+	private boolean flatConcentrationGradient;
+	
 	/** Neural Network Neuron HashMap*/
 	private HashMap<String, GasNeatNeuron> neuronMap = new HashMap<String, GasNeatNeuron>();
 	
@@ -122,6 +124,8 @@ public class GasNeatNeuralNetwork implements Cloneable {
 		
 		this.props = props;
 		
+		flatConcentrationGradient = props.getBooleanProperty( GasNeatConfiguration.FLAT_CONCENTRATION_GRADIENT_KEY, true );
+		
 		//ULTRATODO - find a way to short cut this when it happens, don't waste time simulating it
 		if (recurrentSteps  > 99) {
 			recurrentSteps = 1;
@@ -192,7 +196,13 @@ public class GasNeatNeuralNetwork implements Cloneable {
 				gas.setName( "Gas "+ neuron.getGasProductionType() );
 				
 				//TODO set in config
-				gas.setGasDispersionType(  "FLAT" );
+				
+				if (flatConcentrationGradient) {
+					gas.setGasDispersionType(  "FLAT" );					
+				} else {
+					gas.setGasDispersionType(  "GRADIENT" );
+				}
+				
 				
 				gas.setPropagationSpeed( props.getDoubleProperty( GasNeatConfiguration.GAS_SPEED_KEY ) );
 				gas.setDecayFactor(  props.getDoubleProperty( GasNeatConfiguration.GAS_DECAY_KEY )   );

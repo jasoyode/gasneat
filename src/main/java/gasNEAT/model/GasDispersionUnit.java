@@ -192,16 +192,26 @@ public class GasDispersionUnit implements Cloneable {
 						// if gas dispersion type is DECAY then
 						// calculate build up concentration based on gas
 						// concentration and neuron distance
-					} else if (gasDispersionType.equals("DECAY")) {
+					} else if (gasDispersionType.equals("GRADIENT")) {
 						double neuronDistance = channelSlot.getReceiverNeurons().get(updateNeuronID);
 						
+						double concentration = Math.pow(Math.E, 
+								-1* ( Math.pow(  
+											neuronDistance/ emissionRadius, 2)
+									)
+								);
+						//System.err.println( "Distance: "+ neuronDistance );
+						//System.err.println( "emissionRadius: " + emissionRadius );
+						//System.err.println( "concentration: "+ concentration );
+						
 						//TODO: this is going to be waaaaay to small...
-						buildUpGasConcentration = channelSlot.getGasConcentration() / (neuronDistance * neuronDistance);
-						System.out.println("NEED TO FIX DECAY RATE MODEL HERE");
-						System.exit(1);
+						buildUpGasConcentration = channelSlot.getGasConcentration() * concentration;
+						/// (neuronDistance * neuronDistance);
+						//System.out.println("NEED TO FIX DECAY RATE MODEL HERE");
+						//System.exit(1);
 					} else {
 						
-						System.out.println("NEED TO SELECT MODEL HERE");
+						System.out.println("NEED TO SELECT gasDispersionType HERE");
 						System.exit(1);
 						
 					}

@@ -76,6 +76,23 @@ public void testSpatialSynapticPlasticityModulation() {
 	}
 }
 
+
+@Test
+public void testSpatialGradientSynapticPlasticityModulation() {
+	String experimentToRun = "src/test/java/sanity_tests/gas_synaptic_plasticity_gradient/task.properties";
+	String chromosome = "33649";
+	int fitness = 991;
+	try {
+		testSolution( experimentToRun, chromosome,  fitness );
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.err.println("Exception when running test: " +experimentToRun );
+		e.printStackTrace();
+	}
+}
+
+
+
 @Test
 public void testMultiOutput() {
 	String experimentToRun = "src/test/java/sanity_tests/multi_output/multi_output.properties";
