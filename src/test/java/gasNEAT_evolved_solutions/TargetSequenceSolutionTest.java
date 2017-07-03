@@ -6,23 +6,18 @@ import org.apache.log4j.Logger;
 import org.jgap.Chromosome;
 import org.jgap.Configuration;
 import org.junit.Test;
-
 import com.anji.integration.XmlPersistableChromosome;
 import com.anji.neat.NeatConfiguration;
 import com.anji.persistence.Persistence;
 import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
-
-import gasNEAT.GasNeatEvolverTest;
 import gasNEAT.configurations.GasNeatConfiguration;
 import gasNEAT.targetSequence.TargetSequenceFitnessFunction;
 import junit.framework.TestCase;
 
-
 public class TargetSequenceSolutionTest extends TestCase { 
 
 private final static Logger logger = Logger.getLogger( TargetSequenceSolutionTest.class );
-
 
 private ArrayList<String> experimentsToRun;
 private ArrayList<String> chromosomesToTest;
@@ -37,20 +32,80 @@ public TargetSequenceSolutionTest( String name ) {
 	super( name );
 }	
 
-/**
- * main test
- */
+
+
 @Test
-public void test() {
+public void testGasActivationModulation() {
+	String experimentToRun = "src/test/java/sanity_tests/gas_act_mod/task_gas_act_mod.properties";
+	String chromosome = "6572";
+	int fitness = 991;
+	try {
+		testSolution( experimentToRun, chromosome,  fitness );
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.err.println("Exception when running test: " +experimentToRun );
+		e.printStackTrace();
+	}
+}
+
+@Test
+public void testGasActivatedNeurons() {
+	String experimentToRun = "src/test/java/sanity_tests/gas_activated_neurons/task_gas_activated_neurons.properties";
+	String chromosome = "3800";
+	int fitness = 995;
+	try {
+		testSolution( experimentToRun, chromosome,  fitness );
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.err.println("Exception when running test: " +experimentToRun );
+		e.printStackTrace();
+	}
+}
+
+@Test
+public void testGasSynapticPlasticityModulation() {
+	String experimentToRun = "src/test/java/sanity_tests/gas_synaptic_plasticity/task_gas_synaptic_plasticity.properties";
+	String chromosome = "8891";
+	int fitness = 993;
+	try {
+		testSolution( experimentToRun, chromosome,  fitness );
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.err.println("Exception when running test: " +experimentToRun );
+		e.printStackTrace();
+	}
+}
+
+@Test
+public void testMultiOutput() {
+	String experimentToRun = "src/test/java/sanity_tests/multi_output/multi_output.properties";
+	String chromosome = "12424";
+	int fitness = 993;
+	try {
+		testSolution( experimentToRun, chromosome,  fitness );
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.err.println("Exception when running test: " +experimentToRun );
+		e.printStackTrace();
+	}
+}
+
+
+
+/**
+ * test template for copy paste
+ *
+@Test
+public void testGeneric() {
 
 	experimentsToRun = new ArrayList<String>();
 	chromosomesToTest = new ArrayList<String>();
 	chromosomesFitnessScore = new ArrayList<Integer>();
 	
-	experimentsToRun.add("src/test/java/sanity_tests/gas_act_mod/task_gas_act_mod.properties");
-	chromosomesToTest.add("6572");
-	chromosomesFitnessScore.add(991);
-	
+	experimentsToRun.add( "" );
+	chromosomesToTest.add( "" );
+	chromosomesFitnessScore.add(  );
+
 	
 	for (int i=0; i< experimentsToRun.size(); i++) {
 
@@ -64,12 +119,9 @@ public void test() {
 		
 	}
 	
-	
-	
-	
-	
 }
 
+*/
 
 
 
@@ -117,7 +169,8 @@ public static void testSolution( String exp, String chromosomeID, int fitness ) 
 	logger.info( "= Total Fitness = " + chrom.getFitnessValue() );
 	
 	
-	assertEquals(true, chrom.getFitnessValue() ==  fitness );
+	assertEquals(fitness, chrom.getFitnessValue());
+	
 	
 	
 }
