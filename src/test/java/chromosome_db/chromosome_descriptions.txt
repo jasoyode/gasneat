@@ -1,0 +1,17 @@
+1000 positive activation modulation via gas
+
+2000 negative activation modulation via gas
+
+3000 positive synaptic plasticity modulation via gas
+
+4000 negative synaptic plasticity modulation via gas
+
+5000 positive activation modulation via synapses
+
+6000 negative activation modulation via synapses
+
+7000 positive synaptic plasticity modulation via synapses
+
+8000 negative synaptic plasticity modulation via synapses
+
+9000 gas activated neurons demonstrating CPG

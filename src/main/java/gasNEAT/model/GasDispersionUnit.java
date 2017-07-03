@@ -200,17 +200,9 @@ public class GasDispersionUnit implements Cloneable {
 											neuronDistance/ emissionRadius, 2)
 									)
 								);
-						//System.err.println( "Distance: "+ neuronDistance );
-						//System.err.println( "emissionRadius: " + emissionRadius );
-						//System.err.println( "concentration: "+ concentration );
-						
-						//TODO: this is going to be waaaaay to small...
 						buildUpGasConcentration = channelSlot.getGasConcentration() * concentration;
-						/// (neuronDistance * neuronDistance);
-						//System.out.println("NEED TO FIX DECAY RATE MODEL HERE");
-						//System.exit(1);
+
 					} else {
-						
 						System.out.println("NEED TO SELECT gasDispersionType HERE");
 						System.exit(1);
 						

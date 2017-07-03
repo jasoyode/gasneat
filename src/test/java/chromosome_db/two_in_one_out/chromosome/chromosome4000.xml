@@ -1,0 +1,6 @@
+<chromosome id="4000" primary-parent-id="100">
+<gasneat-neuron id="0" type="in" activation="linear" threshold="0.0" gas-prod-type="1" syn-gas-type="0" receptor="G0_G1_NO_NO_NO" x="20" y="20" A="1" B="-0.5" C="-0.5" D="0.25" LR="1.0" emiss-rate="0.08209748816694074" emiss-radius="300"/>
+<gasneat-neuron id="1" type="in" activation="linear" threshold="0.0" gas-prod-type="0" syn-gas-type="0" receptor="G0_G1_NO_NO_NO" x="20" y="40" A="1" B="-0.5" C="-0.5" D="0.25" LR="1.0" emiss-rate="0.08468651741507517" emiss-radius="300"/>
+<gasneat-neuron id="3" type="out" activation="linear" threshold="0.0" gas-prod-type="0" syn-gas-type="0" receptor="G0_NO_NO_NO_G1" x="200" y="40" A="1" B="-0.5" C="-0.5" D="0.25" LR="1.0" emiss-rate="0.07442718190348174" emiss-radius="300"/>
+<gasneat-connection id="4" src-id="1" dest-id="3" weight="0.5"/>
+</chromosome>
