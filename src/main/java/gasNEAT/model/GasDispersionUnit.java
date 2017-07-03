@@ -207,9 +207,7 @@ public class GasDispersionUnit implements Cloneable {
 					}
 					
 					//buildUpGasConcentration += updateNeuron.getReceptor().getBuiltUpConcentrations()[ new Integer(gasType.substring(1))];
-					
 					//System.out.println("buildUpGasConcentration "+ buildUpGasConcentration +" "+gasType  );
-					
 					
 					//System.out.println("THIS NEEDS TO BE CAREFULLY LOOKED AT WHEN YOU HIT THIS");
 					//updateNeuron.getReceptor().addBufferedConcentration(gasType, buildUpGasConcentration);
@@ -218,16 +216,11 @@ public class GasDispersionUnit implements Cloneable {
 					//	System.out.print( d +"  "  );	
 					//}
 					
-					//System.out.println("");
-					
-					
 					updateNeuron.getReceptor().addBufferedConcentration(gasType, buildUpGasConcentration);
 					
 					//for (double d: updateNeuron.getReceptor().getBufferedConcentration()) {
 					//	System.out.print( d +"  "  );
 					//}
-					//System.out.println("");
-					
 					//System.exit(1);
 					
 					//STARTHERE
