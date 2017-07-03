@@ -1,5 +1,6 @@
 language: java
 sudo: true 
+
 #false # faster builds
 
 jdk:
