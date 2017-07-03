@@ -53,11 +53,11 @@ public GasNeatEvolverTest( String name ) {
 	
 	experimentsToRun.add("experiments/sanity_tests/gas_act_mod/task_gas_act_mod.properties");
 	experimentsToRun.add("experiments/sanity_tests/gas_activated_neurons/task_gas_activated_neurons.properties");
-	experimentsToRun.add("experiments/sanity_tests/multi_output/multi_output.properties");
+	
 	
 	
 	/*
-	
+	experimentsToRun.add("experiments/sanity_tests/multi_output/multi_output.properties");
 	
 	
 	experimentsToRun.add("experiments/sanity_tests/multi_output_delayed/multi_output_delayed.properties");
