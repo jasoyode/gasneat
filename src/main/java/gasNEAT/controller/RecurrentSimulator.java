@@ -225,30 +225,24 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 				logger.debug( sourceNeuron.getGasProductionType()  );
 				logger.debug( neuralNetwork.getGasReceiverNeuronsMap() );
 
-				//List<GasNeatNeuron> targetNeuronsList = (List<GasNeatNeuron>) neuralNetwork.getNeuronMap().values();
-				
-				//#GASNEATMODEL  ULTRATODO
+				//#GASNEATMODEL
 				List<GasNeatNeuron> targetNeuronsList = neuralNetwork.getGasReceiverNeuronsMap().get( sourceNeuron.getGasProductionType() );
-
-				//System.out.println( sourceNeuron.getGasProductionType() );
-				//System.out.println( neuralNetwork.getGasReceiverNeuronsMap() );
 				
-				//System.out.println("MUST MAKE THIS NON-EMPTY!" + targetNeuronsList);
-				//System.exit(1);
 				
 				logger.debug( "targetlist: " + targetNeuronsList  );
-				newGasChannel.addNeuron(targetNeuronsList, sourceNeuron);
 				
+				newGasChannel.addNeuron(targetNeuronsList, sourceNeuron);
 				
 				logger.debug( "setting new gasdisperion unit" + newGasChannel );
 				sourceNeuron.setGasDispersionUnit(newGasChannel);
 				logger.debug( "GAS PRODUCING NEURON CREATED WITH:"  );
 				logger.debug( newGasChannel );
 				
-				for (GasDispersionSlot slot: newGasChannel.getGasDispersionSlotList()) {
-					logger.debug( slot.toString()  );
+				if (logger.isDebugEnabled() ) {
+					for (GasDispersionSlot slot: newGasChannel.getGasDispersionSlotList()) {
+						logger.debug( slot.toString()  );
+					}
 				}
-				//System.exit(1);
 				
 			} else {
 				logger.debug("NON GAS NEURON" + sourceNeuron  );
@@ -538,13 +532,17 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		// This is reverse from previous
 		for (String neuronID : neuralNetwork.getNeuronMap().keySet()) {
 			GasNeatNeuron tempNeuron = neuralNetwork.getNeuronMap().get(neuronID);
+			
+			/*
 			if (!tempNeuron.isGasEmitter() ) {
 				this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
 			} else {
-				
 				//ULTRATODO not sure why this handle was here, but we might need to change...
 				this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
 			}
+			*/
+			this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
+			
 		}
 		
 		logger.debug("STATE AFTER pushBufferedSynapsesToBuiltUpConcentrations");

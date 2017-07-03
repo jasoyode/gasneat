@@ -933,14 +933,12 @@ public void initializeAlleles( SortedSet alleles ) {
 			///for now all neurons have standard receptors
 			neuronAllele.setReceptorTypeToDefault();
 			
-			//#ULTRATODO
-			neuronAllele.setReceptorType(  getReceptorMap().get(0)   );
-			
 			if (  neuronAllele.getReceptorType().trim().equals("")) {
 				System.err.println("WHY IS EMPTY?");
 				System.exit(1);
 			}
-			System.err.println(  neuronAllele.getReceptorType()  );
+			//
+			logger.info( neuronAllele.getReceptorType()  );
 			
 			
 			if (neuronAllele.getType() == NeuronType.INPUT ) {
