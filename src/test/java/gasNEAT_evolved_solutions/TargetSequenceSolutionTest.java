@@ -35,7 +35,7 @@ public TargetSequenceSolutionTest( String name ) {
 
 
 @Test
-public void testGasActivationModulation() {
+public void testSpatialActivationModulation() {
 	String experimentToRun = "src/test/java/sanity_tests/gas_act_mod/task_gas_act_mod.properties";
 	String chromosome = "6572";
 	int fitness = 991;
@@ -63,7 +63,7 @@ public void testGasActivatedNeurons() {
 }
 
 @Test
-public void testGasSynapticPlasticityModulation() {
+public void testSpatialSynapticPlasticityModulation() {
 	String experimentToRun = "src/test/java/sanity_tests/gas_synaptic_plasticity/task_gas_synaptic_plasticity.properties";
 	String chromosome = "8891";
 	int fitness = 993;
@@ -81,6 +81,66 @@ public void testMultiOutput() {
 	String experimentToRun = "src/test/java/sanity_tests/multi_output/multi_output.properties";
 	String chromosome = "12424";
 	int fitness = 993;
+	try {
+		testSolution( experimentToRun, chromosome,  fitness );
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.err.println("Exception when running test: " +experimentToRun );
+		e.printStackTrace();
+	}
+}
+
+@Test
+public void testOneDimCPG() {
+	String experimentToRun = "src/test/java/sanity_tests/one_dim_cpg/task.properties";
+	String chromosome = "17762";
+	int fitness = 996;
+	try {
+		testSolution( experimentToRun, chromosome,  fitness );
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.err.println("Exception when running test: " +experimentToRun );
+		e.printStackTrace();
+	}
+}
+
+
+@Test
+public void testMultiOutputDelayed() {
+	String experimentToRun = "src/test/java/sanity_tests/multi_output_delayed/multi_output_delayed.properties";
+	String chromosome = "12627";
+	int fitness = 996;
+	try {
+		testSolution( experimentToRun, chromosome,  fitness );
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.err.println("Exception when running test: " +experimentToRun );
+		e.printStackTrace();
+	}
+}
+
+
+
+@Test
+public void testTopologicalActivationModulation() {
+	String experimentToRun = "src/test/java/sanity_tests/topological_act_mod/task_topological_act_mod.properties";
+	String chromosome = "133";
+	int fitness = 987;
+	try {
+		testSolution( experimentToRun, chromosome,  fitness );
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.err.println("Exception when running test: " +experimentToRun );
+		e.printStackTrace();
+	}
+}
+
+
+@Test
+public void testTopologicalSynapticPlasticityModulation() {
+	String experimentToRun = "src/test/java/sanity_tests/topological_synaptic_plasticity/task_topological_synaptic_plasticity.properties";
+	String chromosome = "19207";
+	int fitness = 990;
 	try {
 		testSolution( experimentToRun, chromosome,  fitness );
 	} catch (Exception e) {
