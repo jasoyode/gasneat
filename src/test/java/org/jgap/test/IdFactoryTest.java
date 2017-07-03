@@ -30,7 +30,7 @@ import junit.framework.TestCase;
  */
 public class IdFactoryTest extends TestCase {
 
-private final static String FILE_NAME = "test/db/id.xml";
+private final static String FILE_NAME = "src/test/java/db/id.xml";
 
 private final static long TEST_NEXT_ID = 0;
 
