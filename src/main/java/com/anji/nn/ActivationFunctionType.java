@@ -56,6 +56,12 @@ public final static ActivationFunctionType SIGMOID = new ActivationFunctionType(
 public final static ActivationFunctionType TANH = new ActivationFunctionType( "tanh" );
 
 /**
+ * tanh2
+ * used to imitate soltoggio's model
+ */
+public final static ActivationFunctionType TANH2 = new ActivationFunctionType( "tanh2" );
+
+/**
  * tanh cubic
  */
 public final static ActivationFunctionType TANH_CUBIC = new ActivationFunctionType(
@@ -91,6 +97,7 @@ public static ActivationFunctionType valueOf( String name ) {
 		types.put( ActivationFunctionType.LINEAR.toString(), ActivationFunctionType.LINEAR );
 		types.put( ActivationFunctionType.SIGMOID.toString(), ActivationFunctionType.SIGMOID );
 		types.put( ActivationFunctionType.TANH.toString(), ActivationFunctionType.TANH );
+		types.put( ActivationFunctionType.TANH2.toString(), ActivationFunctionType.TANH2 );
 		types.put( ActivationFunctionType.TANH_CUBIC.toString(), ActivationFunctionType.TANH_CUBIC );
 		types.put( ActivationFunctionType.CLAMPED_LINEAR.toString(),
 				ActivationFunctionType.CLAMPED_LINEAR );

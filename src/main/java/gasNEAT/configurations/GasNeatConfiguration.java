@@ -215,14 +215,20 @@ public final static String INITIAL_PLASTICITY_KEY = "gasneat.initial.plasticity"
 public final static String MAXIMUM_PLASTICITY_KEY = "gasneat.maximal.plasticity";
 public final static String MINIMUM_PLASTICITY_KEY = "gasneat.minimal.plasticity";
 
-
-public final static String SPATIAL_NEUROMODULATION_ENABLED_KEY = "gasneat.spatial.neuromodulation.enabled";
-public final static String TOPOLOGICAL_NEUROMODULATION_ENABLED_KEY = "gasneat.topological.neuronmodulation.enabled";
+//these are just checked by the other rates
+//public final static String SPATIAL_NEUROMODULATION_ENABLED_KEY = "gasneat.spatial.neuromodulation.enabled";
+//public final static String TOPOLOGICAL_NEUROMODULATION_ENABLED_KEY = "gasneat.topological.neuronmodulation.enabled";
 
 public static final String MAP_RECEPTOR_FILE = "gasneat.receptor.map.file";
 
 public static final String FROZEN_MODULATORY_SYNAPSES_KEY = "gasneat.frozen.modulatory.synapses";
 public static final String TANH_SQUASH_MODULATION_SIGNAL_KEY = "gasneat.tanh.squash.modulatory.signal";
+
+
+
+public static final String FLAT_CONCENTRATION_GRADIENT_KEY = "gasneat.flat.concentration";
+
+
 
 private static ArrayList<String> receptorList;
 private static String receptorMapFilePath;
@@ -231,6 +237,7 @@ private static int numberGases;
 private static @Getter boolean spatialNeuromodulationEnabled;
 private static @Getter boolean topologicalNeuromodulationEnabled;
 
+private static @Getter boolean flatConcentrationGradient;
 
 
 private static @Getter int initialEmissionRadius;
@@ -752,6 +759,10 @@ private void init( Properties newProps ) throws InvalidConfigurationException {
 	resetReceptorMap();
 	
 	props = newProps;
+	
+	//default to true for backcompat
+	flatConcentrationGradient = props.getBooleanProperty( FLAT_CONCENTRATION_GRADIENT_KEY, true );
+	
 	
 	defaultPlasticityA = props.getDoubleProperty( PLASTICITY_PARAMETER_A_KEY );
 	defaultPlasticityB = props.getDoubleProperty( PLASTICITY_PARAMETER_B_KEY );
