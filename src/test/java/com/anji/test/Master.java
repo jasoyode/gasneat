@@ -82,7 +82,7 @@ public class Master extends TestCase {
 
 /**
  * @return new suite
- */
+ *
 public static TestSuite suite() {
 	TestSuite suite = new TestSuite();
 
@@ -170,7 +170,7 @@ public static TestSuite suite() {
  */
 public static void main( String[] args ) {
 	System.out.println( Copyright.STRING );
-	TestRunner.run( suite() );
+	//TestRunner.run( suite() );
 }
 
 }

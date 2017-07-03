@@ -20,7 +20,10 @@ public class Master extends TestCase {
 
 /**
  * @return suite of tests
- */
+ *
+	
+	
+	
 public static TestSuite suite() {
 	TestSuite suite = new TestSuite();
 	suite.addTest( new TestSuite( ChromosomeTest.class ) );
@@ -39,7 +42,7 @@ public static TestSuite suite() {
  * @param args
  */
 public static void main( String[] args ) {
-	TestRunner.run( suite() );
+	//TestRunner.run( suite() );
 }
 
 }
