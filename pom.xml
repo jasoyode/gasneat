@@ -32,7 +32,8 @@
           <scope>system</scope>
           <systemPath>${basedir}/lib/log4j-api-2.1.jar</systemPath>
         </dependency>
-		
+
+<!--		
 		<dependency>
           <groupId>log4j-core</groupId>
           <artifactId>log4j-core</artifactId>
@@ -40,7 +41,9 @@
           <scope>system</scope>
           <systemPath>${basedir}/lib/log4j-core-2.1.jar</systemPath>
         </dependency>
-	
+-->        
+        
+        
 		<dependency>
           <groupId>org.apache.log4j</groupId>
           <artifactId>log4j</artifactId>
