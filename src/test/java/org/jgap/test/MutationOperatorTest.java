@@ -12,6 +12,8 @@ import org.jgap.Chromosome;
 import org.jgap.ChromosomeMaterial;
 import org.jgap.Configuration;
 import org.jgap.MutationOperator;
+import org.junit.Before;
+import org.junit.Test;
 
 import junit.framework.TestCase;
 
@@ -59,6 +61,7 @@ public MutationOperatorTest( String name ) {
 /**
  * @see junit.framework.TestCase#setUp()
  */
+@Before
 protected void setUp() throws Exception {
 	initConfig();
 	config.lockSettings();
@@ -102,6 +105,7 @@ protected abstract void doTestAfterMutate( List mutants ) throws Exception;
  * 
  * @throws Exception
  */
+@Test
 public void testMutationOperator() throws Exception {
 	for ( int i = 0; i < NUM_GENERATIONS; ++i ) {
 		List mutants = cloneList( preMutants );

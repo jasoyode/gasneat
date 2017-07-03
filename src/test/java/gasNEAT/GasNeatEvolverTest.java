@@ -54,14 +54,15 @@ public GasNeatEvolverTest( String name ) {
 	experimentsToRun.add("experiments/sanity_tests/gas_act_mod/task_gas_act_mod.properties");
 	experimentsToRun.add("experiments/sanity_tests/gas_activated_neurons/task_gas_activated_neurons.properties");
 	
+	experimentsToRun.add("experiments/sanity_tests/one_dim_cpg/task_temp_mutable.properties");
 	
 	
-	//*
+	/*
 	experimentsToRun.add("experiments/sanity_tests/multi_output/multi_output.properties");
 	
 	
 	experimentsToRun.add("experiments/sanity_tests/multi_output_delayed/multi_output_delayed.properties");
-	experimentsToRun.add("experiments/sanity_tests/one_dim_cpg/task_temp_mutable.properties");
+	
 	experimentsToRun.add("experiments/sanity_tests/topological_act_mod/task_topological_act_mod.properties");
 	experimentsToRun.add("experiments/sanity_tests/gas_synaptic_plasticity/task_gas_synaptic_plasticity.properties");
 	experimentsToRun.add("experiments/sanity_tests/topological_synaptic_plasticity/task_topological_synaptic_plasticity.properties");

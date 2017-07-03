@@ -14,6 +14,8 @@ import org.jgap.Configuration;
 import org.jgap.SpeciationParms;
 import org.jgap.Specie;
 import org.jgap.impl.IntegerAllele;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.anji.util.DummyConfiguration;
 
@@ -52,6 +54,7 @@ public SpecieTest( String name ) {
 /**
  * @see junit.framework.TestCase#setUp()
  */
+@Before
 protected void setUp() throws Exception {
 	SpeciationParms speciationParms = config.getSpeciationParms();
 	speciationParms.setSpecieCompatCommonCoeff( 0.04d );
@@ -78,6 +81,7 @@ protected void setUp() throws Exception {
  * add chromosomes to species
  * @throws Exception
  */
+@Test
 public void testChroms() throws Exception {
 
 	for ( int i = 0; i < NUM_SPECIES; ++i ) {
