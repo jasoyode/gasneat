@@ -384,12 +384,21 @@ public static GasNeatNeuronAllele gasNeatNeuronFromXml(Node node) {
 	
 	///////////////////////////////////////////////////
 	
+	
 	actNode = atts.getNamedItem( XmlPersistableAllele.TIMING_CONSTANT );
-	str = actNode.getNodeValue();
+	
+	if (actNode == null)
+		str = "1";
+	else
+		str = actNode.getNodeValue();
 	gasNeatNeuronAllele.setTimingConstant(  new Double(str) );
+
 	
 	actNode = atts.getNamedItem( XmlPersistableAllele.RECEPTOR_STRENGTH );
-	str = actNode.getNodeValue();
+	if (actNode == null)
+		str = "1";
+	else 
+		str = actNode.getNodeValue();
 	gasNeatNeuronAllele.setReceptorStrength( new Double(str) );
 	
 	//#ADDPROPS

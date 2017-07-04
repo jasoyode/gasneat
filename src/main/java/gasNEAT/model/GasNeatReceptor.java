@@ -433,9 +433,7 @@ public class GasNeatReceptor {
 		if (plasticity <= minimumPlasticity) {
 			plasticity = minimumPlasticity;
 		}
-		
-		
-		
+	
 		
 		
 		if (prePlasticity <  plasticity) {
