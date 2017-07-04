@@ -26,6 +26,10 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 	private @Setter @Getter double plasticityParameterD;
 	private @Setter @Getter double plasticityParameterLR;
 	
+	//#ADDPROPS
+	private @Setter @Getter double timingConstant;
+	private @Setter @Getter double receptorStrength;
+	
 	/** Used to known where to crossover*/
 	private GasNeatNeuronGene gasNeatNeuronGene;
 	
@@ -96,6 +100,10 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 		allele.setPlasticityParameterD(plasticityParameterD);
 		allele.setPlasticityParameterLR(plasticityParameterLR);
 		allele.setGasSpeed( getGasSpeed() );
+		
+		//#ADDPROPS
+		allele.setTimingConstant( getTimingConstant() );
+		allele.setReceptorStrength( getReceptorStrength() );
 		
 		return allele;
 	}
@@ -311,6 +319,12 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 		setPlasticityParameterC(  GasNeatConfiguration.getDefaultPlasticityC() );
 		setPlasticityParameterD(  GasNeatConfiguration.getDefaultPlasticityD() );
 		setPlasticityParameterLR(  GasNeatConfiguration.getDefaultPlasticityLR() );
+		
+		
+		//#ADDPROPS
+		//#CTRNNTODO will need to allow these values to change before any effect will happen
+		setReceptorStrength(  GasNeatConfiguration.getDefaultReceptorStrength() );
+		setTimingConstant( GasNeatConfiguration.getDefaultTimingConstant() );
 
 	}
 	
@@ -475,6 +489,11 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 		gasEmissionStrength  = recessiveNeuronAllele.getGasEmissionStrength();
 		gasEmissionRadius  = recessiveNeuronAllele.getGasEmissionRadius();
 		gasSpeed  = recessiveNeuronAllele.getGasSpeed();
+		
+		//#ADDPROPS
+		receptorStrength = recessiveNeuronAllele.getReceptorStrength();
+		timingConstant = recessiveNeuronAllele.getTimingConstant();
+				
 		
 	}
 

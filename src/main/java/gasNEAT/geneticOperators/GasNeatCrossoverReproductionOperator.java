@@ -31,6 +31,7 @@ import org.jgap.Configuration;
 import com.anji.neat.NeatChromosomeUtility;
 import com.anji.neat.NeatCrossoverReproductionOperator;
 
+import gasNEAT.configurations.GasNeatConfiguration;
 import gasNEAT.geneticEncoding.GasNeatConnectionAllele;
 import gasNEAT.geneticEncoding.GasNeatNeuronAllele;
 import gasNEAT.xor.ChromosomeEvaluator;
@@ -98,6 +99,12 @@ protected ChromosomeMaterial reproduce( Configuration config, Chromosome dominan
 	double c = neurons.get(0).getPlasticityParameterC();
 	double d = neurons.get(0).getPlasticityParameterD();
 	double lr = neurons.get(0).getPlasticityParameterLR();
+	
+	//#ADDPROPS
+	
+	
+	//#CTRNNTODO
+	//need to decide if all neurons should have same timing constant or they can have different ones
 	
 	for (GasNeatNeuronAllele neuron: neurons) {
 		neuron.setPlasticityParameterA(a);

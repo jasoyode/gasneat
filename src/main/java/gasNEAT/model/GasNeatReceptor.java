@@ -28,6 +28,9 @@ public class GasNeatReceptor {
 	//ID referencing the receptor
 	private String receptorType;
 	
+	//#ADDPROPS
+	private double receptorStrength;
+	
 	//#ARRAYMAP
 	
 	//Stores the buffered concentration of gases before actually updating the values
@@ -271,9 +274,12 @@ public class GasNeatReceptor {
 	
 	
 	//TODO: need to make exhaustive list here if you want to define these explicit types...
-	public GasNeatReceptor(String receptorType) {
+	public GasNeatReceptor(String receptorType, double receptorStrength) {
 		
 		this.receptorType = receptorType;
+		
+		//#ADDPROPS
+		this.receptorStrength = receptorStrength;
 		
 		//NEED TO SETUP TO READ FROM PROP
 		// #GASNEATMODEL
@@ -376,12 +382,15 @@ public class GasNeatReceptor {
 		//checkAndKill("modulatePlasticityFromConcentrations");
 		
 		
+		
 		if (exclusiveNeuromodulatedPlasticity && minimumPlasticity > 0) {
 			System.err.println("You must allow plasticity to reach zero if you have enabled neuromodulated plasticity");
-			System.err.println("because if there is no moudlation present, the plasticity must be zero!");
+			System.err.println("because if there is no modulation present, the plasticity must be zero!");
 			System.exit(1);
 			
 		}
+		
+		
 		
 		// #GASNEATMODEL
 		double prePlasticity = plasticity;
@@ -391,13 +400,13 @@ public class GasNeatReceptor {
 			//way way faster for the time being
 			//adding simple option to squash the modulation signal 
 			if (tanhSquashModulationSignal) {
-				plasticity = Math.tanh(  plasticityModFunction.evaluate( builtUpConcentrations  ) / 2 );
+				plasticity = Math.tanh( receptorStrength * plasticityModFunction.evaluate( builtUpConcentrations  ) / 2 );
 				
 				//System.out.println("squashed: " + plasticity);
 				//System.out.println("non-squahsed: "  + plasticityModFunction.evaluate( builtUpConcentrations  ) );
 				
 			} else {
-				plasticity =  plasticityModFunction.evaluate( builtUpConcentrations  );
+				plasticity = receptorStrength * plasticityModFunction.evaluate( builtUpConcentrations  );
 				
 				//System.out.println("non-squashed: " + plasticity);
 				//System.out.println("squashed: "  + Math.tanh(  plasticityModFunction.evaluate( builtUpConcentrations  ) / 2 )	);
@@ -408,9 +417,9 @@ public class GasNeatReceptor {
 		} else {
 			
 			if (tanhSquashModulationSignal) {
-				plasticity = plasticity * ( 1.0 + Math.tanh(  plasticityModFunction.evaluate( builtUpConcentrations) / 2 ) );
+				plasticity = plasticity * ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( builtUpConcentrations) / 2 ) );
 			} else {
-				plasticity = plasticity * ( 1.0 + plasticityModFunction.evaluate( builtUpConcentrations) );
+				plasticity = plasticity * ( 1.0 + receptorStrength * plasticityModFunction.evaluate( builtUpConcentrations) );
 			}
 		}
 

@@ -14,6 +14,7 @@ import com.anji.nn.Neuron;
 import com.anji.util.Properties;
 
 import gasNEAT.builders.NeuronBuilder;
+import gasNEAT.configurations.GasNeatConfiguration;
 import gasNEAT.geneticEncoding.GasNeatNeuronAllele;
 import gasNEAT.model.GasDispersionUnit;
 import gasNEAT.model.GasNeatReceptor;
@@ -27,6 +28,11 @@ public class GasNeatNeuron extends Neuron {
 	private @Getter double plasticityParameterC;
 	private @Getter double plasticityParameterD;
 	private @Getter double plasticityParameterLR;
+	
+	//#ADDPROPS
+	private @Getter double timingConstant;
+	private @Getter double receptorStrength;
+	
 	
 	/** Unique Id of Neuron*/
 	private String neuronID;
@@ -148,6 +154,10 @@ public class GasNeatNeuron extends Neuron {
 		plasticityParameterD = neuronAllele.getPlasticityParameterD();
 		plasticityParameterLR = neuronAllele.getPlasticityParameterLR();
 		
+		//#ADDPROPS
+		receptorStrength = neuronAllele.getReceptorStrength();
+		timingConstant = neuronAllele.getTimingConstant();
+		
 		
 		//if we MUST keep strings, ughhh
 		this.neuronID = "N"+neuronAllele.getInnovationId();
@@ -194,7 +204,7 @@ public class GasNeatNeuron extends Neuron {
 
 		//TODO: NEEDS to be completed in constructor
 		//System.out.println("CREATING RECEPTOR WITH TYPE: " + neuronAllele.getReceptorType() );
-		this.receptor = new GasNeatReceptor( ""+neuronAllele.getReceptorType() );
+		this.receptor = new GasNeatReceptor( ""+neuronAllele.getReceptorType(), receptorStrength );
 		receptor.init(props);
 		
 		this.emissionRadius = neuronAllele.getGasEmissionRadius();

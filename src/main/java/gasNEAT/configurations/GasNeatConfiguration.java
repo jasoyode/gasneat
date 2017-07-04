@@ -268,6 +268,11 @@ private static @Getter double defaultPlasticityC;
 private static @Getter double defaultPlasticityD;
 private static @Getter double defaultPlasticityLR;
 
+
+//#ADDPROPS
+private static @Getter double defaultTimingConstant;
+private static @Getter double defaultReceptorStrength;
+
 //TODO: can we use this as is?
 private GasNeatIdMap gasNeatIdMap;
 

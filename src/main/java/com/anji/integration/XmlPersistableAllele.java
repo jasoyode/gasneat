@@ -82,6 +82,9 @@ private final static String PLASTICITY_D ="D";
 private final static String PLASTICITY_LR ="LR";
 
 
+private final static String TIMING_CONSTANT ="timing-c";
+private final static String RECEPTOR_STRENGTH ="recp-str";
+//#ADDPROPS
 
 
 
@@ -170,6 +173,13 @@ public String toXml() {
 		
 		
 		//END PLASTICITY
+		
+		
+		result.append( TIMING_CONSTANT ).append( "=\"" ).append( nAllele.getTimingConstant() ).append( "\" " );
+		result.append( RECEPTOR_STRENGTH ).append( "=\"" ).append( nAllele.getReceptorStrength() ).append( "\" " );
+		
+		//#ADDPROPS
+		
 		
 		result.append( EMISSION_RATE ).append( "=\"" ).append( nAllele.getGasEmissionStrength() ).append(
 				"\" " );
@@ -373,6 +383,17 @@ public static GasNeatNeuronAllele gasNeatNeuronFromXml(Node node) {
 	gasNeatNeuronAllele.setPlasticityParameterLR( new Double(str) );
 	
 	///////////////////////////////////////////////////
+	
+	actNode = atts.getNamedItem( XmlPersistableAllele.TIMING_CONSTANT );
+	str = actNode.getNodeValue();
+	gasNeatNeuronAllele.setTimingConstant(  new Double(str) );
+	
+	actNode = atts.getNamedItem( XmlPersistableAllele.RECEPTOR_STRENGTH );
+	str = actNode.getNodeValue();
+	gasNeatNeuronAllele.setReceptorStrength( new Double(str) );
+	
+	//#ADDPROPS
+	
 	
 	
 	//GET EMISSION_RATE
