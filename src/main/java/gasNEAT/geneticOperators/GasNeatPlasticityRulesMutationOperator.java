@@ -105,7 +105,8 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 		
 		//determine which of A,B,C,D, and LR to mutate
 		
-		int switchValue = config.getRandomGenerator().nextInt(4);
+		//this really should work with 5 instead of 4!
+		int switchValue = config.getRandomGenerator().nextInt(5);
 		
 		double mutationVector = ( config.getRandomGenerator().nextGaussian() * getStdDev() );
 		

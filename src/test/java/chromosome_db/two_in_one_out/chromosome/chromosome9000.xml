@@ -1,5 +1,5 @@
 <chromosome id="8000" primary-parent-id="100">
-<gasneat-neuron id="0" type="in" activation="linear" threshold="0.1" gas-prod-type="1" syn-gas-type="0" receptor="G3_NO_NO_NO_NO" x="20" y="20" A="1" B="-0.5" C="-0.5" D="0.25" LR="1.0" emiss-rate="0.1" emiss-radius="300"/>
-<gasneat-neuron id="1" type="in" activation="linear" threshold="0.1" gas-prod-type="2" syn-gas-type="0" receptor="G1_NO_NO_NO_NO" x="20" y="120" A="1" B="-0.5" C="-0.5" D="0.25" LR="1.0" emiss-rate="0.1" emiss-radius="300"/>
-<gasneat-neuron id="3" type="out" activation="linear" threshold="0.1" gas-prod-type="3" syn-gas-type="0" receptor="G2_NO_NO_NO_NO" x="200" y="60" A="1" B="-0.5" C="-0.5" D="0.25" LR="1.0" emiss-rate="0.1" emiss-radius="300"/>
+<gasneat-neuron id="0" type="in" activation="linear" threshold="0.1" gas-prod-type="1" syn-gas-type="0" receptor="G3_NO_G2_NO_NO" x="45" y="20" A="1" B="-0.5" C="-0.5" D="0.25" LR="1.0" emiss-rate="0.1" emiss-radius="300"/>
+<gasneat-neuron id="1" type="in" activation="linear" threshold="0.1" gas-prod-type="2" syn-gas-type="0" receptor="G1_NO_G3_NO_NO" x="110" y="120" A="1" B="-0.5" C="-0.5" D="0.25" LR="1.0" emiss-rate="0.1" emiss-radius="300"/>
+<gasneat-neuron id="3" type="out" activation="linear" threshold="0.1" gas-prod-type="3" syn-gas-type="0" receptor="G2_NO_G1_NO_NO" x="175" y="20" A="1" B="-0.5" C="-0.5" D="0.25" LR="1.0" emiss-rate="0.1" emiss-radius="300"/>
 </chromosome>
