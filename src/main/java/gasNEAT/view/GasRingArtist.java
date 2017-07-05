@@ -64,7 +64,7 @@ public class GasRingArtist {
 	 */
 	public void drawGasRings(GasNeatNeuron neuron, Graphics2D g2d) {
 
-		color= network.getGasMap().get( neuron.getGasProductionType() ).getColor();
+		color= network.getGasMap().get( neuron.getGasProductionTypeInt() ).getColor();
 		
 		setCoordinates(neuron);
 		slotSize = neuron.getGasDispersionUnit().getSlotSize()*ViewConstants.SCALING_FACTOR;
@@ -247,7 +247,7 @@ public class GasRingArtist {
 		//this does not work!
 		//color = neuron.getGasColor();
 		
-		color= network.getGasMap().get( neuron.getGasProductionType() ).getColor();
+		color= network.getGasMap().get( neuron.getGasProductionTypeInt() ).getColor();
 		
 	}
 

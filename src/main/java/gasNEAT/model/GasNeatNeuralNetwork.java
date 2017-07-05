@@ -191,11 +191,10 @@ public class GasNeatNeuralNetwork implements Cloneable {
 			}
 			
 			//TODO: populate gas map - hardcoded for now
-			if (!gasMap.containsKey( neuron.getGasProductionType()) ) {
-				//int type = Integer.parseInt( neuron.getGasProductionType().substring(1)); 
+			if (!gasMap.containsKey( neuron.getGasProductionTypeInt()) ) {
 				Gas gas = new Gas();
 				gas.setGasID( neuron.getGasProductionTypeInt()  );
-				gas.setName( "Gas "+ neuron.getGasProductionType() );
+				gas.setName( "Gas "+ neuron.getGasProductionTypeInt() );
 				
 				//TODO set in config
 				
@@ -209,7 +208,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 				gas.setPropagationSpeed( props.getDoubleProperty( GasNeatConfiguration.GAS_SPEED_KEY ) );
 				gas.setDecayFactor(  props.getDoubleProperty( GasNeatConfiguration.GAS_DECAY_KEY )   );
 				
-				int number = new Integer((neuron.getGasProductionType().substring(1) ));
+				int number = neuron.getGasProductionTypeInt();
 				
 				float r = 0.0f;
 				float g = 0.7f;

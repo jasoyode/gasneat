@@ -13,8 +13,8 @@ import lombok.Getter;
  *
  */
 public class SynapseBuilder {
-	private @Getter final Long sourceNeuronId;
-	private @Getter final Long targetNeuronId;
+	private @Getter Long sourceNeuronId;
+	private @Getter Long targetNeuronId;
 	private double weight;
 	private final long  synapseID;
 	private Properties props;
@@ -156,14 +156,6 @@ public class SynapseBuilder {
 
 	public double getWeight() {
 		return this.weight;
-	}
-	
-	public long getSourceNeuronId() {
-		return this.sourceNeuronId;
-	}
-	
-	public long getTargetNeuronId() {
-		return this.targetNeuronId;
 	}
 	
 	public long getSynapseID() {

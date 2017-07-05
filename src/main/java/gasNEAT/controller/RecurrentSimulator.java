@@ -208,10 +208,10 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 
 			// if neuron is gas emitter
 			if (sourceNeuron.isGasEmitter()) {
-				emittedGas = neuralNetwork.getGasMap().get(sourceNeuron.getGasProductionType());
+				emittedGas = neuralNetwork.getGasMap().get( sourceNeuron.getGasProductionTypeInt() );
 				
-				logger.debug("emittedGas " + emittedGas    );
-				logger.debug("neuralNetwork.getGasMap() " + neuralNetwork.getGasMap()   );
+				logger.error("emittedGas " + emittedGas    );
+				logger.error("neuralNetwork.getGasMap() " + neuralNetwork.getGasMap()   );
 				
 			
 				GasDispersionUnit newGasChannel = new GasDispersionUnit(sourceNeuron.getEmissionRadius(), sourceNeuron.getBaseProduction(), emittedGas);
@@ -222,11 +222,11 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 					this.logger.debug( slot.toString()  );
 				}
 				
-				logger.debug( sourceNeuron.getGasProductionType()  );
+				logger.debug( sourceNeuron.getGasProductionTypeInt()  );
 				logger.debug( neuralNetwork.getGasReceiverNeuronsMap() );
 
 				//#GASNEATMODEL
-				List<GasNeatNeuron> targetNeuronsList = neuralNetwork.getGasReceiverNeuronsMap().get( sourceNeuron.getGasProductionType() );
+				List<GasNeatNeuron> targetNeuronsList = neuralNetwork.getGasReceiverNeuronsMap().get( sourceNeuron.getGasProductionTypeInt() );
 				
 				
 				logger.debug( "targetlist: " + targetNeuronsList  );
@@ -655,11 +655,8 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	private void pushBufferedConcentrationsToBuiltUpConcentrations(GasNeatNeuron tempNeuron) {
 		
 		// #GASNEATMODEL
-		//System.out.println("pushBufferedConcentrationsToBuiltUpConcentrations for N" +tempNeuron.getId() );
-		//neuralNetwork.getNeuron( "N"+tempNeuron.getId()  ).getReceptor().pushBufferedConcentrations();
-		
-		//ULTRATODO int ok?
-		neuralNetwork.getNeuron( (int)tempNeuron.getId()  ).getReceptor().pushBufferedConcentrations();
+		//REMOVEBUFFER
+		neuralNetwork.getNeuron( tempNeuron.getId()  ).getReceptor().pushBufferedConcentrations();
 	}
 	
 	/**

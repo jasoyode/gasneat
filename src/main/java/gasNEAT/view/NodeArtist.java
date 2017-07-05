@@ -119,7 +119,7 @@ public class NodeArtist {
 					
 					
 					//drawNeuron(neuron.getGasColor(), g2d);
-					drawNeuron( network.getGasMap().get( neuron.getGasProductionType()  ).getColor() , g2d);
+					drawNeuron( network.getGasMap().get( neuron.getGasProductionTypeInt()  ).getColor() , g2d);
 					
 					
 				}
@@ -135,7 +135,7 @@ public class NodeArtist {
 				
 				
 				//drawNeuron(neuron.getGasColor(), g2d);
-				drawNeuron( network.getGasMap().get( neuron.getGasProductionType()  ).getColor() , g2d);
+				drawNeuron( network.getGasMap().get( neuron.getGasProductionTypeInt()  ).getColor() , g2d);
 				
 				
 			} else {
@@ -163,9 +163,9 @@ public class NodeArtist {
 		
 		label.append(" R="+ neuron.getReceptor().getReceptorID().replaceAll("G", "").replaceAll("NO", "") );
 		
-		if (  !neuron.getGasProductionType().equals("G0") ) {
+		if (  neuron.getGasProductionTypeInt() != 0 ) {
 		
-			label.append(" (P->"+neuron.getGasProductionType()+")" );
+			label.append(" (P->G"+neuron.getGasProductionTypeInt()+")" );
 		}
 		
 		g2d.drawString(label.toString() , x+xoffset, y+yoffset );

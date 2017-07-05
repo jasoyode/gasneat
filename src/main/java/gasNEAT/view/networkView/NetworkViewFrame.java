@@ -78,11 +78,6 @@ public class NetworkViewFrame extends JFrame implements ActionListener, ChangeLi
 	
 	private String currentMode;
 
-	/**
-	 * Variable for setting the activated neurons in a time instant in the
-	 * simulation
-	 */
-	private List<String> currentActivatedNeurons;
 
 	/** Setting Logger object of Log4j */
 	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(NetworkViewFrame.class);

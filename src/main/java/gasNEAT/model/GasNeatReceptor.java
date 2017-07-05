@@ -336,7 +336,7 @@ public class GasNeatReceptor {
 		//#BOTTLENECK
 		
 		//#SPEEDTEST
-		//activationLevelPreSquash = activationLevelPreSquash * (1 + activationModFunction.evaluate( builtUpConcentrations)); 
+		activationLevelPreSquash = activationLevelPreSquash * (1 + activationModFunction.evaluate( builtUpConcentrations)); 
 		
 		
 		//add a parameter?
@@ -424,7 +424,7 @@ public class GasNeatReceptor {
 				plasticity = plasticity * ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( builtUpConcentrations) / 2 ) );
 			} else { //#BOTTLENECK
 				//#SPEEDTEST
-				//plasticity = plasticity * ( 1.0 + receptorStrength * plasticityModFunction.evaluate( builtUpConcentrations) );
+				plasticity = plasticity * ( 1.0 + receptorStrength * plasticityModFunction.evaluate( builtUpConcentrations) );
 			}
 		}
 

@@ -540,9 +540,9 @@ public class GasNeatNeuron extends Neuron {
 	 * 
 	 * @return gasType Gas type a Neuron
 	 */
-	public String getGasProductionType() {
-		return gasProductionType;
-	}
+	//public String getGasProductionType() {
+	//	return gasProductionType;
+	//}
 	
 	
 	/**
@@ -574,7 +574,7 @@ public class GasNeatNeuron extends Neuron {
 		int g = getGasProductionTypeInt();
 				//Integer.parseInt(getGasProductionType().substring(1) );
 		if (g < 0) {
-			System.out.println( "Cannot have negative gas production type: " + getGasProductionType().substring(1) );
+			System.out.println( "Cannot have negative gas production type: " + getGasProductionTypeInt() );
 			System.exit(1);
 		}
 		

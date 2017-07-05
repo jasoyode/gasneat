@@ -252,8 +252,8 @@ public GasNeatNet newGasNeatNet( Chromosome chromosome, Properties props ) throw
 		//if neuron is non-gas producing and has non standard connections, it is modulatory
 		//and should not have synaptic plasticity enabled
 		//according to settings....
-		if ( !srcNeuron.getSynapseProductionType().equals("G0")
-				&& srcNeuron.getGasProductionType().equals("G0")  ) {
+		if ( srcNeuron.getSynapseProductionTypeInt() != 0
+				&& srcNeuron.getGasProductionTypeInt() == 0   ) {
 			modulatory = true;
 		}
 		
