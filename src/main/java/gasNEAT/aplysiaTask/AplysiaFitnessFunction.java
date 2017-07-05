@@ -20,8 +20,9 @@ import com.anji.util.Randomizer;
 import gasNEAT.activator.GasNeatActivator;
 import gasNEAT.view.ViewConstants;
 import gasNEAT.view.networkView.NetworkViewFrame;
+import genericEvaluater.DisplayableBulkFitnessFunction;
 
-public class AplysiaFitnessFunction implements BulkFitnessFunction, Configurable {
+public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, Configurable {
 	
 	
 	/*
@@ -1016,6 +1017,15 @@ public class AplysiaFitnessFunction implements BulkFitnessFunction, Configurable
 	@Override
 	public int getMaxFitnessValue() {
 		return maxFitnessValue;
+	}
+
+
+
+
+	@Override
+	public void setEnableDisplay(boolean b) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 		

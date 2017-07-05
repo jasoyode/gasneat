@@ -41,13 +41,14 @@ import com.anji.util.Properties;
 import com.anji.util.Randomizer;
 
 import gasNEAT.model.GasNeatNeuralNetwork;
+import genericEvaluater.DisplayableBulkFitnessFunction;
 /**
  * This code is a port from Colin Green's SharpNEAT pole balancing code, which in turn is a port
  * from Ken Stanley's NEAT code.
  * 
  * @author Derek James
  */
-public class DoublePoleBalanceFitnessFunction implements BulkFitnessFunction, Configurable {
+public class DoublePoleBalanceFitnessFunction implements DisplayableBulkFitnessFunction, Configurable {
 
 private final static String TRACK_LENGTH_KEY = "polebalance.track.length";
 private final static String TIMESTEPS_KEY = "polebalance.timesteps";
@@ -481,5 +482,13 @@ public void enableDisplay() {
 	display = new PoleBalanceDisplay( trackLength, new double[] { poleLength1, poleLength2 },
 			maxTimesteps );
 	display.setVisible( true );
+}
+
+@Override
+public void setEnableDisplay(boolean b) {
+	if (b) {
+		enableDisplay();
+	}
+	
 }
 }

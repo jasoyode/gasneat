@@ -32,12 +32,14 @@ import com.anji.util.Configurable;
 import com.anji.util.Properties;
 import com.anji.util.Randomizer;
 
+import genericEvaluater.DisplayableBulkFitnessFunction;
+
 /**
  * Determines fitness based on how close <code>Activator</code> output is to a target.
  * 
  * @author Philip Tucker
  */
-public abstract class TargetFitnessFunction implements BulkFitnessFunction, Configurable {
+public abstract class TargetFitnessFunction implements DisplayableBulkFitnessFunction, Configurable {
 
 private static Logger logger = Logger.getLogger( TargetFitnessFunction.class );
 

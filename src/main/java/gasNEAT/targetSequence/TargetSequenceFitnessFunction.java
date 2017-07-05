@@ -24,8 +24,9 @@ import com.anji.util.Randomizer;
 import gasNEAT.activator.GasNeatActivator;
 import gasNEAT.view.ViewConstants;
 import gasNEAT.view.networkView.NetworkViewFrame;
+import genericEvaluater.DisplayableBulkFitnessFunction;
 
-public class TargetSequenceFitnessFunction implements BulkFitnessFunction, Configurable {
+public class TargetSequenceFitnessFunction implements DisplayableBulkFitnessFunction, Configurable {
 	
 	private static Logger logger = Logger.getLogger( TargetSequenceFitnessFunction.class );
 	private final static String ADJUST_FOR_NETWORK_SIZE_FACTOR_KEY = "fitness.function.adjust.for.network.size.factor";
@@ -456,6 +457,12 @@ public class TargetSequenceFitnessFunction implements BulkFitnessFunction, Confi
 	 */
 	protected double[][] getTargets() {
 		return targets;
+	}
+
+	@Override
+	public void setEnableDisplay(boolean b) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

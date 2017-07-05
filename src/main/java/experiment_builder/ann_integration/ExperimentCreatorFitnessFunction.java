@@ -35,11 +35,12 @@ import experiment_builder.view.HumanButtonControlPanel;
 import gasNEAT.activator.GasNeatActivator;
 import gasNEAT.view.ViewConstants;
 import gasNEAT.view.networkView.NetworkViewFrame;
+import genericEvaluater.DisplayableBulkFitnessFunction;
 import lombok.Getter;
 import lombok.Setter;
 
 
-public class ExperimentCreatorFitnessFunction implements BulkFitnessFunction, Configurable {
+public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessFunction, Configurable {
 
 	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( ExperimentCreatorFitnessFunction.class );
 	private boolean shuffleFirstTrial;

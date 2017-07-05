@@ -81,4 +81,10 @@ public class NeatTargetFitnessFunction extends TargetFitnessFunction {
 		return result;
 	}
 
+	@Override
+	public void setEnableDisplay(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
