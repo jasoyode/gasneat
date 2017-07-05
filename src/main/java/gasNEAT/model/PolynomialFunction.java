@@ -16,6 +16,7 @@ public class PolynomialFunction {
 	//0 1 2 3 4 5 6
 	//
 	private double[] coefficients;
+	//TODO - not using these currently because of slowdown
 	private double[] powers;
 	
 	
@@ -63,8 +64,14 @@ public class PolynomialFunction {
 		}
 		*/
 		
+		//for (int i=0; i < inputs.length; i++) {
+		//	x += coefficients[i]* Math.pow(inputs[i], powers[i] );
+		//}
+		
+		//THERE IS NO NEED FOR POWERS!
+		
 		for (int i=0; i < inputs.length; i++) {
-			x += coefficients[i]* Math.pow(inputs[i], powers[i] );
+			x += coefficients[i]* inputs[i];
 		}
 
 		return x;

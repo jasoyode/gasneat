@@ -210,8 +210,8 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 			if (sourceNeuron.isGasEmitter()) {
 				emittedGas = neuralNetwork.getGasMap().get( sourceNeuron.getGasProductionTypeInt() );
 				
-				logger.error("emittedGas " + emittedGas    );
-				logger.error("neuralNetwork.getGasMap() " + neuralNetwork.getGasMap()   );
+				logger.debug("emittedGas " + emittedGas    );
+				logger.debug("neuralNetwork.getGasMap() " + neuralNetwork.getGasMap()   );
 				
 			
 				GasDispersionUnit newGasChannel = new GasDispersionUnit(sourceNeuron.getEmissionRadius(), sourceNeuron.getBaseProduction(), emittedGas);

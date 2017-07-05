@@ -58,6 +58,11 @@ public class GasNeatReceptor {
 	//determines the modulation on activation
 	private PolynomialFunction activationModFunction;
 	
+	//refactor into 4 variables
+	
+	
+	
+	
 	//determines the modulation on plasticity
 	private PolynomialFunction plasticityModFunction;
 	
@@ -336,7 +341,7 @@ public class GasNeatReceptor {
 		//#BOTTLENECK
 		
 		//#SPEEDTEST
-		activationLevelPreSquash = activationLevelPreSquash * (1 + activationModFunction.evaluate( builtUpConcentrations)); 
+		activationLevelPreSquash = activationLevelPreSquash * (1 + activationModFunction.evaluate( builtUpConcentrations) ); 
 		
 		
 		//add a parameter?
@@ -422,7 +427,7 @@ public class GasNeatReceptor {
 			
 			if (tanhSquashModulationSignal) {
 				plasticity = plasticity * ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( builtUpConcentrations) / 2 ) );
-			} else { //#BOTTLENECK
+			} else {
 				//#SPEEDTEST
 				plasticity = plasticity * ( 1.0 + receptorStrength * plasticityModFunction.evaluate( builtUpConcentrations) );
 			}
