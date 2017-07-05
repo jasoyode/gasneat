@@ -37,14 +37,21 @@ public class GasNeatNeuron extends Neuron {
 	/** Unique Id of Neuron*/
 	private String neuronID;
 	
+	private long neuronIDLong;
+	
 	/** Neuron Layer type*/
 	private NeuronType layerType;
 	
 	/** Gas type emitted by Neuron G0 indicates no gas produced, just synapses */
 	private String gasProductionType;
+	private int gasProductionTypeInt;
+	
 	
 	/** Gas type emitted by Neuron via synapses G0 = regular transmission*/
 	private String synapticGasType;
+	
+	private int synapticGasTypeInt;
+	
 	
 	/** Neuron X coordinate on a 2D plane*/
 	private int x;
@@ -63,7 +70,8 @@ public class GasNeatNeuron extends Neuron {
 	
 	
 	/** Outgoing Synapses List*/
-	private ArrayList<String> outgoingSynapsesList;
+	private ArrayList<Long> outgoingSynapsesList;
+	
 	
 	/** Threshold of Neuron*/
 	private double threshold;
@@ -90,49 +98,15 @@ public class GasNeatNeuron extends Neuron {
 	private static Logger LOG = Logger.getLogger( GasNeatNeuron.class );
 	
 	
-	public GasNeatNeuron(NeuronBuilder neuronBuilder) {
-		//DO NOT USE
-		super(neuronBuilder.getActivationFunction() );
-		
-		this.neuronID = neuronBuilder.getNeuronID();
-		this.layerType = neuronBuilder.getLayerType();
-		this.x = neuronBuilder.getX();
-		this.y = neuronBuilder.getY();
-		this.isGasReceiver = neuronBuilder.getIsGasReceiver();
-		this.gasColor = neuronBuilder.getGasColor();
-		this.receptor = neuronBuilder.getReceptor();
-		this.emissionRadius = neuronBuilder.getGasEmissionRadius();
-		this.baseProduction = neuronBuilder.getBaseProduction();
-		this.gasProductionType = neuronBuilder.getGasType();
-		this.synapticGasType = neuronBuilder.getSynapticGasType();
-		if ( !gasProductionType.equals("G0") && !synapticGasType.equals("G0") ) {
-			System.out.println("A neuron cannot produce gas and have synaptic connections!");
-			assert(false);
-		}
-		
-		if (gasProductionType.equals("G-1") ) {
-			
-			System.out.println("EXIT");
-			System.exit(-1);
-		}
-		
-		this.threshold = neuronBuilder.getThreshold();
-		this.activationFunction = neuronBuilder.getActivationFunction();
-		outgoingSynapsesList = new ArrayList<String>();
-		
-		System.out.println("NEURON BUILDER CALLED");
-		System.exit(-1);
-	}
-	
 	
 	public GasNeatNeuron(ActivationFunction activationFunction, Properties props) {
 		super(activationFunction);
 		this.props = props;
 
-		this.neuronID = neuronID;
+		
 		this.x = -1;
 		this.y = -1;
-		outgoingSynapsesList = new ArrayList<String>();
+		outgoingSynapsesList = new ArrayList<Long>();
 		
 		//ULTRATODO
 		//synapticGasType = "G0"; 
@@ -161,6 +135,8 @@ public class GasNeatNeuron extends Neuron {
 		
 		//if we MUST keep strings, ughhh
 		this.neuronID = "N"+neuronAllele.getInnovationId();
+		this.neuronIDLong = neuronAllele.getInnovationId();
+		
 		this.setLayerType(  neuronAllele.getType() );
 		this.layerType = neuronAllele.getType();
 		
@@ -197,8 +173,10 @@ public class GasNeatNeuron extends Neuron {
 		
 		if (neuronAllele.getGasEmissionType() != 0 ) {
 			this.gasProductionType = "G"+neuronAllele.getGasEmissionType();
+			gasProductionTypeInt = neuronAllele.getGasEmissionType();
 		} else {
 			this.gasProductionType = "G0";
+			gasProductionTypeInt = 0;
 		}
 		
 
@@ -222,7 +200,7 @@ public class GasNeatNeuron extends Neuron {
 		
 		//TODO: need to get rid of strings everywhere!
 		this.gasProductionType = "G"+neuronAllele.getGasEmissionType();
-		
+		gasProductionTypeInt = neuronAllele.getGasEmissionType();
 		
 		if ( neuronAllele.getSynapticGasEmissionType() < 0 ) {
 			System.out.println("Synaptic Gas Emission should be set and cannot be zero!");
@@ -233,13 +211,16 @@ public class GasNeatNeuron extends Neuron {
 		
 		this.synapticGasType = "G"+neuronAllele.getSynapticGasEmissionType();
 		
+		this.synapticGasTypeInt = neuronAllele.getSynapticGasEmissionType();
+		
+		
 		this.threshold = neuronAllele.getFiringThreshold();
 		
 		//sigmoid, log, linear, etc
 		ActivationFunctionFactory factory = ActivationFunctionFactory.getInstance();
 		this.activationFunction = factory.get( neuronAllele.getActivationType().toString() );
 
-		outgoingSynapsesList = new ArrayList<String>();
+		outgoingSynapsesList = new ArrayList<Long>();
 		
 	}
 			
@@ -281,10 +262,12 @@ public class GasNeatNeuron extends Neuron {
 	 */
 	public double calculateActivation() {
 		
-		//
-		LOG.debug("receptor.getActivationLevel() "+ receptor.getActivationLevel()   );
-		LOG.debug("threshold "  + threshold );
-		LOG.debug("activationFunction " + activationFunction.toString() );
+		/*/ #PERFORMANCE BOOST
+		if (LOG.isDebugEnabled() ) {
+			LOG.debug("receptor.getActivationLevel() "+ receptor.getActivationLevel()   );
+			LOG.debug("threshold "  + threshold );
+			LOG.debug("activationFunction " + activationFunction.toString() );
+		}
 		//*/
 		return activationFunction.apply( receptor.getActivationLevel() - threshold  );
 	}
@@ -297,7 +280,7 @@ public class GasNeatNeuron extends Neuron {
 	 */
 	public GasNeatNeuron clone()  throws CloneNotSupportedException {
 		GasNeatNeuron neuron = (GasNeatNeuron) super.clone();
-		neuron.setSynapsesList((ArrayList<String>) outgoingSynapsesList.clone());
+		neuron.setSynapsesList((ArrayList<Long>) outgoingSynapsesList.clone());
 
 		
 		//TODO: verify later that it is what it should be
@@ -319,7 +302,7 @@ public class GasNeatNeuron extends Neuron {
 	 * 
 	 * @return synapseList Outgoing Synapses List
 	 */
-	public ArrayList<String> getOutgoingSynapses() {
+	public ArrayList<Long> getOutgoingSynapses() {
 		return outgoingSynapsesList;
 	}
 
@@ -328,10 +311,13 @@ public class GasNeatNeuron extends Neuron {
 	 * 
 	 * @return neuronID Neuron ID
 	 */
-	public String getNeuronID() {
+	public long getNeuronID() {
 		//Use the historical marker instead
-		return "N"+getId();
-		//return neuronID;
+		//#ULTRATODO test and see if this has to be this way
+		//return "N"+getId();
+		//ULTRATODO is int big enough?
+		//return neuronIDLong;
+		return getId();
 	}
 
 
@@ -419,14 +405,16 @@ public class GasNeatNeuron extends Neuron {
 	 * @param concentration
 	 *            Activation concentration
 	 */
+	/*
 	public void setActivationConcentration(double concentration) {
-		receptor.setGasConcentration(receptor.getActivationType(), concentration);
+		receptor.setGasConcentration( receptor.getActivationType(), concentration);
 		System.out.println( "Should add to buffer instead!"  );
 		System.exit(-1);
 	}
+	*/
 	
 	public void addToActivationConcentrationGasBuffer( double concentrationToAdd) {
-		receptor.addBufferedConcentration(receptor.getActivationType(), concentrationToAdd);
+		receptor.addBufferedConcentration( receptor.getActivationType()  , concentrationToAdd);
 		//receptor.setGasConcentrationBuffer(receptor.getActivationType(), concentrationToAdd );
 	}
 	
@@ -442,9 +430,12 @@ public class GasNeatNeuron extends Neuron {
 	 * @param gas, concentration
 	 *            Activation concentration
 	 */
-	public void setGasConcentration(String gas, double concentration) {
+	/*
+	
+	public void setGasConcentration(int gas, double concentration) {
 		receptor.setGasConcentration( gas, concentration);
 	}
+	*/
 	
 
 	/**
@@ -552,6 +543,16 @@ public class GasNeatNeuron extends Neuron {
 	public String getGasProductionType() {
 		return gasProductionType;
 	}
+	
+	
+	/**
+	 * Returns Neuron gasType of Neuron
+	 * 
+	 * @return gasType Gas type a Neuron
+	 */
+	public int getGasProductionTypeInt() {
+		return gasProductionTypeInt;
+	}
 
 	/**
 	 * Sets gasType of Neuron
@@ -569,8 +570,9 @@ public class GasNeatNeuron extends Neuron {
 	 * @return gasEmitter True if Neuron is gas emitter
 	 */
 	public boolean isGasEmitter() {
-
-		int g = Integer.parseInt(getGasProductionType().substring(1) );
+		
+		int g = getGasProductionTypeInt();
+				//Integer.parseInt(getGasProductionType().substring(1) );
 		if (g < 0) {
 			System.out.println( "Cannot have negative gas production type: " + getGasProductionType().substring(1) );
 			System.exit(1);
@@ -618,7 +620,7 @@ public class GasNeatNeuron extends Neuron {
 	 * @param synapsesList
 	 *            Outgoing Synapse List
 	 */
-	public void setSynapsesList(ArrayList<String> synapsesList) {
+	public void setSynapsesList(ArrayList<Long> synapsesList) {
 		this.outgoingSynapsesList = synapsesList;
 	}
 
@@ -681,9 +683,18 @@ public class GasNeatNeuron extends Neuron {
 	// NetworkBuilder::buildSynapsesMap   ... source.addOutgoingConnection( synapse );
 	@Override
 	public long getId() {
-		return new Long( neuronID.substring(1) );
+		return neuronIDLong;
+		//return new Long( neuronID.substring(1) );
 		
 	}
+	
+	
+	public String getIdString() {
+		return neuronID;
+		//return new Long( neuronID.substring(1) );
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "GasNeatNeuron [neuronID=" + neuronID + ", layerType=" + layerType + ", gasType=" + gasProductionType + ", x=" + x
@@ -698,6 +709,11 @@ public class GasNeatNeuron extends Neuron {
 	public String getSynapseProductionType() {
 		return synapticGasType;
 	}
+	
+	//get the gas produced in synaptic connections
+		public int getSynapseProductionTypeInt() {
+			return synapticGasTypeInt;
+		}
 
 	//remove all state information
 	public void clear() {

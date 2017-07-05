@@ -23,7 +23,9 @@ public class GasDispersionUnit implements Cloneable {
 	private ArrayList<GasDispersionSlot> gasDispersionSlotList;
 	
 	/** emitted gas type **/
-	private String gasType;
+	//private String gasType;
+	
+	private int gasTypeInt;
 	
 	/** radius for emitted gas **/
 	double emissionRadius;
@@ -97,7 +99,9 @@ public class GasDispersionUnit implements Cloneable {
 		this.baseStrength = currentStrength;
 		this.propagationSpeed = gas.getPropagationSpeed();
 		this.gasDispersionType = gas.getGasDispersionType();
-		this.gasType = gas.getGasID();
+		//this.gasType = gas.getGasID();
+		this.gasTypeInt =gas.getGasID(); 
+				//Integer.parseInt( gasType.substring(1) );
 	}
 
 	/**
@@ -161,7 +165,7 @@ public class GasDispersionUnit implements Cloneable {
 	 * 
 	 * @param neuronMap	Neuron map having information about all neurons
 	 */
-	public void updateTargetNeurons(HashMap<String, GasNeatNeuron> neuronMap) {
+	public void updateTargetNeurons(HashMap<Long, GasNeatNeuron> neuronMap) {
 		
 		for (GasDispersionSlot channelSlot : gasDispersionSlotList) {
 			
@@ -169,14 +173,14 @@ public class GasDispersionUnit implements Cloneable {
 			if (channelSlot.getGasConcentration() > 0) {
 				
 				// get each entry from the list of receiver neuron
-				for (Map.Entry<String, Double> receiverNeuron : channelSlot.getReceiverNeurons().entrySet()) {
+				for (Map.Entry<Long, Double> receiverNeuron : channelSlot.getReceiverNeurons().entrySet()) {
 					
 					//System.out.println("updateTargetNeurons");
 					//System.out.println(channelSlot);
 					//System.exit(1);
 					
 					// get individual neuron ID
-					String updateNeuronID = receiverNeuron.getKey();
+					long updateNeuronID = receiverNeuron.getKey();
 
 					// get neuron object for updating gas concentration
 					GasNeatNeuron updateNeuron = neuronMap.get(updateNeuronID);
@@ -218,7 +222,7 @@ public class GasDispersionUnit implements Cloneable {
 					//	System.out.print( d +"  "  );	
 					//}
 					
-					updateNeuron.getReceptor().addBufferedConcentration(gasType, buildUpGasConcentration);
+					updateNeuron.getReceptor().addBufferedConcentration(gasTypeInt, buildUpGasConcentration);
 					
 					//for (double d: updateNeuron.getReceptor().getBufferedConcentration()) {
 					//	System.out.print( d +"  "  );
@@ -267,7 +271,7 @@ public class GasDispersionUnit implements Cloneable {
 				
 				// Calculate euclidean distance of the target neuron from the source
 				// neuron
-				if (!targetNeuron.getNeuronID().equals(sourceNeuron.getNeuronID())) {
+				if (targetNeuron.getNeuronID() != sourceNeuron.getNeuronID() ) {
 	
 					// get coordinates for target neuron
 					double targetNeuronX = targetNeuron.getX();
@@ -481,7 +485,7 @@ public class GasDispersionUnit implements Cloneable {
 
 	@Override
 	public String toString() {
-		return "GasDispersionUnit [gasDispersionSlotList=" + gasDispersionSlotList + ", gasType=" + gasType
+		return "GasDispersionUnit [gasDispersionSlotList=" + gasDispersionSlotList + ", gasType=" + gasTypeInt
 				+ ", emissionRadius=" + emissionRadius + ", baseStrength=" + baseStrength + ", currentStrength="
 				+ currentStrength + ", propagationSpeed=" + propagationSpeed // ", strengthIncrease=" + strengthIncrease
 				+ ", maximumAllowedStrength=" + maximumAllowedStrength //+ ", isEmitted=" + isEmitted

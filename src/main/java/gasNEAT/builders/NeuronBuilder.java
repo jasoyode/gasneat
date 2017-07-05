@@ -18,7 +18,7 @@ public class NeuronBuilder {
 	
 	// required parameters
 	/** Neuron ID */
-	private final String neuronID;
+	private final int neuronID;
 	
 	
 	private final ActivationFunction activationFunction;
@@ -58,7 +58,7 @@ public class NeuronBuilder {
 	 * @param neuronID Neuron's Unique ID
 	 * @param layerType In which layer does the neuron belong to (Input/Output/Hidden)
 	 */
-	public NeuronBuilder(ActivationFunction activationFunction, ActivationThresholdFunction activationThresholdFunction, String neuronID, NeuronType layerType, String synapticTransmitterType ) {
+	public NeuronBuilder(ActivationFunction activationFunction, ActivationThresholdFunction activationThresholdFunction, int neuronID, NeuronType layerType, String synapticTransmitterType ) {
 		this.activationFunction = activationFunction;
 		this.activationThresholdFunction = activationThresholdFunction;
 		this.neuronID = neuronID;
@@ -134,9 +134,9 @@ public class NeuronBuilder {
 		return this;
 	}
 	
-	public GasNeatNeuron build() {
-		return new GasNeatNeuron(this);
-	}
+	//public GasNeatNeuron build() {
+	//	return new GasNeatNeuron(this);
+	//}
 	
 	/**
 	 * Builds neuron with random configuration
@@ -144,16 +144,20 @@ public class NeuronBuilder {
 	 */
 	public GasNeatNeuron buildRandomNeuron() {
 		
-		System.out.println("If you are using this, you need to fix randomization from seed");
-		System.exit(1);
-		this.x = (int) Math.random() * 25;
-		this.y = (int) Math.random() * 25;
-		this.threshold = Math.random();
-		return new GasNeatNeuron(this);
+		System.err.println("Not using spreadsheets");
+		System.exit(-1);
+		return null;
+		
+		//System.out.println("If you are using this, you need to fix randomization from seed");
+		//System.exit(1);
+		//this.x = (int) Math.random() * 25;
+		//this.y = (int) Math.random() * 25;
+		//this.threshold = Math.random();
+		//return new GasNeatNeuron(this);
 	}
 	
 	// Getters
-	public String getNeuronID() { return this.neuronID; }
+	public int getNeuronID() { return this.neuronID; }
 	
 	public ActivationFunction getActivationFunction() { return this.activationFunction; } 
 	

@@ -21,6 +21,7 @@ import com.anji.util.Properties;
 import gasNEAT.builders.NetworkBuilder;
 import gasNEAT.builders.SpreadsheetConstants;
 import gasNEAT.builders.SpreadsheetConstants.LAYER_TYPES;
+import gasNEAT.builders.SynapseBuilder;
 import gasNEAT.configurations.GasNeatConfiguration;
 import gasNEAT.controller.RecurrentSimulator;
 import gasNEAT.nn.GasNeatNeuron;
@@ -43,19 +44,19 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	private boolean flatConcentrationGradient;
 	
 	/** Neural Network Neuron HashMap*/
-	private HashMap<String, GasNeatNeuron> neuronMap = new HashMap<String, GasNeatNeuron>();
+	private HashMap<Long, GasNeatNeuron> neuronMap = new HashMap<Long, GasNeatNeuron>();
 	
 	/** Neural Network Synapse HashMap*/
-	private HashMap<String, GasNeatSynapse> synapseMap = new HashMap<String, GasNeatSynapse>();
+	private HashMap<Long, GasNeatSynapse> synapseMap = new HashMap<Long, GasNeatSynapse>();
 	
 	/** Neural Network Gas HashMap*/
-	private HashMap<String, Gas> gasMap = new HashMap<String, Gas>();
+	private HashMap<Integer, Gas> gasMap = new HashMap<Integer, Gas>();
 	
 	/** Gas Receiving Neurons HashMap*/
 	
 	//THIS NEEDS TO BE SET OR ELSE WHEN CREATING DISPERSION UNIT,
 	//NO GAS RECEIVERS WILL BE KNOWN TO NEED TO BE ADDED
-	private HashMap<String, List<GasNeatNeuron>> gasReceiverNeuronsMap;
+	private HashMap<Integer, List<GasNeatNeuron>> gasReceiverNeuronsMap;
 	
 	/** Receptor Neurons HashMap*/
 	private HashMap<String, GasNeatReceptor> receptorMap;
@@ -104,12 +105,12 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	 * Constructs a Neural Network
 	 */
 	public GasNeatNeuralNetwork() {
-		neuronMap = new HashMap<String, GasNeatNeuron>();
-		synapseMap = new HashMap<String, GasNeatSynapse>();
-		gasMap = new HashMap<String, Gas>();
+		neuronMap = new HashMap<Long, GasNeatNeuron>();
+		synapseMap = new HashMap<Long, GasNeatSynapse>();
+		gasMap = new HashMap<Integer, Gas>();
 		setReceptorMap(new HashMap<String, GasNeatReceptor>());
 		setFunctionMap(new HashMap<String, PolynomialFunction>());
-		gasReceiverNeuronsMap = new HashMap<String, List<GasNeatNeuron>>();
+		gasReceiverNeuronsMap = new HashMap<Integer, List<GasNeatNeuron>>();
 		networkBuilder = new NetworkBuilder();
 		
 		//default -NOOOOOOOOO - 
@@ -120,7 +121,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	
 	//*
 	public GasNeatNeuralNetwork( Collection<GasNeatNeuron> someNeurons, List<GasNeatNeuron> someInNeurons, List<GasNeatNeuron> someOutNeurons,
-			Collection someRecurrentConns, String aName, HashMap<String, GasNeatSynapse> synapseMap, Properties props, int recurrentSteps ) {
+			Collection someRecurrentConns, String aName, HashMap<Long, GasNeatSynapse> synapseMap, Properties props, int recurrentSteps ) {
 		
 		this.props = props;
 		
@@ -153,16 +154,16 @@ public class GasNeatNeuralNetwork implements Cloneable {
 		setFunctionMap(new HashMap<String, PolynomialFunction>());
 		
 		
-		gasMap = new HashMap<String, Gas>();
-		gasReceiverNeuronsMap = new HashMap<String, List<GasNeatNeuron>>();
+		gasMap = new HashMap<Integer, Gas>();
+		gasReceiverNeuronsMap = new HashMap<Integer, List<GasNeatNeuron>>();
 		networkBuilder = new NetworkBuilder();
 		//////////////////
 		
-		neuronMap = new HashMap<String, GasNeatNeuron>();
+		neuronMap = new HashMap<Long, GasNeatNeuron>();
 		this.synapseMap = synapseMap;
 
 		//TODO: take this from the config file...
-		ArrayList<String> gases = new ArrayList<String>();
+		ArrayList<Integer> gases = new ArrayList<Integer>();
 
 		
 		//ULTRATODO
@@ -171,17 +172,18 @@ public class GasNeatNeuralNetwork implements Cloneable {
 		
 		for (int i=0; i <= numberGases; i++ ) {
 			//will include "G0" no matter what
-			gases.add("G"+i);
+			// only using numerical values for speed up
+			gases.add( i );
 		}
 		
-		for (String gas: gases) {
+		for (int gas: gases) {
 			gasReceiverNeuronsMap.put(gas, new ArrayList<GasNeatNeuron>() );
 		}
 		
 		
 		for (GasNeatNeuron neuron: someNeurons) {
 			
-			for ( String gas : neuron.getReceptor().getGasList()  ) {
+			for ( Integer gas : neuron.getReceptor().getGasList()  ) {
 				
 				gasReceiverNeuronsMap.get(  gas ).add(neuron);
 				//System.out.println( "END: neuron"+neuron.getId()+" had gas added: " + gas );
@@ -192,7 +194,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 			if (!gasMap.containsKey( neuron.getGasProductionType()) ) {
 				//int type = Integer.parseInt( neuron.getGasProductionType().substring(1)); 
 				Gas gas = new Gas();
-				gas.setGasID( neuron.getGasProductionType()  );
+				gas.setGasID( neuron.getGasProductionTypeInt()  );
 				gas.setName( "Gas "+ neuron.getGasProductionType() );
 				
 				//TODO set in config
@@ -246,16 +248,23 @@ public class GasNeatNeuralNetwork implements Cloneable {
 			if ( !receptorMap.containsKey( neuron.getReceptor().getReceptorID())  ) {
 				receptorMap.put( neuron.getReceptor().getReceptorID()  , neuron.getReceptor() );
 			}
-			neuronMap.put("N"+neuron.getId(), neuron);
+			//ULTRATODO is int enough?
+			neuronMap.put( neuron.getId(), neuron);
 		}
 
 		
-		for (String synapseName: synapseMap.keySet() ) {
-			int startOfSecond = synapseName.substring(2).indexOf("N");
-			String source = synapseName.substring(1,startOfSecond+2);
-			String destination = synapseName.substring(startOfSecond+2);
+		for (long synapseId: synapseMap.keySet() ) {
+			//int startOfSecond = synapseName.substring(2).indexOf("N");
+			
+			long[] pair =  SynapseBuilder.elegantUnpairing( synapseId  );
+			//synapseName.substring(1,startOfSecond+2);
+			long source = pair[0];
+			
+			long destination = pair[1];
+			
+			//= synapseId.substring(startOfSecond+2);
 			//LOG.info( source +" "+destination);
-			neuronMap.get(source).addOutgoingConnection( synapseMap.get(synapseName) );
+			neuronMap.get(source).addOutgoingConnection( synapseMap.get(synapseId) );
 		}
 
 		
@@ -311,15 +320,20 @@ public class GasNeatNeuralNetwork implements Cloneable {
 		logger.info("synapseID: "+ synapse.getSynapseID() );
 		
 		// You also have to add any synapses to the neurons synapse list... may want to remove this later if possible
-		String[] ids = synapse.getSynapseID().split(SpreadsheetConstants.NEURON_ID_PREFIX);
+		//String[] ids = synapse.getSynapseID().split(SpreadsheetConstants.NEURON_ID_PREFIX);
+		
+		//int[] ids = SynapseBuilder.elegantUnpairing( synapse.getSynapseID() );
+		
 		
 		
 		//GasNeatNeuron currentNeuron = this.neuronMap.get(SpreadsheetConstants.NEURON_ID_PREFIX + ids[0]);
 		//BUG the "S" at the start of the ID will not be an index and will break the creation
-		GasNeatNeuron currentNeuron = this.neuronMap.get(SpreadsheetConstants.NEURON_ID_PREFIX + ids[1]);
+		GasNeatNeuron currentNeuron = this.neuronMap.get( synapse.getTargetNeuron() );
 				
-		logger.info("SpreadsheetConstants.NEURON_ID_PREFIX:" + SpreadsheetConstants.NEURON_ID_PREFIX );
-		logger.info("get: " + SpreadsheetConstants.NEURON_ID_PREFIX + ids[1] );
+				//SpreadsheetConstants.NEURON_ID_PREFIX + ids[1]);
+				
+		//logger.info("SpreadsheetConstants.NEURON_ID_PREFIX:" + SpreadsheetConstants.NEURON_ID_PREFIX );
+		logger.info("get: " + SpreadsheetConstants.NEURON_ID_PREFIX + synapse.getTargetNeuron()  );
 		
 		
 		logger.info("currentNeuron:" + currentNeuron);
@@ -329,20 +343,24 @@ public class GasNeatNeuralNetwork implements Cloneable {
 		
 		if(currentNeuron == null) {
 			
-			logger.info( "neuronMap");
-			logger.info( neuronMap);
+			if (logger.isInfoEnabled() ) {
+				logger.info( "neuronMap");
+				logger.info( neuronMap);
+				this.logger.info("Tried to add synapse to neuron not yet created: " + synapse.getSynapseID() + SpreadsheetConstants.NEURON_ID_PREFIX + synapse.getSourceNeuron()  ) ;
+			}
 			
-			this.logger.info("Tried to add synapse to neuron not yet created: " + synapse.getSynapseID() + SpreadsheetConstants.NEURON_ID_PREFIX + ids[0]);
 		} else {
-			this.logger.info("Adding synapse: " + synapse.getSynapseID() + SpreadsheetConstants.NEURON_ID_PREFIX + ids[0]);
+			if (logger.isInfoEnabled() ) {
+				this.logger.info("Adding synapse: " + synapse.getSynapseID() + SpreadsheetConstants.NEURON_ID_PREFIX + synapse.getSourceNeuron()  );
+			}
 		}
 	}
 	
 	public void addNeuron(GasNeatNeuron neuron) {
 		//and build the gas/receiver neurons map
 		if (neuron.isGasReceiver()) {								
-			ArrayList<String> gasList = neuron.getReceptor().getGasList();
-			for (String gasID : gasList) {
+			ArrayList<Integer> gasList = neuron.getReceptor().getGasList();
+			for (Integer gasID : gasList) {
 				if (this.getGasReceiverNeuronsMap().keySet().contains(gasID)) {
 					this.getGasReceiverNeuronsMap().get(gasID).add(neuron);
 				} else {
@@ -421,7 +439,8 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	/* Outputs a linkedlist of neurons of the input type that are contained in the network */
 	private LinkedList<GasNeatNeuron> getNeuronsOfType(NeuronType type) {
 		LinkedList<GasNeatNeuron> outputs = new LinkedList<GasNeatNeuron>();
-		for(String neuronID : this.neuronMap.keySet()) {
+		
+		for(long neuronID : this.neuronMap.keySet()) {
 			GasNeatNeuron neuron = this.neuronMap.get(neuronID);
 			if(neuron.getLayerType() == type) {
 				outputs.add(neuron);
@@ -476,10 +495,10 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	 */
 	public GasNeatNeuralNetwork clone() throws CloneNotSupportedException {
 		GasNeatNeuralNetwork neuralNetworkCopy = (GasNeatNeuralNetwork) super.clone();
-		neuralNetworkCopy.setNeuronMap((HashMap<String, GasNeatNeuron>) deepClone(neuronMap));
-		neuralNetworkCopy.setSynapseMap((HashMap<String, GasNeatSynapse>) deepClone(synapseMap));
-		neuralNetworkCopy.setGasMap((HashMap<String, Gas>) deepClone(gasMap));
-		neuralNetworkCopy.setGasReceiverNeuronsMap((HashMap<String, List<GasNeatNeuron>>) deepClone(gasReceiverNeuronsMap));
+		neuralNetworkCopy.setNeuronMap((HashMap<Long, GasNeatNeuron>) deepClone(neuronMap));
+		neuralNetworkCopy.setSynapseMap((HashMap<Long, GasNeatSynapse>) deepClone(synapseMap));
+		neuralNetworkCopy.setGasMap((HashMap<Integer, Gas>) deepClone(gasMap));
+		neuralNetworkCopy.setGasReceiverNeuronsMap((HashMap<Integer, List<GasNeatNeuron>>) deepClone(gasReceiverNeuronsMap));
 		return neuralNetworkCopy;
 	}
 	/**
@@ -617,10 +636,10 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	 * 
 	 * @return neuronMap HashMap of Neurons
 	 */
-	public HashMap<String, GasNeatNeuron> getNeuronMap() {
+	public HashMap<Long, GasNeatNeuron> getNeuronMap() {
 		return neuronMap;
 	}
-	public GasNeatNeuron getNeuron(String key) {
+	public GasNeatNeuron getNeuron(long key) {
 		return this.neuronMap.get(key);
 	}
 	/**
@@ -628,7 +647,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	 * 
 	 * @return synapseMap HashMap of Synapses
 	 */
-	public HashMap<String, GasNeatSynapse> getSynapseMap() {
+	public HashMap<Long, GasNeatSynapse> getSynapseMap() {
 		return synapseMap;
 	}
 	/**
@@ -654,7 +673,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	 * @param neuronMap
 	 *            HashMap of neurons
 	 */
-	public void setNeuronMap(HashMap<String, GasNeatNeuron> neuronMap) {
+	public void setNeuronMap(HashMap<Long, GasNeatNeuron> neuronMap) {
 		this.neuronMap = neuronMap;
 		updateIONeurons();
 	}
@@ -664,7 +683,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	 * @param synapseMap
 	 *            HashMap of synapses
 	 */
-	public void setSynapseMap(HashMap<String, GasNeatSynapse> synapseMap) {
+	public void setSynapseMap(HashMap<Long, GasNeatSynapse> synapseMap) {
 		this.synapseMap = synapseMap;
 	}
 	/**
@@ -673,7 +692,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	 * @param gasReceiverNeuronsMap
 	 *            HashMap of gas receiver Neurons
 	 */
-	public void setGasReceiverNeuronsMap(HashMap<String, List<GasNeatNeuron>> gasReceiverNeuronsMap) {
+	public void setGasReceiverNeuronsMap(HashMap<Integer, List<GasNeatNeuron>> gasReceiverNeuronsMap) {
 		this.gasReceiverNeuronsMap = gasReceiverNeuronsMap;
 	}
 	/**
@@ -681,7 +700,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	 * 
 	 * @return gasMap HashMap of gases
 	 */
-	public HashMap<String, Gas> getGasMap() {
+	public HashMap<Integer, Gas> getGasMap() {
 		return gasMap;
 	}
 	/**
@@ -690,7 +709,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	 * @param gasMap
 	 *            HashMap of gases
 	 */
-	public void setGasMap(HashMap<String, Gas> gasMap) {
+	public void setGasMap(HashMap<Integer, Gas> gasMap) {
 		this.gasMap = gasMap;
 	}
 	/**
@@ -698,7 +717,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	 * 
 	 * @return gasReceiverNeuronsMap HashMap of gas receiver neurons
 	 */
-	public HashMap<String, List<GasNeatNeuron>> getGasReceiverNeuronsMap() {
+	public HashMap<Integer, List<GasNeatNeuron>> getGasReceiverNeuronsMap() {
 		return gasReceiverNeuronsMap;
 	}
 	public void addReceptor(GasNeatReceptor receptor) {

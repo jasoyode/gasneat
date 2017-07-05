@@ -223,7 +223,7 @@ public GasNeatNet newGasNeatNet( Chromosome chromosome, Properties props ) throw
 	
 	
 	//this is what is used to create the underlying recurrentsimulator model 
-	HashMap<String, GasNeatSynapse> synapseMap = new HashMap<String, GasNeatSynapse>();
+	HashMap<Long, GasNeatSynapse> synapseMap = new HashMap<Long, GasNeatSynapse>();
 	
 
 	
@@ -264,9 +264,10 @@ public GasNeatNet newGasNeatNet( Chromosome chromosome, Properties props ) throw
 		double lr = targetNeuron.getPlasticityParameterLR();
 		
 		
-		SynapseBuilder builder = new SynapseBuilder("N"+src.getId(), "N"+dest.getId(), connAllele.getWeight(), modulatory, a,b,c,d,lr, props );
+		SynapseBuilder builder = new SynapseBuilder(src.getId(), dest.getId(), connAllele.getWeight(), modulatory, a,b,c,d,lr, props );
 		
-		synapseMap.put( SpreadsheetConstants.SYNAPSE_ID_PREFIX+ "N"+src.getId()+ "N"+dest.getId(), new GasNeatSynapse(builder) );
+		//ULTRATODO int big enough
+		synapseMap.put( SynapseBuilder.elegantPairing( src.getId(), dest.getId()), new GasNeatSynapse(builder) );
 		
 	}
 

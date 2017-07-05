@@ -13,7 +13,7 @@ public class GasDispersionSlot implements Cloneable {
 	private double gasConcentration;
 	
 	/** receiver neurons map with distance from the center of source neuron **/
-	private HashMap<String , Double> receiverNeurons = new HashMap<String, Double>();
+	private HashMap<Long , Double> receiverNeurons = new HashMap<Long, Double>();
 	
 	/** start location for gas dispersion slot **/
 	private double startLocation;
@@ -94,7 +94,7 @@ public class GasDispersionSlot implements Cloneable {
 	 * 
 	 * @return nextGenerationDnaList	map to hold receiver Neurons
 	 */	
-	public HashMap<String, Double> getReceiverNeurons() {
+	public HashMap<Long, Double> getReceiverNeurons() {
 		return receiverNeurons;
 	}
 	
@@ -103,7 +103,7 @@ public class GasDispersionSlot implements Cloneable {
 	 * 
 	 * @param receiverNeurons map to hold receiver Neurons
 	 */	
-	public void setReceiverNeurons(HashMap<String, Double> receiverNeurons) {
+	public void setReceiverNeurons(HashMap<Long, Double> receiverNeurons) {
 		this.receiverNeurons = receiverNeurons;
 	}
 	
@@ -120,7 +120,7 @@ public class GasDispersionSlot implements Cloneable {
 	 */	
 	public GasDispersionSlot clone() throws CloneNotSupportedException {
 		GasDispersionSlot gasDispersionSlot = (GasDispersionSlot) super.clone();
-		gasDispersionSlot.setReceiverNeurons((HashMap<String, Double>) receiverNeurons.clone());
+		gasDispersionSlot.setReceiverNeurons((HashMap<Long, Double>) receiverNeurons.clone());
 		return gasDispersionSlot;
 	}
 }

@@ -19,9 +19,10 @@ public class PrimaryIDManager {
 	/**
 	 * @return NeuronID
 	 */
-	public String getNewNeuronID() {
+	public int getNewNeuronID() {
 		this.currentNeuronID++;
-		return SpreadsheetConstants.NEURON_ID_PREFIX + this.currentNeuronID;
+		return this.currentNeuronID;
+		//return SpreadsheetConstants.NEURON_ID_PREFIX + this.currentNeuronID;
 	}
 	
 	/**
@@ -57,9 +58,12 @@ public class PrimaryIDManager {
 	 * @return
 	 */
 	public String getCorrespondingReceptorID(GasNeatNeuron neuron) {
-		String neuronID = neuron.getNeuronID();
-		String receptorID = neuronID.replace(SpreadsheetConstants.NEURON_ID_PREFIX, SpreadsheetConstants.RECEPTOR_ID_PREFIX);
-		return this.claimReceptorID(receptorID);
+		System.err.println("Not using spreadsheets");
+		System.exit(-1);
+		return null;
+		//int neuronID = neuron.getNeuronID();
+		//int receptorID = neuronID.replace(SpreadsheetConstants.NEURON_ID_PREFIX, SpreadsheetConstants.RECEPTOR_ID_PREFIX);
+		//return this.claimReceptorID(receptorID);
 	}
 	
 	/**

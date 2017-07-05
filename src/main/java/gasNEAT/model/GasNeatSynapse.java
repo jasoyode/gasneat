@@ -19,13 +19,13 @@ import gasNEAT.configurations.GasNeatConfiguration;
 public class GasNeatSynapse implements Cloneable {
 
 	/** Unique Id of Synapse*/
-	private String synapseID;
+	private long synapseID;
 	
 	/** Source neuron of Synapse*/
-	private final String sourceName;
+	private final long sourceName;
 	
 	/** Target neuron of Synapse*/
-	private final String targetName;
+	private final long targetName;
 	
 	/** Synaptic weight of Synapse*/
 	private double synapticWeight;
@@ -56,8 +56,8 @@ public class GasNeatSynapse implements Cloneable {
 	 * @param synapseBuilder
 	 */
 	public GasNeatSynapse(SynapseBuilder synapseBuilder) {
-		this.sourceName = synapseBuilder.getSourceNeuronName();
-		this.targetName = synapseBuilder.getTargetNeuronName();
+		this.sourceName = synapseBuilder.getSourceNeuronId();
+		this.targetName = synapseBuilder.getTargetNeuronId();
 		this.synapticWeight = synapseBuilder.getWeight();
 		this.synapseID = synapseBuilder.getSynapseID();
 		this.isModulatory = synapseBuilder.isModulatory();
@@ -119,29 +119,13 @@ public class GasNeatSynapse implements Cloneable {
 			return;
 		}
 		
-//		logger.debug( "updatePlasticity called"  );
-//		logger.debug("XXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		//changed to be target instead of source
 		GasNeatReceptor receptor = network.getNeuronMap().get(targetName).getReceptor();
 		
-		if (targetName.equals("N3")) {
-		
-		logger.debug(  "built up concentration at target neuron: 0->" 
-				+ receptor.getBuiltUpConcentrations()[0] + " 1->" 
-				+ receptor.getBuiltUpConcentrations()[1] + " 2->" 
-				+ receptor.getBuiltUpConcentrations()[2] + " 3->" 
-				+ receptor.getBuiltUpConcentrations()[3] );
-//		logger.debug("XXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		logger.debug( "PRE plasticity = "+ plasticity );
-		}
 		
 		receptor.modulatePlasticityFromConcentrations();
 		
 		plasticity = receptor.getPlasticity();
 		
-		if (targetName.equals("N3")) {
-			logger.debug( "POST plasticity = "+ plasticity );
-		}
 	}
 
 	/**
@@ -193,7 +177,7 @@ public class GasNeatSynapse implements Cloneable {
 	 * 
 	 * @return synapseID Synapse ID
 	 */
-	public void setSynapseID(String synapseID) {
+	public void setSynapseID(int synapseID) {
 		this.synapseID = synapseID;
 	}
 
@@ -202,7 +186,7 @@ public class GasNeatSynapse implements Cloneable {
 	 * 
 	 * @return synapseID Synapse ID
 	 */
-	public String getSynapseID() {
+	public long getSynapseID() {
 		return synapseID;
 	}
 
@@ -211,7 +195,7 @@ public class GasNeatSynapse implements Cloneable {
 	 * 
 	 * @return sourceNeuron Source Neuron of Synapse
 	 */
-	public String getSourceNeuron() {
+	public long getSourceNeuron() {
 		return sourceName;
 	}
 
@@ -220,7 +204,7 @@ public class GasNeatSynapse implements Cloneable {
 	 * 
 	 * @return targetNeuron Target Neuron of Synapse
 	 */
-	public String getTargetNeuron() {
+	public long getTargetNeuron() {
 		return targetName;
 	}
 

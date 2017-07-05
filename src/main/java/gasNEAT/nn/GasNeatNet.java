@@ -46,7 +46,7 @@ public class GasNeatNet  {
 	 * @param aName
 	 */
 	public GasNeatNet( Collection<GasNeatNeuron> someNeurons, List<GasNeatNeuron> someInNeurons, List<GasNeatNeuron> someOutNeurons,
-			Collection someRecurrentConns, String aName, HashMap<String, GasNeatSynapse> synapseMap, Properties props, int recurrentSteps ) {
+			Collection someRecurrentConns, String aName, HashMap<Long, GasNeatSynapse> synapseMap, Properties props, int recurrentSteps ) {
 		init( someNeurons, someInNeurons, someOutNeurons, someRecurrentConns, aName );
 
 		net = new GasNeatNeuralNetwork(someNeurons, someInNeurons, someOutNeurons,

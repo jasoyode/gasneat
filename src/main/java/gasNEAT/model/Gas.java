@@ -9,7 +9,7 @@ import java.awt.Color;
 public class Gas implements Cloneable {
 
 	/** Unique Id of Gas */
-	private String gasID;
+	private int gasID;
 	
 	/** Name of Gas */
 	private String name;
@@ -69,7 +69,7 @@ public class Gas implements Cloneable {
 	 * 
 	 * @return gasID Gas Id
 	 */
-	public String getGasID() {
+	public int getGasID() {
 		return gasID;
 	}
 
@@ -80,7 +80,7 @@ public class Gas implements Cloneable {
 	 * @param gasID
 	 *            Gas id
 	 */
-	public void setGasID(String gasID) {
+	public void setGasID(int gasID) {
 		this.gasID = gasID;
 	}
 

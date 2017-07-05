@@ -333,8 +333,12 @@ public class GasNeatReceptor {
 		//May need to be sure updateActivationLevelFromBuiltUpConcentrations
 		//is called before running this method
 		
-	
-		activationLevelPreSquash = activationLevelPreSquash * (1 + activationModFunction.evaluate( builtUpConcentrations)); 
+		//#BOTTLENECK
+		
+		//#SPEEDTEST
+		//activationLevelPreSquash = activationLevelPreSquash * (1 + activationModFunction.evaluate( builtUpConcentrations)); 
+		
+		
 		//add a parameter?
 		// activationConcentration = aC * \beta * p(Gas)
 		//checkAndKill("modulateActivationLevelFromConcentrations");
@@ -418,8 +422,9 @@ public class GasNeatReceptor {
 			
 			if (tanhSquashModulationSignal) {
 				plasticity = plasticity * ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( builtUpConcentrations) / 2 ) );
-			} else {
-				plasticity = plasticity * ( 1.0 + receptorStrength * plasticityModFunction.evaluate( builtUpConcentrations) );
+			} else { //#BOTTLENECK
+				//#SPEEDTEST
+				//plasticity = plasticity * ( 1.0 + receptorStrength * plasticityModFunction.evaluate( builtUpConcentrations) );
 			}
 		}
 
@@ -467,15 +472,15 @@ public class GasNeatReceptor {
 	/**
 	 * @return List of the gases
 	 */
-	public ArrayList<String> getGasList() {
-		ArrayList<String> gases = new ArrayList<String>();
+	public ArrayList<Integer> getGasList() {
+		ArrayList<Integer> gases = new ArrayList<Integer>();
 		//ULTRATODO
 		//test out if everything is handled properly in setup by just
 		//returning gas list without adding inside the function here
-		gases.add("G1");
-		gases.add("G2");
-		gases.add("G3");
-		gases.add("G4");
+		gases.add(1);
+		gases.add(2);
+		gases.add(3);
+		gases.add(4);
 		
 		//return gasList;
 		return gases;
@@ -587,15 +592,18 @@ public class GasNeatReceptor {
 		//return bufferedConcentrations.get(activationType);
 	}
 
-	
+	/*
 	public void setGasConcentration(String gasType, double concentration) {
 		//builtUpConcentrations.put(gasType,  concentration);
 		builtUpConcentrations[ new Integer(gasType.substring(1)) ]=  concentration;
+		
 		//this.activationConcentration = activationConcentration;
 		System.out.println("I expect this to error when using actual gasSlots.");
 		System.out.println("You must decide if you want to add gasSlot gases to buffer or not");
 		System.exit(-1);
 	}
+	*/
+	
 	
 	
 	/**
@@ -610,8 +618,8 @@ public class GasNeatReceptor {
 	/**
 	 * @return activationType
 	 */
-	public String getActivationType() {
-		return activationType;
+	public int getActivationType() {
+		return activationTypeInt;
 	}
 
 	/**
@@ -671,7 +679,7 @@ public class GasNeatReceptor {
 	 * @param String gasType to be added to receptor buffer
 	 * @param Double concentration amount of gas to be added
 	 */
-	public void addBufferedConcentration(String gasType, Double concentration) {
+	public void addBufferedConcentration(int gasType, Double concentration) {
 		
 		//checkAndKill("addBufferedConcentration1");
 		
@@ -685,10 +693,10 @@ public class GasNeatReceptor {
 		bufferedConcentrations2.put(gasType, newValue);
 		//*/
 		
-		double newValue = bufferedConcentrations[ new Integer( gasType.substring(1)  )];
+		double newValue = bufferedConcentrations[ gasType ];
 		newValue+= concentration;
 		
-		bufferedConcentrations[ new Integer( gasType.substring(1)  )] = newValue;
+		bufferedConcentrations[ gasType] = newValue;
 		
 		//checkAndKill("addBufferedConcentration2");
 		

@@ -213,7 +213,7 @@ public void evaluate( List genotypes ) {
 	Iterator it = genotypes.iterator();
 	while ( it.hasNext() ) {
 		Chromosome c = (Chromosome) it.next();
-		System.out.println( "evaling chromosome #"+ c.getId() );
+		//System.out.println( "evaling chromosome #"+ c.getId() );
 		evaluate( c );
 	}
 }

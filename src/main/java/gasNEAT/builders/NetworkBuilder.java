@@ -232,7 +232,7 @@ public class NetworkBuilder {
 
 				if (Cell.CELL_TYPE_STRING == cell.getCellType()) {
 					if (cell.getColumnIndex() == 0) {
-						gas.setGasID(cell.getStringCellValue());
+						gas.setGasID( Integer.parseInt(cell.getStringCellValue() ) );
 					} else if (cell.getColumnIndex() == 1) {
 						gas.setName(cell.getStringCellValue());
 					} else if (cell.getColumnIndex() == 4)
@@ -439,6 +439,11 @@ public class NetworkBuilder {
 	 *            excel sheet that contains neuron information
 	 */
 	private void buildNeuronMap(Sheet sheet) {
+		
+		System.err.println("DO NOT USE SPREADSHEETS");
+		System.exit(-1);
+		
+		/*
 		Iterator<Row> rowIterator = sheet.iterator();
 
 		// iterating over each row
@@ -494,6 +499,7 @@ public class NetworkBuilder {
 			GasNeatNeuron neuron = neuronBuilder.build();
 			this.neuralNetwork.addNeuron(neuron);
 		}
+		*/
 
 	}
 
@@ -512,7 +518,7 @@ public class NetworkBuilder {
 		while (rowIterator.hasNext()) {
 			Row row = (Row) rowIterator.next();
 
-			String sourceNeuron = null;
+			int sourceNeuron = -1;
 
 			Iterator<Cell> cellIterator = row.cellIterator();
 
@@ -526,7 +532,7 @@ public class NetworkBuilder {
 						// starting with cell 1
 						targetNeurons.add(cell.getStringCellValue());
 					} else if (cell.getColumnIndex() == 0) {
-						sourceNeuron = cell.getStringCellValue();
+						sourceNeuron = Integer.parseInt( cell.getStringCellValue() );
 					}
 				} else if (Cell.CELL_TYPE_NUMERIC == cell.getCellType()) {
 					// fill synapseMap
@@ -534,7 +540,7 @@ public class NetworkBuilder {
 					if (cell.getColumnIndex() >= 1 && cell.getColumnIndex() <= targetNeurons.size()
 							&& cell.getNumericCellValue() != 0) {
 						// create one synapse per weight cell
-						String targetNeuron = targetNeurons.get(cell.getColumnIndex() - 1);
+						int targetNeuron = Integer.parseInt( targetNeurons.get(cell.getColumnIndex() - 1) );
 						SynapseBuilder synapseBuilder = new SynapseBuilder(sourceNeuron, targetNeuron,
 								cell.getNumericCellValue(), false,0,0,0,0,0, null);
 						GasNeatSynapse synapse = synapseBuilder.build();

@@ -13,25 +13,119 @@ import lombok.Getter;
  *
  */
 public class SynapseBuilder {
-	private final String sourceNeuronName;
-	private final String targetNeuronName;
+	private @Getter final Long sourceNeuronId;
+	private @Getter final Long targetNeuronId;
 	private double weight;
-	private final String synapseID;
+	private final long  synapseID;
 	private Properties props;
 	private boolean modulatory;
 	private @Getter double a, b,c,d,lr;
+	
+	
+	public static void main(String[] ars) {
+		
+		
+		for (int i=1; i< 10; i++) {
+			for (int j=1; j< 10; j++) {
+				System.out.println( "i: " + i +",  j: "+ j  );
+				long z = elegantPairing(i,j);
+				System.out.println( "  z: "+  z );
+				System.out.println( "  unpaired: i: "+ elegantUnpairing(z)[0]+ ", j: "+ elegantUnpairing(z)[1]  );
+				
+				if (i != elegantUnpairing(z)[0]) {
+					System.err.println( "i did not match!"  );
+					System.exit(-1);
+				}
+				
+				if (j != elegantUnpairing(z)[1]) {
+					System.err.println( "j did not match!"  );
+					System.exit(-1);
+				}
+				
+			}
+			
+			
+			for (int j=10; j> 1; j--) {
+				System.out.println( "i: " + i +",  j: "+ j  );
+				long z = elegantPairing(i,j);
+				System.out.println( "  z: "+  z );
+				System.out.println( "  unpaired: i: "+ elegantUnpairing(z)[0]+ ", j: "+ elegantUnpairing(z)[1]  );
+				
+				if (i != elegantUnpairing(z)[0]) {
+					System.err.println( "i did not match!"  );
+					System.exit(-1);
+				}
+				
+				if (j != elegantUnpairing(z)[1]) {
+					System.err.println( "j did not match!"  );
+					System.exit(-1);
+				}
+				
+			}
+			
+			
+			
+			
+			
+			
+		}
+		
+		
+		
+	}
+	
+	//https://www.semanticscholar.org/paper/An-Elegant-Pairing-Function-Szudzik/68e87ad59107481bc3cfdf1669706fd0368cce60
+	//http://szudzik.com/ElegantPairing.pdf
+	public static long elegantPairing(long x, long y) {
+		
+		if (x > 1000000000 || y > 1000000000) {
+			System.err.println( "too big!");
+			System.exit( -1 );
+		}
+		
+		
+		if (x < y) {
+			return y*y + x;
+		} else {
+			return x*x + x + y;			
+		}
+		
+		 
+	}
+
+	//https://www.semanticscholar.org/paper/An-Elegant-Pairing-Function-Szudzik/68e87ad59107481bc3cfdf1669706fd0368cce60
+	//http://szudzik.com/ElegantPairing.pdf
+	public static long[] elegantUnpairing(long z) {
+		
+		long[] pair = new long[2];
+		
+		long trunSqrtZ = (long)( Math.sqrt(z ) );
+		
+		if (z - trunSqrtZ*trunSqrtZ < trunSqrtZ ) {
+			pair[0] = z - trunSqrtZ * trunSqrtZ;
+			pair[1] = trunSqrtZ;
+		} else {
+			pair[0] = trunSqrtZ;
+			pair[1] = z - trunSqrtZ*trunSqrtZ - trunSqrtZ;			
+		}
+		
+		return pair;
+
+	}
 	
 	/**
 	 * @param sourceNeuron Source neuron of Synapse
 	 * @param targetNeuron Target neuron of Synapse
 	 * @param weight Weight of the synapse
 	 */
-	public SynapseBuilder(String sourceNeuron, String targetNeuron, double weight, boolean modulatory, 
+	public SynapseBuilder(long sourceNeuron, long targetNeuron, double weight, boolean modulatory, 
 			double a, double b, double c, double d, double lr, Properties props) {
 		this.weight = weight;
-		this.sourceNeuronName = sourceNeuron;
-		this.targetNeuronName = targetNeuron;
-		this.synapseID = SpreadsheetConstants.SYNAPSE_ID_PREFIX + this.sourceNeuronName + this.targetNeuronName;
+		this.sourceNeuronId = sourceNeuron;
+		this.targetNeuronId = targetNeuron;
+		this.synapseID = elegantPairing( sourceNeuronId, targetNeuronId);
+				
+				//SpreadsheetConstants.SYNAPSE_ID_PREFIX + this.sourceNeuronName + this.targetNeuronName;
 		this.props = props;
 		this.modulatory = modulatory;
 		this.a = a;
@@ -48,10 +142,12 @@ public class SynapseBuilder {
 	 * @param sourceNeuron Source neuron of Synapse
 	 * @param targetNeuron Target neuron of Synapse
 	 */
-	public SynapseBuilder(String sourceNeuron, String targetNeuron) {
-		this.sourceNeuronName = sourceNeuron;
-		this.targetNeuronName = targetNeuron;
-		this.synapseID = SpreadsheetConstants.SYNAPSE_ID_PREFIX + this.sourceNeuronName + this.targetNeuronName;
+	public SynapseBuilder(long sourceNeuron, long targetNeuron) {
+		this.sourceNeuronId = sourceNeuron;
+		this.targetNeuronId = targetNeuron;
+		this.synapseID = elegantPairing(sourceNeuron, targetNeuron); 
+				//
+				//SpreadsheetConstants.SYNAPSE_ID_PREFIX + this.sourceNeuronName + this.targetNeuronName;
 	}
 	
 	public boolean isModulatory() {
@@ -62,15 +158,15 @@ public class SynapseBuilder {
 		return this.weight;
 	}
 	
-	public String getSourceNeuronName() {
-		return this.sourceNeuronName;
+	public long getSourceNeuronId() {
+		return this.sourceNeuronId;
 	}
 	
-	public String getTargetNeuronName() {
-		return this.targetNeuronName;
+	public long getTargetNeuronId() {
+		return this.targetNeuronId;
 	}
 	
-	public String getSynapseID() {
+	public long getSynapseID() {
 		return this.synapseID;
 	}
 	

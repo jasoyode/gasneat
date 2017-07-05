@@ -34,7 +34,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	
 	private final boolean listsInitialized;
 	/**  list of ids of activated neurons at each time instant that gets supplied to the view */
-	private List<String> currentActivatedNeurons;
+	private List<Long> currentActivatedNeurons;
 
 	/**  clone of neural network instance, used to store in networkStateList */
 	private GasNeatNeuralNetwork neuralNetworkClone;
@@ -43,7 +43,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	private ArrayList<Double> outputList;
 
 	/**  list of neurons in the input layer */
-	private List<String> inputNeurons;
+	private List<Long> inputNeurons;
 
 	/**  map representing input signals at each time instant */
 	private Map<Integer, List<Double>> inputTimeSignalMap;
@@ -135,8 +135,8 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		outputList = new ArrayList<Double>();
 		inputList = new ArrayList<Double>();
 		networkStateList = new ArrayList<NetworkState>();
-		inputNeurons = new ArrayList<String>();
-		currentActivatedNeurons = new ArrayList<String>();
+		inputNeurons = new ArrayList<Long>();
+		currentActivatedNeurons = new ArrayList<Long>();
 		return true;
 	}
 
@@ -203,7 +203,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		logger.debug("receiver map:" +  neuralNetwork.getGasReceiverNeuronsMap()   );
 		
 		
-		for (Map.Entry<String, GasNeatNeuron> entry : neuralNetwork.getNeuronMap().entrySet()) {
+		for (Map.Entry<Long, GasNeatNeuron> entry : neuralNetwork.getNeuronMap().entrySet()) {
 			GasNeatNeuron sourceNeuron = entry.getValue();
 
 			// if neuron is gas emitter
@@ -264,7 +264,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 			GasNeatNeuron currentNeuron = (GasNeatNeuron) currentEntry.getValue();
 			//LOG.info(  currentNeuron.getLayerType()  );
 			if (currentNeuron.getLayerType().equals(NeuronType.INPUT)) {
-				inputNeurons.add(currentEntry.getKey().toString());
+				inputNeurons.add( (Long)currentEntry.getKey() );
 			}
 
 		}
@@ -387,7 +387,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	
 	public void printState() {
 		if (logger.isDebugEnabled() ) {
-			for ( String neuronID:  neuralNetwork.getNeuronMap().keySet()  ) {
+			for ( long neuronID:  neuralNetwork.getNeuronMap().keySet()  ) {
 				
 				GasNeatNeuron neuron = neuralNetwork.getNeuronMap().get(neuronID);
 				logger.debug("  " + neuronID +" |" +  
@@ -395,7 +395,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 						"  actCon: " + neuron.getActivationConcentration() +
 						"  actLvl: " +  neuron.getActivationLevel() +						
 						"  applyFun "+  neuron.getFunction().apply( neuron.getActivationLevel() ) );
-				for (String s: neuron.getOutgoingSynapses()) {
+				for (long s: neuron.getOutgoingSynapses()) {
 					GasNeatSynapse syn= neuralNetwork.getSynapseMap().get(s);
 					logger.debug( "    "+syn.getSynapseID() +"w->  "+ syn.getSynapticWeight() );
 				}
@@ -504,7 +504,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		List<Double> currentSignal = inputSignals;
 		for(int index = 0; index < currentSignal.size(); index++) {
 			
-			String currentNeuron = inputNeurons.get(index);
+			long currentNeuron = inputNeurons.get(index);
 			
 			GasNeatNeuron neuron = neuralNetwork.getNeuronMap().get(currentNeuron);
 			//will add appropriate gas to receptor (may have buffered inputs from previous
@@ -530,7 +530,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		
 		// We must take the current loaded values in buffer and update our activation levels
 		// This is reverse from previous
-		for (String neuronID : neuralNetwork.getNeuronMap().keySet()) {
+		for (long neuronID : neuralNetwork.getNeuronMap().keySet()) {
 			GasNeatNeuron tempNeuron = neuralNetwork.getNeuronMap().get(neuronID);
 			
 			/*
@@ -565,7 +565,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		
 		// We should leave buffered concentrations to be present
 		// For the next simulation 
-		for (String neuronID : neuralNetwork.getNeuronMap().keySet()) {
+		for (long neuronID : neuralNetwork.getNeuronMap().keySet()) {
 			GasNeatNeuron tempNeuron = neuralNetwork.getNeuronMap().get(neuronID);
 			// updating Target Neurons
 			if (tempNeuron.isGasEmitter() ) {
@@ -603,12 +603,15 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		
 		// #GASNEATMODEL
 		
-		ArrayList<String> outgoingSynapses = tempNeuron.getOutgoingSynapses();
-		String gasType = tempNeuron.getSynapseProductionType();
+		ArrayList<Long> outgoingSynapses = tempNeuron.getOutgoingSynapses();
+		//String gasType = tempNeuron.getSynapseProductionType();
 		
-		for (String synapseID : outgoingSynapses) {
+		int gasType = tempNeuron.getSynapseProductionTypeInt();
+		
+		//SLOWDOWN
+		for (long synapseID : outgoingSynapses) {
 			GasNeatSynapse tempSynapse = neuralNetwork.getSynapseMap().get(synapseID);
-			String targetNeuronID = tempSynapse.getTargetNeuron();
+			long targetNeuronID = tempSynapse.getTargetNeuron();
 			GasNeatNeuron targetNeuron = neuralNetwork.getNeuronMap().get(targetNeuronID);
 			
 			double concentrationToAdd = tempSynapse.getSynapticWeight() * tempNeuron.calculateActivation();
@@ -653,8 +656,10 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		
 		// #GASNEATMODEL
 		//System.out.println("pushBufferedConcentrationsToBuiltUpConcentrations for N" +tempNeuron.getId() );
-		neuralNetwork.getNeuron( "N"+tempNeuron.getId()  ).getReceptor().pushBufferedConcentrations();
+		//neuralNetwork.getNeuron( "N"+tempNeuron.getId()  ).getReceptor().pushBufferedConcentrations();
 		
+		//ULTRATODO int ok?
+		neuralNetwork.getNeuron( (int)tempNeuron.getId()  ).getReceptor().pushBufferedConcentrations();
 	}
 	
 	/**
@@ -694,10 +699,11 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		
 		// #GASNEATMODEL
 		
-		HashMap<String, GasNeatSynapse> synapseMap = this.neuralNetwork.getSynapseMap();
+		HashMap<Long, GasNeatSynapse> synapseMap = this.neuralNetwork.getSynapseMap();
 		logger.debug("updateSynapticPlasticityAndWeights called"    );
 		
-		for(String synapseName : synapseMap.keySet()) {
+		//SLOWDOWN
+		for(long synapseName : synapseMap.keySet()) {
 			GasNeatSynapse synapse = synapseMap.get(synapseName);
 			
 			//System.out.println( "  buffered concentrations: "+  neuralNetwork.getNeuronMap().get( synapse.getSourceNeuron() ).getBufferedConcentration()   ); 
@@ -732,10 +738,10 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	private void updateActivationLevelsAndResetBuiltUpConcentrations() {
 		// #GASNEATMODEL
 		
-		HashMap<String, GasNeatNeuron> neuronMap = this.neuralNetwork.getNeuronMap();
+		HashMap<Long, GasNeatNeuron> neuronMap = this.neuralNetwork.getNeuronMap();
 		
 		// Display elements
-		for(String neuronKey : neuronMap.keySet()) {
+		for(long neuronKey : neuronMap.keySet()) {
 			GasNeatNeuron neuron = neuronMap.get(neuronKey);
 			
 			//VIEW ONLY CODE
