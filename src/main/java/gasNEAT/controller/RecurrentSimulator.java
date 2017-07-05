@@ -530,9 +530,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		
 		// We must take the current loaded values in buffer and update our activation levels
 		// This is reverse from previous
-		for (long neuronID : neuralNetwork.getNeuronMap().keySet()) {
-			GasNeatNeuron tempNeuron = neuralNetwork.getNeuronMap().get(neuronID);
-			
+		for (GasNeatNeuron tempNeuron : neuralNetwork.getNeuronMap().values()) {
 			/*
 			if (!tempNeuron.isGasEmitter() ) {
 				this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
@@ -565,8 +563,10 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		
 		// We should leave buffered concentrations to be present
 		// For the next simulation 
-		for (long neuronID : neuralNetwork.getNeuronMap().keySet()) {
-			GasNeatNeuron tempNeuron = neuralNetwork.getNeuronMap().get(neuronID);
+		//for (long neuronID : neuralNetwork.getNeuronMap().keySet()) {
+		//	GasNeatNeuron tempNeuron = neuralNetwork.getNeuronMap().get(neuronID);
+		for (GasNeatNeuron tempNeuron: neuralNetwork.getNeuronMap().values() ) {
+			
 			// updating Target Neurons
 			if (tempNeuron.isGasEmitter() ) {
 				
@@ -700,8 +700,11 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		logger.debug("updateSynapticPlasticityAndWeights called"    );
 		
 		//SLOWDOWN
-		for(long synapseName : synapseMap.keySet()) {
-			GasNeatSynapse synapse = synapseMap.get(synapseName);
+		//for(long synapseName : synapseMap.keySet()   ) {
+			//GasNeatSynapse synapse = synapseMap.get(synapseName);
+		for( GasNeatSynapse synapse : synapseMap.values()   ) {
+			 //synapseMap.get(synapseName);
+			
 			
 			//System.out.println( "  buffered concentrations: "+  neuralNetwork.getNeuronMap().get( synapse.getSourceNeuron() ).getBufferedConcentration()   ); 
 			
@@ -738,8 +741,9 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		HashMap<Long, GasNeatNeuron> neuronMap = this.neuralNetwork.getNeuronMap();
 		
 		// Display elements
-		for(long neuronKey : neuronMap.keySet()) {
-			GasNeatNeuron neuron = neuronMap.get(neuronKey);
+		//for(long neuronKey : neuronMap.keySet()) {
+			//GasNeatNeuron neuron = neuronMap.get(neuronKey);
+		for(GasNeatNeuron neuron : neuronMap.values()) {
 			
 			//VIEW ONLY CODE
 			if(neuron.getActivationConcentration() >= neuron.getThreshold()) {
