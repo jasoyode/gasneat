@@ -42,7 +42,7 @@ public class GasNeatReceptor {
 	private double[] bufferedConcentrations = new double[NUMBER_GASES];
 	private double[] builtUpConcentrations = new double[NUMBER_GASES];
 	
-	private ArrayList<String> receptorMap;
+	private static ArrayList<String> receptorMap;
 	//
 	private double activationLevelPreSquash = 0;
 	
@@ -159,28 +159,29 @@ public class GasNeatReceptor {
 	}
 	
 	public void setupReceptorMap() {
-		receptorMap = new ArrayList<String>(); 
 		
+		if (receptorMap == null ) {
 		
-		try {
-			BufferedReader receptorList = new BufferedReader( new FileReader( receptorMapFilePath ));
-			String currentLine = receptorList.readLine();
-			for (int i=0; currentLine  != null; i++) {
-				receptorMap.add( currentLine );
-				currentLine = receptorList.readLine();
-			}
-			receptorList.close();
+			receptorMap = new ArrayList<String>(); 
+			try {
+				BufferedReader receptorList = new BufferedReader( new FileReader( receptorMapFilePath ));
+				String currentLine = receptorList.readLine();
+				for (int i=0; currentLine  != null; i++) {
+					receptorMap.add( currentLine );
+					currentLine = receptorList.readLine();
+				}
+				receptorList.close();
+				
 			
-		
-		} catch ( IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Could not read file:" +receptorMapFilePath );
-			e.printStackTrace();
-			System.exit(1);
+			} catch ( IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Could not read file:" +receptorMapFilePath );
+				e.printStackTrace();
+				System.exit(1);
+			}
+			
+			
 		}
-		
-		
-		
 		
 		//receptorMap.put("NO_NO_NO_NO_NO", "NO_NO_NO_NO_NO");
 		//receptorMap.put("0", "NO_G1_G2_G3_G4");

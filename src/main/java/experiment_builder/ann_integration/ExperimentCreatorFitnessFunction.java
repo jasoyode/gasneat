@@ -146,13 +146,18 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 		logger.debug(  "   ...Performing action by agent on enviornment" );
 		
 		try {
-			Thread.sleep(delay);
+			
+			if (delay > 0) {
+				Thread.sleep(delay);
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
+		if (logger.isDebugEnabled() ) {
+			logger.debug(  "motorData: " + getStringFormat( motorData) );
+		}
 		
-		logger.debug(  "motorData: " + getStringFormat( motorData) );
 		
 		if (mapper == null) {
 			
@@ -162,8 +167,9 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 				mapper = gridView.getCellGrid().getActionMap()  ;
 			}
 		}
-		
-		logger.debug("mapper: "+ mapper);
+		if (logger.isDebugEnabled() ) { 
+			logger.debug("mapper: "+ mapper);
+		}
 		
 		//System.err.println(mapper);
 		//System.err.println(mapper.getClass());
@@ -192,7 +198,9 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 
 	public void evaluate( Chromosome c ) {
 		
-		logger.debug("Evaluating "+ c.toString() );
+		if (logger.isDebugEnabled() ) {
+			logger.debug("Evaluating "+ c.toString() );
+		}
 		try {
 			//Activator activator = factory.newActivator( c );
 			
@@ -240,9 +248,13 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 				}
 				
 				if (visibleMode) {
-					logger.info(  c.getId() + " Trial "+ gridView.getCellGrid().getTrialNumber() +" score: "+ value  );
+					if (logger.isDebugEnabled() ){
+						logger.debug(  c.getId() + " Trial "+ gridView.getCellGrid().getTrialNumber() +" score: "+ value  );
+					}
 				} else {
-					logger.info(  c.getId() + " Trial "+ cellGrid.getTrialNumber() +" score: "+ value  );
+					if (logger.isDebugEnabled() ){
+						logger.debug(  c.getId() + " Trial "+ cellGrid.getTrialNumber() +" score: "+ value  );
+					}
 				}
 				fitness += value;
 			}
@@ -319,10 +331,13 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			RegisterEventCommand.getInstance().setEnvironment(cellGrid );
 			AgentActions agentActions = AgentActions.getInstance();
 			agentActions.setCellGrid(cellGrid);
-			
-			logger.debug( "visible[0] "+cellGrid.getVisibility()[0] );
+			if (logger.isDebugEnabled() ) {
+				logger.debug( "visible[0] "+cellGrid.getVisibility()[0] );
+			}
 			cellGrid.setFinalizedMazeCellFromVisibility();
-			logger.debug( "finalized "+cellGrid.getFinalizedMazeCells() );
+			if (logger.isDebugEnabled() ) {
+				logger.debug( "finalized "+cellGrid.getFinalizedMazeCells() );
+			}
 			parametersCalculator.setCellGrid( cellGrid );
 			
 			mapper = cellGrid.getActionMap();
@@ -344,6 +359,7 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			
 			
 			logger.info( "Trial : " + gridView.getCellGrid().getTrialNumber() );
+			
 			gridView.getCellGrid().restartExperiment();
 			if ( shufflePoints.contains( gridView.getCellGrid().getTrialNumber() ) ) {
 				logger.info("Shuffling Rewards!");
@@ -362,11 +378,15 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			}
 			
 		} else {
-			logger.info( "Trial : " + cellGrid.getTrialNumber() );
+			if (logger.isDebugEnabled() ){
+				logger.debug( "Trial : " + cellGrid.getTrialNumber() );
+			}
 			cellGrid.restartExperiment();
 			
 			if ( shufflePoints.contains( cellGrid.getTrialNumber() ) ) {
-				logger.info("Shuffling Rewards!");
+				if (logger.isDebugEnabled() ){
+					logger.debug("Shuffling Rewards!");
+				}
 				ShuffleRewards sr = new ShuffleRewards( cellGrid );
 				sr.execute();
 			}
@@ -390,8 +410,9 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 		double[]  sensorData;
 		
 		for ( currentTimestep = 0; currentTimestep < maxTimesteps; currentTimestep++ ) {
-			logger.debug("TIMESTEP START OF LOOP: "+ currentTimestep);
-			
+			if (logger.isDebugEnabled() ) {
+				logger.debug("TIMESTEP START OF LOOP: "+ currentTimestep);
+			}
 			//read the sensor information from experiment
 			formattedSensorData = getFormattedSensorData();
 			sensorData = getSensorData();
@@ -399,10 +420,14 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			//INTRODUCE OPTIONAL NOISE AT INPUT ONLY
 			if (noise > 0) {
 				for (int i=0; i < sensorData.length; i++) {
-					logger.debug("Prenoise: " + sensorData[i]);
+					if (logger.isDebugEnabled() ) {
+						logger.debug("Prenoise: " + sensorData[i]);
+					}
 					double rand_noise = noise * (randomizer.getRand().nextDouble() -0.5 );
 					sensorData[i] += rand_noise;
-					logger.debug("Postnoise: " + sensorData[i]);
+					if (logger.isDebugEnabled() ) {
+						logger.debug("Postnoise: " + sensorData[i]);
+					}
 				}
 			}
 			
@@ -450,7 +475,9 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			
 			//System.err.println("post perf action");
 			
-			logger.debug("Motor data: " + motorData[0] );
+			if (logger.isDebugEnabled() ) {
+				logger.debug("Motor data: " + motorData[0] );
+			}
 			ParametersCalculator.displayParameters();
 
 			/*
@@ -473,15 +500,21 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 					logger.debug("Trial has been set to be over! Ending Current Trial Now!");
 					break;
 				} else {
-					logger.debug("cellGrid.isTrialOver() = " + cellGrid.isTrialOver() );
+					if (logger.isDebugEnabled() ) {
+						logger.debug("cellGrid.isTrialOver() = " + cellGrid.isTrialOver() );
+					}
 				}	
 			}
 			
 
 		}
-		logger.debug("TIMESTEP END OF LOOP: "+ currentTimestep);
+		if (logger.isDebugEnabled() ) {
+			logger.debug("TIMESTEP END OF LOOP: "+ currentTimestep);
+		}
 		fitness = (int) ParametersCalculator.getFitnessScore();
-		logger.debug("FITNESS AT END OF LOOP: "+ fitness );
+		if (logger.isDebugEnabled() ) {
+			logger.debug("FITNESS AT END OF LOOP: "+ fitness );
+		}
 		return fitness;
 	}
 

@@ -30,9 +30,13 @@ private static Logger logger = Logger.getLogger( AddRewardToFitnessEvent.class )
 		if ( gc.getRewards().containsKey(pos) ) {
 			double reward = gc.getRewards().get(pos).getValue();
 			ParametersCalculator.setFitnessScore(  ParametersCalculator.getFitnessScore() + reward );
-			logger.info("Fitness Increased by " + reward);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Fitness Increased by " + reward);
+			}
 		} else {
-			logger.info("There is no reward in this cell to increase score by!");
+			if (logger.isDebugEnabled()) {
+				logger.debug("There is no reward in this cell to increase score by!");
+			}
 		}
 
 		

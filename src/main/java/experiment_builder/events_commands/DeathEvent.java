@@ -32,7 +32,9 @@ public class DeathEvent implements EventCommand{
 		Teleport tele = new Teleport(cellGrid.getAgent(), pos);
 		
 		ParametersCalculator.setFitnessScore(  ParametersCalculator.getFitnessScore() + DEATH_COEFFICIENT  );
-		logger.info("Triggered Death Event Reducing score by "+ DEATH_COEFFICIENT);
+		if (logger.isDebugEnabled() ){
+			logger.debug("Triggered Death Event Reducing score by "+ DEATH_COEFFICIENT);
+		}
 		tele.execute();
 		
 		logger.debug(" PRE DEATH agent orientation "+ cellGrid.getAgent().getOrientation()  );

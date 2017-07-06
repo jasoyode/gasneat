@@ -34,7 +34,8 @@ public abstract class Simulator implements SimulatorInterface {
 	protected ArrayList<NetworkState> networkStateList;
 	protected final String runType;
 	/** logger instance */
-	private static final org.apache.logging.log4j.Logger LOG = LogManager.getLogger(Simulator.class);
+	
+	//private static final org.apache.logging.log4j.Logger LOG = LogManager.getLogger(Simulator.class);
 	
 	/**
 	 * @param runType
@@ -56,7 +57,9 @@ public abstract class Simulator implements SimulatorInterface {
 	}
 	
 	public void logBeginning(String name) {
-		this.LOG.info(name + " beginning!");
+		
+		//disable for speed
+		//this.LOG.info(name + " beginning!");
 	}
 	
 	/* (non-Javadoc)

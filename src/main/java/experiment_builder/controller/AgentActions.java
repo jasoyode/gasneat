@@ -186,9 +186,13 @@ public class AgentActions {
 			
 			if (gridView == null) {
 				if (!cellGrid.isActiveInExperiment()) {
-					logger.debug("Event Triggered: Move "+ direction);
+					if (logger.isDebugEnabled() ){
+						logger.debug("Event Triggered: Move "+ direction);
+					}
 					RegisterEventCommand.getInstance().checkEvent(originalPosition, singleAgent.getPos());
-					logger.debug("Event check-> pos: "+ singleAgent.getPos() );
+					if (logger.isDebugEnabled() ){
+						logger.debug("Event check-> pos: "+ singleAgent.getPos() );
+					}
 					if (gridView != null){
 						gridView.repaint();
 					}

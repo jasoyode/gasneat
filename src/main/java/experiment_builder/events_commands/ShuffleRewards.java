@@ -53,9 +53,11 @@ public class ShuffleRewards implements EventCommand {
 			e.setValue( valueList.get( valueIt ) );
 			
 		}
-		logger.info("Shuffled current rewards");
 		
-		logger.debug("POST "+gc.getRewards().entrySet());
+		if (logger.isDebugEnabled() ){
+			logger.debug("Shuffled current rewards");
+			logger.debug("POST "+gc.getRewards().entrySet());
+		}
 		
 		//System.exit(1);
 		

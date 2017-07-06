@@ -22,7 +22,9 @@ public class FlipOrientation implements EventCommand{
 
 	@Override
 	public void execute() {
-		logger.info("Agent orientation flipped!" );
+		if (logger.isDebugEnabled()) {
+			logger.debug("Agent orientation flipped!" );
+		}
 		agent.flipOrientation();
 	}
 

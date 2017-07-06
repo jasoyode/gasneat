@@ -24,7 +24,9 @@ public class Teleport implements EventCommand{
 
 	@Override
 	public void execute() {
-		logger.info("Agent teleported to " + pos);
+		if (logger.isDebugEnabled() ){
+			logger.debug("Agent teleported to " + pos);
+		}
 		agent.setPos(pos);
 	}
 

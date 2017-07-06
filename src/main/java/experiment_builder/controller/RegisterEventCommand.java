@@ -42,14 +42,17 @@ public class RegisterEventCommand {
 	public void checkEvent(int start, int stop) {
 		EventCommand ec = null;
 		
-		logger.info( "Cell event values" +  gc.getCellEvents().values() );
+		if (logger.isDebugEnabled() ){
+			logger.debug( "Cell event values" +  gc.getCellEvents().values() );
+		}
 		
 		//ACTIONS THAT TAKE PLACE IMMEDIATELY UPON ENTERING SPACE
 		if (gc.getCellEvents().containsKey(stop)) {
 			for (String s : gc.getCellEvents().get(stop)) {
 				
-				logger.info("Considering Event:" + s);
-				
+				if (logger.isDebugEnabled() ){
+					logger.debug("Considering Event:" + s);
+				}
 				
 				//THIS MUST HAPPEN BEFORE THE BELOW!
 				if (s.equals("AddRewardToFitnessEvent")) {
@@ -98,8 +101,9 @@ public class RegisterEventCommand {
 		if (gc.getCellEvents().containsKey(start)) {
 			for (String s : gc.getCellEvents().get(start)) {
 				
-				logger.info("Considering Event:" + s);
-				
+				if (logger.isDebugEnabled() ){
+					logger.debug("Considering Event:" + s);
+				}
 
 				
 				if (s.equals("RemoveAllRewardsEvent")) {

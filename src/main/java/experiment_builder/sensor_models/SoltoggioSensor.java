@@ -37,11 +37,14 @@ public class SoltoggioSensor implements SensorImpl {
 		
 		int position = agent.getPos();
 		
-		logger.debug("cellProperties: "+   cellProperties  );
+		if (logger.isDebugEnabled() ) {
+			logger.debug("cellProperties: "+   cellProperties  );
+		}
 
 		if (cellProperties.containsKey(position)) {
-			
-			logger.debug("cellProperties contains "+   position  );
+			if (logger.isDebugEnabled() ) {
+				logger.debug("cellProperties contains "+   position  );
+			}
 			
 			//MAZE-END
 			if ( cellProperties.get(position).contains( "Home" )  ) {

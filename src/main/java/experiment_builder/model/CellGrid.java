@@ -106,12 +106,12 @@ public class CellGrid {
 			for (Map.Entry<Integer, Reward> e : rewards.entrySet()) {
 				backupRewards.put( e.getKey() , e.getValue().deepClone() );
 			}
-			logger.info("Reward copied");
+			logger.debug("Reward copied");
 			rewards.clear();
-			logger.info("Reward removed");
+			logger.debug("Reward removed");
 			
 		} else {
-			logger.info("No reward on map, cannot temporarily remove!");
+			logger.debug("No reward on map, cannot temporarily remove!");
 		}
 	}
 	
@@ -123,12 +123,12 @@ public class CellGrid {
 			{
 				rewards.put( e.getKey() , e.getValue().deepClone() );
 			}
-			logger.info("BackupReward copied");
+			logger.debug("BackupReward copied");
 			backupRewards.clear();
-			logger.info("BackupReward removed");
+			logger.debug("BackupReward removed");
 			
 		} else {
-			logger.info("Reward on map, cannot replenish!");
+			logger.debug("Reward on map, cannot replenish!");
 		}
 	}
 	

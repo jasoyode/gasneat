@@ -28,13 +28,19 @@ public class SoltoggioTanhInputActionMap implements InputActionMappable {
 		
 		
 		if ( d >= -1 && d < LOWER_LIMIT  ) {
-			logger.debug("Double value: " + d + " mapped to action TURN LEFT");
+			if (logger.isDebugEnabled() ) {
+				logger.debug("Double value: " + d + " mapped to action TURN LEFT");
+			}
 			turnLeft();
 		} else if ( d >= LOWER_LIMIT && d < UPPER_LIMIT  ) {
-			logger.debug("Double value: " + d + " mapped to action GO FORWARD");
+			if (logger.isDebugEnabled() ) {
+				logger.debug("Double value: " + d + " mapped to action GO FORWARD");
+			}
 			goForward();
 		} else  if ( d >= UPPER_LIMIT &&  d <= 1.0  ) {
-			logger.debug("Double value: " + d + " mapped to action TURN RIGHT");
+			if (logger.isDebugEnabled() ) {
+				logger.debug("Double value: " + d + " mapped to action TURN RIGHT");
+			}
 			turnRight();
 		} else {
 			System.err.println("Invalid input! Exiting");
