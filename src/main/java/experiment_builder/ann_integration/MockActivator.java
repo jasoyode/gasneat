@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 public class MockActivator implements MockActivatorImpl{
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( MockActivator.class );
+	private static Logger logger = Logger.getLogger( MockActivator.class );
 	
 	public static final int INPUT_SIZE = 1;
 	private Chromosome chromosome;

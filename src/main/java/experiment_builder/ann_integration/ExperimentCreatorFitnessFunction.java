@@ -42,7 +42,7 @@ import lombok.Setter;
 
 public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessFunction, Configurable {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( ExperimentCreatorFitnessFunction.class );
+	private static Logger logger = Logger.getLogger( ExperimentCreatorFitnessFunction.class );
 	private boolean shuffleFirstTrial;
 	private boolean onCurrentFirstTrial;
 	
@@ -152,7 +152,7 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 		}
 		
 		
-		logger.trace(  "motorData: " + getStringFormat( motorData) );
+		logger.debug(  "motorData: " + getStringFormat( motorData) );
 		
 		if (mapper == null) {
 			
@@ -161,13 +161,17 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			} else {
 				mapper = gridView.getCellGrid().getActionMap()  ;
 			}
-			
-			
 		}
 		
-		logger.trace("mapper: "+ mapper);
+		logger.debug("mapper: "+ mapper);
+		
+		//System.err.println(mapper);
+		//System.err.println(mapper.getClass());
+		
 		
 		mapper.actFromDoubleValue( motorData[0]  );
+		
+		//System.err.println("post-mapper");
 
 	}
 	
@@ -180,8 +184,8 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 		while ( it.hasNext() ) {
 			Chromosome c = (Chromosome) it.next();
 			onCurrentFirstTrial = shuffleFirstTrial;
-			System.err.println( c );
-			System.err.println( c.getAlleles() );
+			//System.err.println( c );
+			//System.err.println( c.getAlleles() );
 			evaluate( c );
 		}
 	}
@@ -250,7 +254,7 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			c.setFitnessValue(   100*   (fitness / numTrials)/25   );
 		}
 		catch ( Throwable e ) {
-			logger.warn( "error evaluating chromosome " + c.toString(), e );
+			logger.error( "error evaluating chromosome " + c.toString(), e );
 			//logger.warn( "error evaluating chromosome " );
 			c.setFitnessValue( 0 );
 			e.printStackTrace(); 
@@ -298,9 +302,9 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			agentActions.setGridView(gridView);
 			agentActions.setButtonPanel(buttonPanel);
 			
-			logger.trace( "visible[0] "+gridView.getCellGrid().getVisibility()[0] );
+			logger.debug( "visible[0] "+gridView.getCellGrid().getVisibility()[0] );
 			gridView.getCellGrid().setFinalizedMazeCellFromVisibility();
-			logger.trace( "finalized "+gridView.getCellGrid().getFinalizedMazeCells() );
+			logger.debug( "finalized "+gridView.getCellGrid().getFinalizedMazeCells() );
 			parametersCalculator.setCellGrid( gridView.getCellGrid() );
 			
 			mapper = gridView.getCellGrid().getActionMap();
@@ -316,9 +320,9 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			AgentActions agentActions = AgentActions.getInstance();
 			agentActions.setCellGrid(cellGrid);
 			
-			logger.trace( "visible[0] "+cellGrid.getVisibility()[0] );
+			logger.debug( "visible[0] "+cellGrid.getVisibility()[0] );
 			cellGrid.setFinalizedMazeCellFromVisibility();
-			logger.trace( "finalized "+cellGrid.getFinalizedMazeCells() );
+			logger.debug( "finalized "+cellGrid.getFinalizedMazeCells() );
 			parametersCalculator.setCellGrid( cellGrid );
 			
 			mapper = cellGrid.getActionMap();
@@ -332,8 +336,13 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 	private int singleTrial( Activator activator ) {
 		ParametersCalculator.reset();
 		
+		//System.err.println("SINGLE TRIAL START");
+		
+		
 		//TODO embed this in the environment somehow!
 		if (visibleMode) {
+			
+			
 			logger.info( "Trial : " + gridView.getCellGrid().getTrialNumber() );
 			gridView.getCellGrid().restartExperiment();
 			if ( shufflePoints.contains( gridView.getCellGrid().getTrialNumber() ) ) {
@@ -381,7 +390,7 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 		double[]  sensorData;
 		
 		for ( currentTimestep = 0; currentTimestep < maxTimesteps; currentTimestep++ ) {
-			logger.info("TIMESTEP START OF LOOP: "+ currentTimestep);
+			logger.debug("TIMESTEP START OF LOOP: "+ currentTimestep);
 			
 			//read the sensor information from experiment
 			formattedSensorData = getFormattedSensorData();
@@ -398,9 +407,9 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			}
 			
 			
+			
 			// Activate the network.
 			double[] motorData = activator.next( sensorData );
-			
 			
 			//WRITE MOTOR DATA TO FILE
 			if (recordActivations) {
@@ -421,7 +430,6 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			if (visibleMode) {
 				frame.updateNeuralNetworkPanel(ViewConstants.PLAY_STATUS_TEXT, ((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork() );
 			}
-			
 
 			//show before it goes
 			if ( visibleMode ) {
@@ -430,10 +438,17 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 				myFrame.repaint();
 				myFrame.getOutputDataPanel().repaint();
 				myFrame.getInputDataPanel().repaint();
+				
+				
+				
 			}
+			
+			//System.err.println("pre perform action");
 			
 			//Use the motor data to update the enviornment
 			performAction( motorData );
+			
+			//System.err.println("post perf action");
 			
 			logger.debug("Motor data: " + motorData[0] );
 			ParametersCalculator.displayParameters();
@@ -455,10 +470,10 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 				}
 			} else {
 				if ( cellGrid.isTrialOver() ) {
-					logger.info("Trial has been set to be over! Ending Current Trial Now!");
+					logger.debug("Trial has been set to be over! Ending Current Trial Now!");
 					break;
 				} else {
-					logger.info("cellGrid.isTrialOver() = " + cellGrid.isTrialOver() );
+					logger.debug("cellGrid.isTrialOver() = " + cellGrid.isTrialOver() );
 				}	
 			}
 			
@@ -495,8 +510,11 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			shuffleFirstTrial = props.getBooleanProperty( SHUFFLE_REWARD_LOCATIONS_KEY, false );
 			
 			
-			this.delay =  props.getIntProperty( DISPLAY_DELAY_KEY, 1000 );
-			
+			if (enableDisplay) {
+				this.delay =  props.getIntProperty( DISPLAY_DELAY_KEY, 0 );
+			} else {
+				this.delay = 0;
+			}
 			
 			
 			

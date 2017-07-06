@@ -11,7 +11,7 @@ import experiment_builder.model.CellGrid;
 
 public class ParametersCalculator {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( ParametersCalculator.class );
+	private static Logger logger = Logger.getLogger( ParametersCalculator.class );
 	
 	// the object of this class is created in Controller class
 

@@ -33,7 +33,7 @@ import lombok.Setter;
 /**/
 public class BuildingMenuPanel extends JPanel {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( BuildingMenuPanel.class );
+	private static Logger logger = Logger.getLogger( BuildingMenuPanel.class );
 
 	private JButton addAgentButton;
 	private JButton addRewardButton;

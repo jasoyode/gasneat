@@ -4,10 +4,13 @@ import org.apache.logging.log4j.LogManager; import org.apache.log4j.Logger;
 
 import experiment_builder.controller.AgentActions;
 import experiment_builder.model.CellGrid;
+import gasNEAT.controller.RecurrentSimulator;
 
 public class SoltoggioTanhInputActionMap implements InputActionMappable {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( SoltoggioTanhInputActionMap.class );
+	private static Logger logger = Logger.getLogger( SoltoggioTanhInputActionMap.class );
+	
+	//private static Logger logger = Logger.getLogger( RecurrentSimulator.class );
 	
 	private CellGrid cellGrid;
 	
@@ -25,13 +28,13 @@ public class SoltoggioTanhInputActionMap implements InputActionMappable {
 		
 		
 		if ( d >= -1 && d < LOWER_LIMIT  ) {
-			logger.trace("Double value: " + d + " mapped to action TURN LEFT");
+			logger.debug("Double value: " + d + " mapped to action TURN LEFT");
 			turnLeft();
 		} else if ( d >= LOWER_LIMIT && d < UPPER_LIMIT  ) {
-			logger.trace("Double value: " + d + " mapped to action GO FORWARD");
+			logger.debug("Double value: " + d + " mapped to action GO FORWARD");
 			goForward();
 		} else  if ( d >= UPPER_LIMIT &&  d <= 1.0  ) {
-			logger.trace("Double value: " + d + " mapped to action TURN RIGHT");
+			logger.debug("Double value: " + d + " mapped to action TURN RIGHT");
 			turnRight();
 		} else {
 			System.err.println("Invalid input! Exiting");

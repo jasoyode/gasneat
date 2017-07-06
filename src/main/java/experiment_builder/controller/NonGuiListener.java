@@ -21,7 +21,7 @@ import experiment_builder.view.CellGridPanel;
 @Log
 public class NonGuiListener implements ActionListener {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( NonGuiListener.class );
+	private static Logger logger = Logger.getLogger( NonGuiListener.class );
 	
 	private CellGridPanel gridView;
 	private BuildingMenuPanel inputPanel;

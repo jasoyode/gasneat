@@ -22,7 +22,7 @@ import experiment_builder.view.InputDataPanel;
 
 public class FileController {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( FileController.class );
+	private static Logger logger = Logger.getLogger( FileController.class );
 	
 	private int count;
 	private int delay = Constants.DELAY;

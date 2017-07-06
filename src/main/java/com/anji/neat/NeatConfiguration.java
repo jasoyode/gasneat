@@ -46,7 +46,7 @@ import gasNEAT.configurations.GasNeatConfiguration;
  */
 public class NeatConfiguration extends Configuration {
 
-private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( NeatConfiguration.class );
+private static Logger logger = Logger.getLogger( NeatConfiguration.class );
 
 /**
  * properties key, file in which unique ID sequence number is stored

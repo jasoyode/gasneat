@@ -16,7 +16,7 @@ import lombok.Setter;
 
 public class InputDataPanel extends JPanel{
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( InputDataPanel.class );
+	private static Logger logger = Logger.getLogger( InputDataPanel.class );
 	
 	private @Getter TitledBorder inputDataPanelTitle;
 	private @Setter @Getter JLabel inputLabel;

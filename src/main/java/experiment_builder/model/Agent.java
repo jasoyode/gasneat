@@ -11,7 +11,7 @@ import lombok.Setter;
 
 public class Agent {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( Agent.class );
+	private static Logger logger = Logger.getLogger( Agent.class );
 	
 	private @Getter @Setter int pos = -1;
 	private @Getter @Setter double health = 10;

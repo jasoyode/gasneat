@@ -18,7 +18,7 @@ import experiment_builder.model.Reward;
 
 public class ShuffleRewards implements EventCommand {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( ShuffleRewards.class );
+	private static Logger logger = Logger.getLogger( ShuffleRewards.class );
 	
 	private CellGrid gc;
 

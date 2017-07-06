@@ -34,7 +34,7 @@ import experiment_builder.view.CellGridPanel;
 @Log4j
 public class XMLController {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( XMLController.class );
+	private static Logger logger = Logger.getLogger( XMLController.class );
 
 	//pass in references to be set to values
 	public static int loadLayoutXML(String filePath, CellGrid passedCellGrid ) {

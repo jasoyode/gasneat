@@ -713,6 +713,24 @@ public class GasNeatReceptor {
 		return bufferedConcentrations;
 	}
 	
+	
+	public String getBufferedConcentrationText() {
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i< bufferedConcentrations.length; i++) {
+			sb.append( "["+i+"]: "+ bufferedConcentrations[i] +"   "    );
+		}
+		return sb.toString();
+	}
+	
+	public String getBuiltUpConcentrationsText() {
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i< builtUpConcentrations.length; i++) {
+			sb.append( "["+i+"]: "+ builtUpConcentrations[i] +"   "    );
+		}
+		return sb.toString();
+	}
+
+	
 
 	/**
 	 * @return plasticity

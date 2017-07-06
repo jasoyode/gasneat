@@ -24,7 +24,7 @@ import experiment_builder.view.HumanButtonControlPanel;
 @Log4j
 public class BtnCreateController implements ActionListener {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( BtnCreateController.class );
+	private static Logger logger = Logger.getLogger( BtnCreateController.class );
 	
 	//private Agent agent;
 	private HumanButtonControlPanel buttonPanel;
@@ -257,12 +257,12 @@ public class BtnCreateController implements ActionListener {
 			
 			logger.debug("Output level "+ outputLevel+ "mapping to action according to " + mapper.getClass().toString()  );
 			
-			logger.trace("pre EXECUTE agent's orientation is "+  cellGrid.getAgent().getOrientation()  );
+			logger.debug("pre EXECUTE agent's orientation is "+  cellGrid.getAgent().getOrientation()  );
 			
 			mapper.actFromDoubleValue(  outputLevel );
 			AgentActions.updateInputDataPanel();
 			
-			logger.trace("post EXECUTE agent's orientation is "+  cellGrid.getAgent().getOrientation()  );
+			logger.debug("post EXECUTE agent's orientation is "+  cellGrid.getAgent().getOrientation()  );
 			
 			//update sensor panel
 			gridView.repaint();

@@ -50,7 +50,7 @@ import com.anji.util.Properties;
  */
 public class NeatIdMap {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( NeatIdMap.class );
+	private static Logger logger = Logger.getLogger( NeatIdMap.class );
 
 
 	/**

@@ -8,7 +8,7 @@ import experiment_builder.model.CellGrid;
 
 public class RemoveAllRewardsEvent implements EventCommand {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( RemoveAllRewardsEvent.class );
+	private static Logger logger = Logger.getLogger( RemoveAllRewardsEvent.class );
 	
 	
 	private Agent agent;

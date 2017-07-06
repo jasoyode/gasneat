@@ -17,7 +17,7 @@ import lombok.Getter;
 
 public class ExperimentBuilderPanel extends JPanel {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( ExperimentBuilderPanel.class );
+	private static Logger logger = Logger.getLogger( ExperimentBuilderPanel.class );
 
 	private @Getter HumanButtonControlPanel buttonPanel = new HumanButtonControlPanel();
 	private @Getter BuildingMenuPanel inputPanel = new BuildingMenuPanel();

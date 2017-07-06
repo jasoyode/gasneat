@@ -9,7 +9,7 @@ import experiment_builder.constants.Constants;
 @SuppressWarnings("serial")
 public class ExperimentBuilderFrame extends JFrame {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( ExperimentBuilderFrame.class );
+	private static Logger logger = Logger.getLogger( ExperimentBuilderFrame.class );
 
 	private CellGridPanel gridView;
 	private ExperimentBuilderPanel mazeCreator;

@@ -80,7 +80,7 @@ public class NetworkViewFrame extends JFrame implements ActionListener, ChangeLi
 
 
 	/** Setting Logger object of Log4j */
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(NetworkViewFrame.class);
+	private static Logger logger = Logger.getLogger(NetworkViewFrame.class);
 
 	/**
 	 * Constructor: Gets called whenever an object of the class gets

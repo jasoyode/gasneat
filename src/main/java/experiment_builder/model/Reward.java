@@ -7,7 +7,7 @@ import lombok.Setter;
 
 public class Reward {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( Reward.class );
+	private static Logger logger = Logger.getLogger( Reward.class );
 	
 	private @Setter @Getter String type;
 	private @Setter @Getter double value;

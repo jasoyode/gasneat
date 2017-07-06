@@ -11,7 +11,7 @@ import java.util.Set;
 
 import javax.swing.Timer;
 
-import org.apache.logging.log4j.LogManager; import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import com.anji.neat.NeuronType;
 
@@ -401,8 +401,8 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 				}
 				logger.debug("");
 				
-				logger.debug("    " + neuronID +"buffer |" +  neuron.getReceptor().getBufferedConcentration() );
-				logger.debug("    " + neuronID +"built^ |" +  neuron.getReceptor().getBuiltUpConcentrations() );
+				logger.debug("    " + neuronID +"buffer |" +  neuron.getReceptor().getBufferedConcentrationText() );
+				logger.debug("    " + neuronID +"built^ |" +  neuron.getReceptor().getBuiltUpConcentrationsText() );
 			}
 		}
 	}
@@ -432,6 +432,9 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	
 	public double[] step( double[] inputs ) throws CloneNotSupportedException {
 	
+		logger.debug("--------------------------------STEP STARTING");
+		
+		
 		//ONLY DO THIS FOR TARGETS THIS BREAKS RECURRENCE!
 		//TODO decide if this should be done
 		//neuralNetwork.clear();
@@ -486,6 +489,8 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		printWeightState();
 		
 		double[] outputs = this.neuralNetwork.getOutputValues();
+		
+		logger.debug("--------------------------------STEP ENDED2");
 	
 		return outputs;
 

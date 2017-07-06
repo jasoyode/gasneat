@@ -10,7 +10,7 @@ import lombok.Setter;
 
 public class MockChromosome extends Chromosome {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( MockChromosome.class );
+	private static Logger logger = Logger.getLogger( MockChromosome.class );
 	
 	private @Setter @Getter int fitnessValue;
 	private @Setter @Getter String name;

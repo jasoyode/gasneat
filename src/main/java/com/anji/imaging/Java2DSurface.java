@@ -45,7 +45,7 @@ import com.anji.util.Properties;
  */
 public class Java2DSurface implements Surface, Configurable {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( Java2DSurface.class );
+	private static Logger logger = Logger.getLogger( Java2DSurface.class );
 
 	private final static int IMAGE_TYPE = BufferedImage.TYPE_INT_ARGB;
 

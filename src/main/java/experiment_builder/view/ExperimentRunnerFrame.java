@@ -17,7 +17,7 @@ import lombok.Getter;
 @SuppressWarnings({ "serial", "unused" })
 public class ExperimentRunnerFrame extends JFrame {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( ExperimentRunnerFrame.class );
+	private static Logger logger = Logger.getLogger( ExperimentRunnerFrame.class );
 
 	private HumanButtonControlPanel buttonPanel;
 	private GridBagConstraints gbc;

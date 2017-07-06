@@ -35,7 +35,7 @@ import gasNEAT.configurations.GasNeatConfiguration;
  */
 public class DoublePoleBalanceEvaluator {
 
-private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( DoublePoleBalanceEvaluator.class );
+private static Logger logger = Logger.getLogger( DoublePoleBalanceEvaluator.class );
 
 /**
  * @param args

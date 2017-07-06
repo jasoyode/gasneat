@@ -43,7 +43,7 @@ import com.anji.util.Randomizer;
  */
 public class ImageRandomizer implements Configurable {
 
-private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( ImageRandomizer.class );
+private static Logger logger = Logger.getLogger( ImageRandomizer.class );
 
 /**
  * property to determine if images should be randomized

@@ -22,7 +22,7 @@ import lombok.Setter;
 
 public class AgentActions {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( AgentActions.class );
+	private static Logger logger = Logger.getLogger( AgentActions.class );
 	
 	//singleton
 	private static AgentActions agentActions;
@@ -144,7 +144,7 @@ public class AgentActions {
 			if (temp.getFinalizedMazeCells().contains(pos + 1) && (pos + 1) % mazeWidth != 0)
 				newPos = pos + 1;
 		}
-		logger.trace("newPos="+newPos );
+		logger.debug("newPos="+newPos );
 		return newPos > -1 ? newPos : pos;
 	}
 	
@@ -230,8 +230,11 @@ public class AgentActions {
 		logger.info("Experiment ending!");
 		
 		ParametersCalculator.displayParameters();
-		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(gridView);
-		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		
+		if (gridView != null) {
+			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(gridView);
+			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		}
 	}
 
 	private AgentActions() {

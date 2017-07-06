@@ -141,9 +141,9 @@ private boolean penalizeOscillations = false;
 private Random rand;
 
 /** logger instance */
-private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(DoublePoleBalanceFitnessFunction.class);
-//private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(DoublePoleBalanceFitnessFunction.class);
-//private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(
+private static Logger logger = Logger.getLogger(DoublePoleBalanceFitnessFunction.class);
+//private static Logger logger = Logger.getLogger(DoublePoleBalanceFitnessFunction.class);
+//private static Logger logger = Logger.getLogger(
 
 
 private void setTrackLength( double aTrackLength ) {

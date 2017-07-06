@@ -38,7 +38,7 @@ import magick.MagickImage;
  */
 public class JMagickSurface implements Surface {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( JMagickSurface.class );
+	private static Logger logger = Logger.getLogger( JMagickSurface.class );
 
 	private MagickImage data;
 

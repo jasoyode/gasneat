@@ -35,7 +35,7 @@ import magick.MagickImage;
  */
 public class MagickImageTransformer {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( MagickImageTransformer.class );
+	private static Logger logger = Logger.getLogger( MagickImageTransformer.class );
 
 	private MagickImage data;
 

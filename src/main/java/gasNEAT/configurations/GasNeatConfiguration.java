@@ -86,7 +86,7 @@ public class GasNeatConfiguration  extends NeatConfiguration {
  */
 private static final long serialVersionUID = 1L;
 
-private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( GasNeatConfiguration.class );
+private static Logger logger = Logger.getLogger( GasNeatConfiguration.class );
 
 /**
  * properties key, file in which unique ID sequence number is stored

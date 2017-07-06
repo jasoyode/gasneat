@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 
 public class FileReadingActivator implements Activator {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( FileReadingActivator.class );
+	private static Logger logger = Logger.getLogger( FileReadingActivator.class );
 	public static final int INPUT_SIZE = 1;
 	
 	//each element in the array list is the set of output signals received from output neurons
@@ -50,11 +50,11 @@ public class FileReadingActivator implements Activator {
 		
 		int time = 0;
 		for (double[] data: activationSignals ) {
-			logger.trace( "activation signals @ time: "+ time +"\t"  );
+			logger.debug( "activation signals @ time: "+ time +"\t"  );
 			for (double datum: data) {
-				logger.trace("\t"+datum);				
+				logger.debug("\t"+datum);				
 			}
-			logger.trace("");
+			logger.debug("");
 			time++;
 		}
 		scan.close();
@@ -67,9 +67,9 @@ public class FileReadingActivator implements Activator {
 		double[] motorData = activationSignals.get(currentTimeStepIndex);
 		
 		currentTimeStepIndex += 1;
-		logger.trace("Motor data loaded from file: " );
+		logger.debug("Motor data loaded from file: " );
 		for (double datum: motorData) {
-			logger.trace("\t"+datum);				
+			logger.debug("\t"+datum);				
 		}
 		
 		

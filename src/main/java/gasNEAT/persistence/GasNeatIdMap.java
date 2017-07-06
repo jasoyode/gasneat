@@ -51,7 +51,7 @@ import com.anji.util.Properties;
  */
 public class GasNeatIdMap {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( GasNeatIdMap.class );
+	private static Logger logger = Logger.getLogger( GasNeatIdMap.class );
 
 
 	/**

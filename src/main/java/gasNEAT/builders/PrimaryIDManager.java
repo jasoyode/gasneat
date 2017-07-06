@@ -9,7 +9,7 @@ import gasNEAT.nn.GasNeatNeuron;
 
 public class PrimaryIDManager {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(PrimaryIDManager.class);
+	private static Logger logger = Logger.getLogger(PrimaryIDManager.class);
 	private HashSet<String> claimedReceptorIDs = new HashSet<String>();
 	private long longID = -1;
 	private int currentNeuronID = -1;

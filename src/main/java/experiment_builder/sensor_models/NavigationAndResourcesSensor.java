@@ -12,7 +12,7 @@ import experiment_builder.model.Reward;
 
 public class NavigationAndResourcesSensor implements SensorImpl {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( NavigationAndResourcesSensor.class );
+	private static Logger logger = Logger.getLogger( NavigationAndResourcesSensor.class );
 	
 	private CellGrid cellGrid;
 	
@@ -39,22 +39,22 @@ public class NavigationAndResourcesSensor implements SensorImpl {
 		//UP
 		if (finalizedMazeCells.contains(  position - mazeWidth  )  ) {
 			sensorData[0] = 1.0;
-			logger.trace("UP IS OPEN!");
+			logger.debug("UP IS OPEN!");
 		}
 		//DOWN
 		if (finalizedMazeCells.contains(  position + mazeWidth  )  ) {
 			sensorData[1] = 1.0;
-			logger.trace("DOWN IS OPEN!");
+			logger.debug("DOWN IS OPEN!");
 		}
 		//LEFT
 		if (finalizedMazeCells.contains(  position - 1  ) && (position % mazeWidth != 0)  ) {
 			sensorData[2] = 1.0;
-			logger.trace("LEFT IS OPEN!");
+			logger.debug("LEFT IS OPEN!");
 		}
 		//RIGHT
 		if (finalizedMazeCells.contains(  position + 1  ) && (position + 1) % mazeWidth != 0 ) {
 			sensorData[3] = 1.0;
-			logger.trace("RIGHT IS OPEN");
+			logger.debug("RIGHT IS OPEN");
 		}
 		
 		//REWARD

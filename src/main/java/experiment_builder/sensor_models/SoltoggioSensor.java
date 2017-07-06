@@ -12,7 +12,7 @@ import experiment_builder.model.Reward;
 
 public class SoltoggioSensor implements SensorImpl {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( SoltoggioSensor.class );
+	private static Logger logger = Logger.getLogger( SoltoggioSensor.class );
 	
 	private CellGrid cellGrid;
 	
@@ -37,26 +37,26 @@ public class SoltoggioSensor implements SensorImpl {
 		
 		int position = agent.getPos();
 		
-		logger.trace("cellProperties: "+   cellProperties  );
+		logger.debug("cellProperties: "+   cellProperties  );
 
 		if (cellProperties.containsKey(position)) {
 			
-			logger.trace("cellProperties contains "+   position  );
+			logger.debug("cellProperties contains "+   position  );
 			
 			//MAZE-END
 			if ( cellProperties.get(position).contains( "Home" )  ) {
 				sensorData[0] = 1.0;
-				logger.trace("HOME SPACE!");
+				logger.debug("HOME SPACE!");
 			}
 			
 			if ( cellProperties.get(position).contains( "Turn" )  ) {
 				sensorData[1] = 1.0;
-				logger.trace("TURN SPACE!");
+				logger.debug("TURN SPACE!");
 			}
 			
 			if ( cellProperties.get(position).contains( "Maze-End" )  ) {
 				sensorData[2] = 1.0;
-				logger.trace("MAZE-END SPACE!");
+				logger.debug("MAZE-END SPACE!");
 			}
 		}
 		//REWARD FOOD

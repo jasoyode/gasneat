@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.jgap.Allele;
 import org.jgap.Chromosome;
 
@@ -36,7 +36,7 @@ import gasNEAT.view.Constants;
 
 public class GasNeatTranscriber implements Transcriber, Configurable {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( GasNeatTranscriber.class );
+	private static Logger logger = Logger.getLogger( GasNeatTranscriber.class );
 	private RecurrencyPolicy recurrencyPolicy = RecurrencyPolicy.BEST_GUESS;
 	private Properties props;
 	
@@ -135,6 +135,9 @@ public GasNeatNet newGasNeatNet( Chromosome chromosome, Properties props ) throw
 				System.out.println("D didn't match! exiting");
 				System.exit(1);
 			}  else if (neuron.getPlasticityParameterLR() != LR) {
+				
+				System.err.println(neuron.getPlasticityParameterLR() +"!="+ LR   );
+				
 				System.out.println("LR didn't match! exiting");
 				System.exit(1);
 			}  

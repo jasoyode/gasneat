@@ -8,7 +8,7 @@ import experiment_builder.view.ExperimentBuilderPanel;
 
 public class ExperimentBuilder {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( ExperimentBuilder.class );
+	private static Logger logger = Logger.getLogger( ExperimentBuilder.class );
 	
 	private AgentActions agentActions;
 	private BtnCreateController btnCreateController;

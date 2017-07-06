@@ -7,7 +7,7 @@ import experiment_builder.model.Agent;
 
 public class FlipOrientation implements EventCommand{
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( FlipOrientation.class );
+	private static Logger logger = Logger.getLogger( FlipOrientation.class );
 	
 	private Agent agent;
 	

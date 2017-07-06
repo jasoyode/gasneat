@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 public class ANNLauncher {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( ANNLauncher.class );
+	private static Logger logger = Logger.getLogger( ANNLauncher.class );
 	
 	public static void main(String[] args) {
 		

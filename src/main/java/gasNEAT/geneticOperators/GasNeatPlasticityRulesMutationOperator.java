@@ -165,9 +165,9 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 				case 4:
 					//System.out.println("LR mutated!");
 					//normal A/B/C/D are between -1, +1, LR is -100, +100
-					mutationVector *= 100;
+					//mutationVector *= 100;
 					oldValue = origAllele.getPlasticityParameterLR();
-					newValue = oldValue + mutationVector;
+					newValue = oldValue + mutationVector*100;
 					if (newValue < -100)
 						newValue = -100;
 					if (newValue > 100) 

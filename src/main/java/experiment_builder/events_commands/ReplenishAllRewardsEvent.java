@@ -8,7 +8,7 @@ import experiment_builder.model.CellGrid;
 
 public class ReplenishAllRewardsEvent implements EventCommand {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( ReplenishAllRewardsEvent.class );
+	private static Logger logger = Logger.getLogger( ReplenishAllRewardsEvent.class );
 	
 	
 	private Agent agent;

@@ -9,7 +9,7 @@ import experiment_builder.model.CellGrid;
 
 public class DeathEvent implements EventCommand{
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( DeathEvent.class );
+	private static Logger logger = Logger.getLogger( DeathEvent.class );
 	
 	//private Agent agent;
 	private CellGrid cellGrid ;
@@ -35,13 +35,13 @@ public class DeathEvent implements EventCommand{
 		logger.info("Triggered Death Event Reducing score by "+ DEATH_COEFFICIENT);
 		tele.execute();
 		
-		logger.trace(" PRE DEATH agent orientation "+ cellGrid.getAgent().getOrientation()  );
+		logger.debug(" PRE DEATH agent orientation "+ cellGrid.getAgent().getOrientation()  );
 		//ALWAYS SET UPRIGHT
 		cellGrid.getAgent().setXOrientation(0);
 		cellGrid.getAgent().setYOrientation(-1);
 		
-		logger.trace(" POST DEATH agent orientation "+ cellGrid.getAgent().getOrientation()  );
-		logger.trace(" DEATH EVENT TRIGGERED CALLING endExperiment"  );
+		logger.debug(" POST DEATH agent orientation "+ cellGrid.getAgent().getOrientation()  );
+		logger.debug(" DEATH EVENT TRIGGERED CALLING endExperiment"  );
 		cellGrid.endExperiment();
 		
 	}

@@ -15,7 +15,7 @@ import experiment_builder.model.CellGrid;
 
 public class RegisterEventCommand {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( RegisterEventCommand.class );
+	private static Logger logger = Logger.getLogger( RegisterEventCommand.class );
 	
 	private volatile static RegisterEventCommand rec;
 
@@ -60,11 +60,11 @@ public class RegisterEventCommand {
 				if (s.equals("FlipOrientation")) {
 					ec = new FlipOrientation(gc.getAgent() );
 					
-					logger.trace("PRE FLIP "+  gc.getAgent().getOrientation() );
+					logger.debug("PRE FLIP "+  gc.getAgent().getOrientation() );
 					
 					ec.execute();
 					
-					logger.trace("POST FLIP "+  gc.getAgent().getOrientation() );
+					logger.debug("POST FLIP "+  gc.getAgent().getOrientation() );
 					
 				}
 				
@@ -77,12 +77,12 @@ public class RegisterEventCommand {
 						}
 					}
 
-					logger.trace("PRE DEATHEVENT "+  gc.getAgent().getOrientation() );
+					logger.debug("PRE DEATHEVENT "+  gc.getAgent().getOrientation() );
 					
 					ec = new DeathEvent(gc, pos);
 					ec.execute();
 					
-					logger.trace("POST DEATHEVENT "+  gc.getAgent().getOrientation() );
+					logger.debug("POST DEATHEVENT "+  gc.getAgent().getOrientation() );
 
 				}
 				if (s.equals("ShuffleRewards")) {

@@ -13,7 +13,7 @@ import experiment_builder.model.Reward;
 
 public class EachCellPlusFoodSensor implements SensorImpl {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( EachCellPlusFoodSensor.class );
+	private static Logger logger = Logger.getLogger( EachCellPlusFoodSensor.class );
 	private CellGrid cellGrid;
 	private int numberOfCells;
 	
@@ -55,13 +55,13 @@ public class EachCellPlusFoodSensor implements SensorImpl {
 			//if the agent is in cell, sensor is 1.0 otherwise its 0.0
 			if (agentPosition == cellPosition) {
 				
-				logger.trace("agent at position: "+   cellPosition  );
+				logger.debug("agent at position: "+   cellPosition  );
 				sensorData[sensorIndex] = 1.0;
 				sensorIndex++;
 				
 			} else if (cellGrid.getVisibility()[cellPosition]){
 				
-				logger.trace("agent not at position: "+   cellPosition  );
+				logger.debug("agent not at position: "+   cellPosition  );
 				sensorData[sensorIndex] = 0.0;
 				
 				sensorIndex++;

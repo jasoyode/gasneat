@@ -7,7 +7,7 @@ import experiment_builder.model.CellGrid;
 
 public class SoltoggioInputActionMap implements InputActionMappable {
 
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( SoltoggioInputActionMap.class );
+	private static Logger logger = Logger.getLogger( SoltoggioInputActionMap.class );
 	
 	private CellGrid cellGrid;
 	
@@ -25,13 +25,13 @@ public class SoltoggioInputActionMap implements InputActionMappable {
 		
 		
 		if ( d >= 0 && d < LOWER_LIMIT  ) {
-			logger.trace("Double value: " + d + " mapped to action TURN LEFT");
+			logger.debug("Double value: " + d + " mapped to action TURN LEFT");
 			turnLeft();
 		} else if ( d >= LOWER_LIMIT && d < UPPER_LIMIT  ) {
-			logger.trace("Double value: " + d + " mapped to action GO FORWARD");
+			logger.debug("Double value: " + d + " mapped to action GO FORWARD");
 			goForward();
 		} else  if ( d >= UPPER_LIMIT &&  d <= 1.0  ) {
-			logger.trace("Double value: " + d + " mapped to action TURN RIGHT");
+			logger.debug("Double value: " + d + " mapped to action TURN RIGHT");
 			turnRight();
 		} else {
 			System.err.println("Invalid input! Exiting");

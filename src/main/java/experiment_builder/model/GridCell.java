@@ -12,7 +12,7 @@ import lombok.Setter;
 
 public class GridCell {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( GridCell.class );
+	private static Logger logger = Logger.getLogger( GridCell.class );
 	
 	private @Getter @Setter HashMap<Integer, HashSet<String>> cellEvents;
 	private @Getter @Setter HashMap<Integer, HashSet<String>> cellProperty;

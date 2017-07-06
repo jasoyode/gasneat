@@ -22,7 +22,7 @@ import org.apache.logging.log4j.LogManager; import org.apache.log4j.Logger;
 
 public class CollapsablePanel extends JPanel {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( CollapsablePanel.class );
+	private static Logger logger = Logger.getLogger( CollapsablePanel.class );
 
 	class HeaderPanel extends JPanel implements MouseListener {
 		Font font;

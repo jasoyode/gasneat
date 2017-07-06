@@ -8,7 +8,7 @@ import experiment_builder.model.CellGrid;
 
 public class AddRewardToFitnessEvent implements EventCommand {
 
-private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( AddRewardToFitnessEvent.class );
+private static Logger logger = Logger.getLogger( AddRewardToFitnessEvent.class );
 	
 	
 	private CellGrid gc ;

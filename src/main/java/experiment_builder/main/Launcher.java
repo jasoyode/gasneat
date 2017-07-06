@@ -6,7 +6,7 @@ import experiment_builder.controller.ExperimentBuilder;
 
 public class Launcher {
 	
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( Launcher.class );
+	private static Logger logger = Logger.getLogger( Launcher.class );
 	
 
 	public static void main(String[] args) {

@@ -13,7 +13,7 @@ import gasNEAT.configurations.GasNeatConfiguration;
 
 public class FoodAndWaterTaskEvaluator {
 
-private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger( FoodAndWaterTaskEvaluator.class );
+private static Logger logger = Logger.getLogger( FoodAndWaterTaskEvaluator.class );
 
 /**
  * @param args
