@@ -29,6 +29,7 @@ public static void main( String[] args ) throws Exception {
 	
 	Properties props = new Properties();
 	props.loadFromResource( args[ 0 ] );
+	ff.setEnableDisplay(true);
 	ff.init( props );
 	Persistence db = (Persistence) props.newObjectProperty( Persistence.PERSISTENCE_CLASS_KEY );
 	
@@ -56,7 +57,7 @@ public static void main( String[] args ) throws Exception {
 	List<Chromosome> chromosomes = new ArrayList<Chromosome>();
 	chromosomes.add( chrom);
 	//show visual of network
-	ff.setViewEnabled(true);
+	
 	ff.evaluate( chromosomes );
 	
 	logger.info( "= Total Fitness = " + chrom.getFitnessValue() );

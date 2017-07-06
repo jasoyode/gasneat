@@ -3,6 +3,9 @@
 *.~
 bin/*
 
+
+src/test/java/images/matches/*
+
 # Log file
 *.log
 

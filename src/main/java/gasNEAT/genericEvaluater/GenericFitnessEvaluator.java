@@ -60,9 +60,9 @@ public static void main( String[] args ) throws Exception {
 	
 	
 	//XOR and other 1 to 1 mapping tests
-		nameToFitnessFunction.put(
-				"com.anji.neat.NeatTargetFitnessFunction",
-				(DisplayableBulkFitnessFunction)new NeatTargetFitnessFunction() );
+	nameToFitnessFunction.put(
+			"com.anji.neat.NeatTargetFitnessFunction",
+			(DisplayableBulkFitnessFunction)new NeatTargetFitnessFunction() );
 	
 		
 	
@@ -74,7 +74,10 @@ public static void main( String[] args ) throws Exception {
 	
 	
 	DisplayableBulkFitnessFunction ff = nameToFitnessFunction.get(functionName) ;
-		
+	
+
+	ff.setEnableDisplay( true );
+	
 	((Configurable)ff).init( props );
 
 	
@@ -109,7 +112,7 @@ public static void main( String[] args ) throws Exception {
 	List<Chromosome> chromosomes = new ArrayList<Chromosome>();
 	chromosomes.add( chrom);
 	//show visual of network
-	ff.setEnableDisplay( true );
+	
 	ff.evaluate( chromosomes );
 	
 	logger.info( "= Total Fitness = " + chrom.getFitnessValue() );

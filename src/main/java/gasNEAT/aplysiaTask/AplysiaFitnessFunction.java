@@ -21,6 +21,8 @@ import gasNEAT.activator.GasNeatActivator;
 import gasNEAT.genericEvaluater.DisplayableBulkFitnessFunction;
 import gasNEAT.view.ViewConstants;
 import gasNEAT.view.networkView.NetworkViewFrame;
+import lombok.Getter;
+import lombok.Setter;
 
 public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, Configurable {
 	
@@ -58,7 +60,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 	private int maxFitnessValue;
 	private ActivatorTranscriber activatorFactory;
 	private Randomizer randomizer;
-	private boolean viewEnabled = false;
+	private @Getter @Setter boolean enableDisplay;
 	
 	//Aplysia experiment set properties
 	//*
@@ -206,10 +208,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 
 	//////
 	
-	public void setViewEnabled(boolean v) {
-		viewEnabled = v;
-	}
-	
+
 	private int displayDelay = 1000; 
 	
 	/**
@@ -224,6 +223,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 			activatorFactory = (ActivatorTranscriber) props
 					.singletonObjectProperty( ActivatorTranscriber.class );
 
+			
 			displayDelay =  props.getIntProperty( DISPLAY_DELAY_KEY, 1000 );
 			
 			adjustForNetworkSizeFactor = props.getFloatProperty( ADJUST_FOR_NETWORK_SIZE_FACTOR_KEY, 0.0f );
@@ -489,7 +489,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 				
 				
 				NetworkViewFrame frame = null;
-				if (viewEnabled) {
+				if (enableDisplay) {
 					activator = (GasNeatActivator)activatorFactory.newActivator( genotype );
 					((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork().setLabeled(true);
 					frame = new NetworkViewFrame(((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork(), ((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork().getSimulator() );
@@ -689,7 +689,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 						logger.debug( "ATTACK AT:" + timeFitness   );
 						//UPDATE SENSOR DATA TO INCLUDE REAL ATTACK SENSING
 						
-						if (viewEnabled ) {
+						if (enableDisplay ) {
 							System.out.println("PREDATOR ATTACK STARTS");
 						}
 						
@@ -896,7 +896,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 					
 					//end of timestep, agent has been damaged and moved
 					
-					if ( viewEnabled  ) {
+					if ( enableDisplay  ) {
 						
 						frame.updateNeuralNetworkPanel(ViewConstants.PLAY_STATUS_TEXT, ((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork() );
 						
@@ -937,7 +937,11 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 						System.out.println("-----------------TIME:"+timeFitness+"-----------------------------------------");
 						
 						try {
+							
+							
 							Thread.sleep( displayDelay );
+							
+							
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -1022,11 +1026,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 
 
 
-	@Override
-	public void setEnableDisplay(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 		
 
