@@ -36,7 +36,7 @@ import com.anji.util.Configurable;
 import com.anji.util.Properties;
 import com.anji.util.Randomizer;
 
-import genericEvaluater.DisplayableBulkFitnessFunction;
+import gasNEAT.genericEvaluater.DisplayableBulkFitnessFunction;
 
 /**
  * This code is a port from Colin Green's SharpNEAT pole balancing code, which in turn is a port

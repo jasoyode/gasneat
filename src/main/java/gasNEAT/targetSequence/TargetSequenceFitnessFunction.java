@@ -22,9 +22,9 @@ import com.anji.util.Properties;
 import com.anji.util.Randomizer;
 
 import gasNEAT.activator.GasNeatActivator;
+import gasNEAT.genericEvaluater.DisplayableBulkFitnessFunction;
 import gasNEAT.view.ViewConstants;
 import gasNEAT.view.networkView.NetworkViewFrame;
-import genericEvaluater.DisplayableBulkFitnessFunction;
 
 public class TargetSequenceFitnessFunction implements DisplayableBulkFitnessFunction, Configurable {
 	
@@ -38,12 +38,15 @@ public class TargetSequenceFitnessFunction implements DisplayableBulkFitnessFunc
 	private final static String PRECISION_PENALTY_KEY = "precision.penalty";
 	private final static String STIMULI_NOISE_LEVEL = "gasneat.target.sequence.stimuli.noise.level";
 	private final static String TARGET_NOISE_LEVEL = "gasneat.target.sequence.target.noise.level";
-	
 	private final static String FITNESS_POSITIVE_SCORING_MODE_KEY = "fitness.positive.scoring.mode";
+	
+	private final static String NEGATIVE_VALUES_RANDOM_MODE_KEY = "gasneat.negative.values.random.mode";
+	
+	
 	
 	private double precisionPenalty = 0.0d;
 	private boolean positiveFitnessMode = false;
-	
+	private boolean negativeValuesRandomMode;
 	
 	private double stimuliNoise = 0.0d;
 	private double targetNoise = 0.0d;
@@ -96,6 +99,8 @@ public class TargetSequenceFitnessFunction implements DisplayableBulkFitnessFunc
 			
 			stimuliNoise = props.getDoubleProperty( STIMULI_NOISE_LEVEL, 0.0 );
 			targetNoise = props.getDoubleProperty( TARGET_NOISE_LEVEL, 0.0 );
+			
+			negativeValuesRandomMode = props.getBooleanProperty(NEGATIVE_VALUES_RANDOM_MODE_KEY, false );
 			
 			targetRange = props.getDoubleProperty( TARGETS_RANGE_KEY, 0.0d );
 			adjustForNetworkSizeFactor = props.getFloatProperty( ADJUST_FOR_NETWORK_SIZE_FACTOR_KEY,
@@ -208,34 +213,37 @@ public class TargetSequenceFitnessFunction implements DisplayableBulkFitnessFunc
 				
 				
 				//MAKE FLAG FOR NEGATIVE VALUES
-				//targetRange 
-				for (int i=0; i < stimuli.length; i++) {
-					
-					for (int j=0; j < stimuli[0].length; j++) {
-					
-						//for each input (NEGATIVE ARE RANDOM VALUES)
-						if (stimuli[i][j] < 0.0   ) {
-							long longValue = Double.doubleToLongBits(stimuli[i][j]);
-							if (randomMap.containsKey( longValue  )  ) {
-								stimuli[i][j] = randomMap.get( longValue );
-							} else {
-								//put random value between 0 and 1 
-								randomMap.put(longValue, randomizer.getRand().nextDouble()  );
-								stimuli[i][j] = randomMap.get( longValue  );
+				
+				if ( negativeValuesRandomMode ) {
+					//targetRange 
+					for (int i=0; i < stimuli.length; i++) {
+						
+						for (int j=0; j < stimuli[0].length; j++) {
+						
+							//for each input (NEGATIVE ARE RANDOM VALUES)
+							if (stimuli[i][j] < 0.0   ) {
+								long longValue = Double.doubleToLongBits(stimuli[i][j]);
+								if (randomMap.containsKey( longValue  )  ) {
+									stimuli[i][j] = randomMap.get( longValue );
+								} else {
+									//put random value between 0 and 1 
+									randomMap.put(longValue, randomizer.getRand().nextDouble()  );
+									stimuli[i][j] = randomMap.get( longValue  );
+								}
 							}
 						}
-					}
-
-					for (int j=0; j < targets[0].length; j++) {
-					
-						if (targets[i][j] < 0.0   ) {
-							long longValue = Double.doubleToLongBits(targets[i][j]);
-							if (randomMap.containsKey( longValue  )  ) {
-								targets[i][j] = randomMap.get( longValue );
-							} else {
-								//put random value between 0 and 1 
-								randomMap.put(longValue, randomizer.getRand().nextDouble()  );
-								targets[i][j] = randomMap.get( longValue  );
+	
+						for (int j=0; j < targets[0].length; j++) {
+						
+							if (targets[i][j] < 0.0   ) {
+								long longValue = Double.doubleToLongBits(targets[i][j]);
+								if (randomMap.containsKey( longValue  )  ) {
+									targets[i][j] = randomMap.get( longValue );
+								} else {
+									//put random value between 0 and 1 
+									randomMap.put(longValue, randomizer.getRand().nextDouble()  );
+									targets[i][j] = randomMap.get( longValue  );
+								}
 							}
 						}
 					}
@@ -462,6 +470,7 @@ public class TargetSequenceFitnessFunction implements DisplayableBulkFitnessFunc
 	@Override
 	public void setEnableDisplay(boolean b) {
 		// TODO Auto-generated method stub
+		setViewEnabled(b);
 		
 	}
 	

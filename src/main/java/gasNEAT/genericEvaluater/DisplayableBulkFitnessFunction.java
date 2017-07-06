@@ -1,4 +1,4 @@
-package genericEvaluater;
+package gasNEAT.genericEvaluater;
 
 import org.jgap.BulkFitnessFunction;
 

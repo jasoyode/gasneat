@@ -33,9 +33,9 @@ import experiment_builder.view.CellGridPanel;
 import experiment_builder.view.ExperimentRunnerFrame;
 import experiment_builder.view.HumanButtonControlPanel;
 import gasNEAT.activator.GasNeatActivator;
+import gasNEAT.genericEvaluater.DisplayableBulkFitnessFunction;
 import gasNEAT.view.ViewConstants;
 import gasNEAT.view.networkView.NetworkViewFrame;
-import genericEvaluater.DisplayableBulkFitnessFunction;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,4 +1,4 @@
-package genericEvaluater;
+package gasNEAT.genericEvaluater;
 
 import java.util.ArrayList;
 import java.util.HashMap;

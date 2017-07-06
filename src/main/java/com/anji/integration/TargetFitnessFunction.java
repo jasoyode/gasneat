@@ -32,7 +32,7 @@ import com.anji.util.Configurable;
 import com.anji.util.Properties;
 import com.anji.util.Randomizer;
 
-import genericEvaluater.DisplayableBulkFitnessFunction;
+import gasNEAT.genericEvaluater.DisplayableBulkFitnessFunction;
 
 /**
  * Determines fitness based on how close <code>Activator</code> output is to a target.

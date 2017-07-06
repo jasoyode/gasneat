@@ -18,9 +18,9 @@ import com.anji.util.Configurable;
 import com.anji.util.Properties;
 import com.anji.util.Randomizer;
 import gasNEAT.activator.GasNeatActivator;
+import gasNEAT.genericEvaluater.DisplayableBulkFitnessFunction;
 import gasNEAT.view.ViewConstants;
 import gasNEAT.view.networkView.NetworkViewFrame;
-import genericEvaluater.DisplayableBulkFitnessFunction;
 
 public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, Configurable {
 	
