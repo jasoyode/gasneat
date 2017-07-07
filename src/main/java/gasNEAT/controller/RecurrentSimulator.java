@@ -613,8 +613,12 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		
 		int gasType = tempNeuron.getSynapseProductionTypeInt();
 		
-		//SLOWDOWN
-		for (long synapseID : outgoingSynapses) {
+		//SLOWDOWN   8%
+		//for (long synapseID : outgoingSynapses) {
+		for (int i=0; i< outgoingSynapses.size(); ++i) {
+			
+			long synapseID = outgoingSynapses.get(i);
+			
 			GasNeatSynapse tempSynapse = neuralNetwork.getSynapseMap().get(synapseID);
 			long targetNeuronID = tempSynapse.getTargetNeuron();
 			GasNeatNeuron targetNeuron = neuralNetwork.getNeuronMap().get(targetNeuronID);
@@ -707,13 +711,17 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		//SLOWDOWN
 		//for(long synapseName : synapseMap.keySet()   ) {
 			//GasNeatSynapse synapse = synapseMap.get(synapseName);
+		
+		//SLOWDOWN 30% of time is spent here 
 		for( GasNeatSynapse synapse : synapseMap.values()   ) {
 			 //synapseMap.get(synapseName);
 			
 			
 			//System.out.println( "  buffered concentrations: "+  neuralNetwork.getNeuronMap().get( synapse.getSourceNeuron() ).getBufferedConcentration()   ); 
+			if (logger.isDebugEnabled()) {
+				printState();
+			}
 			
-			printState();
 			synapse.updatePlasticity(this.neuralNetwork);
 			
 			GasNeatNeuron sourceNeuron = this.neuralNetwork.getNeuron(synapse.getSourceNeuron());
@@ -728,7 +736,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 			//System.out.println("     synapseWeight "+ synapse.getSynapticWeight() );
 			
 			//if(a >= sourceNeuron.getThreshold() && b >= targetNeuron.getThreshold()) {
-				synapse.updateSynapticWeight(sourceNeuron.calculateActivation(a), targetNeuron.calculateActivation(b));
+			synapse.updateSynapticWeight(sourceNeuron.calculateActivation(a), targetNeuron.calculateActivation(b));
 //			} else {
 //				synapse.unlearn(sourceNeuron.calculateActivation(a), targetNeuron.calculateActivation(b));
 //			}

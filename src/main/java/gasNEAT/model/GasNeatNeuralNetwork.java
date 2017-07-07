@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 	private HashMap<Long, GasNeatNeuron> neuronMap = new HashMap<Long, GasNeatNeuron>();
 	
 	/** Neural Network Synapse HashMap*/
-	private HashMap<Long, GasNeatSynapse> synapseMap = new HashMap<Long, GasNeatSynapse>();
+	private HashMap<Long, GasNeatSynapse> synapseMap = new LinkedHashMap<Long, GasNeatSynapse>();
 	
 	/** Neural Network Gas HashMap*/
 	private HashMap<Integer, Gas> gasMap = new HashMap<Integer, Gas>();

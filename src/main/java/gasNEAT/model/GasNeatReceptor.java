@@ -447,7 +447,7 @@ public class GasNeatReceptor {
 	
 		
 		
-		if (prePlasticity <  plasticity) {
+		//if (prePlasticity <  plasticity) {
 			//System.out.println("Pre:" + prePlasticity + "  Post:"+ plasticity );
 			//System.out.println(  "modeval= " + plasticityModFunction.evaluate( builtUpConcentrations ) );
 			//for (double d: builtUpConcentrations) {
@@ -455,7 +455,7 @@ public class GasNeatReceptor {
 			//}
 			//System.exit(1);
 			
-		}
+		//}
 		
 		
 		

@@ -520,8 +520,11 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 						fakeAttackTimes.add( fakeAttackInterval + randomizer.getRand().nextInt( fakeAttackInterval ) );
 					}
 				}
-				logger.debug( realAttackTimes  );
-				logger.debug( fakeAttackTimes  );
+				
+				if (logger.isDebugEnabled()) {
+					logger.debug( realAttackTimes  );
+					logger.debug( fakeAttackTimes  );
+				}
 				
 				//pull from head, push to end for re-use
 				int realAttackCountdown = realAttackTimes.remove(0);
@@ -636,7 +639,9 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 						
 						fakeAttackCountdown = fakeAttackTimes.remove(0);
 						fakeAttackTimes.add( fakeAttackCountdown );
-						logger.debug( "FAKE ATTACK AT:" + timeFitness   );
+						if (logger.isDebugEnabled()) {
+							logger.debug( "FAKE ATTACK AT:" + timeFitness   );
+						}
 						
 						
 						
@@ -686,7 +691,9 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 						//TRIGGER ATTACK!
 						realAttackCountdown = realAttackTimes.remove(0);
 						realAttackTimes.add( realAttackCountdown );
-						logger.debug( "ATTACK AT:" + timeFitness   );
+						if (logger.isDebugEnabled()) {
+							logger.debug( "ATTACK AT:" + timeFitness   );
+						}
 						//UPDATE SENSOR DATA TO INCLUDE REAL ATTACK SENSING
 						
 						if (enableDisplay ) {
@@ -844,18 +851,20 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 					}
 					
 					//SHOW ACTUAL OUTPUTS
-					logger.debug("len: " + motors.length );
-					logger.debug("M: ");
-					for (int i=0; i< motors.length; i++) {
-						logger.debug( motors[i]+ " " );
+					if (logger.isDebugEnabled()) {
+						logger.debug("len: " + motors.length );
+						logger.debug("M: ");
+						for (int i=0; i< motors.length; i++) {
+							logger.debug( motors[i]+ " " );
+						}
+						logger.debug("len: " + sensors.length );
+						logger.debug("S: ");
+						for (int i=0; i< sensors.length; i++) {
+							logger.debug( sensors[i]+ " " );
+						}
+						logger.debug("END");
+						
 					}
-					logger.debug("len: " + sensors.length );
-					logger.debug("S: ");
-					for (int i=0; i< sensors.length; i++) {
-						logger.debug( sensors[i]+ " " );
-					}
-					logger.debug("END");
-
 					//Entire ANN abstraction
 					motors = activator.next( sensors );
 					
