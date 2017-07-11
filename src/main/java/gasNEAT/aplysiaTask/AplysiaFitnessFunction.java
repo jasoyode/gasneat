@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -354,32 +355,39 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 		}
 
 		
-		int rounds = 10;
+		
+		//determines number of rounds
+		double[] testingLevels = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
+		
+		//WIDTH - columns
 		int timePerRound = 10;
+		
+		//WIDTH OF STIMULUS
 		int duration = 5;
+		
+		//HOW QUICKLY DOES STIMULUS PEAK
 		int timeToMax = 3;
 		
+		//EACH SENSOR PLUS 1 FOR ALL
 		int iterations = (1 + sensors.length );
 		
+		double baseline = 0.0;
+		
+		
+		//HEIGHT - rows
+		int rounds = testingLevels.length;
+		
 		double[] motors = new double[1];
+		//single motor output
 		double[][] motorData = new double[rounds*timePerRound * iterations][1];
 		
 		
 		
-		double baseline = 0.1;
-				
-		double[] testingLevels = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
-		
-		
-		for (int k=0; k < sensors.length; k++) {
-			sensors[k] = baseline;
-		}
-		
 		//outer loop one test for each individual non-pain sensor
-		for (int iter=0; iter < iterations-1; iter++) {
+		for (int sensorNum=0; sensorNum < iterations-1; sensorNum++) {
 			
 			//middle loop test each individual sensor with a different level of threat
-			for (int j=0; j< testingLevels.length; j++ ) {
+			for (int r=0; r< rounds; r++ ) {
 				
 				try {
 					//create a new activator for each test
@@ -389,37 +397,61 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 					//we want to start at zero and increment up to the max sensor value
 					//then drop off to baseline level after reaching the maximum duration
 					for (int t=0; t< timePerRound; t++) {
+						
+						//must always set everything to baseline
+						for (int k=0; k < sensors.length; k++) {
+							sensors[k] = baseline;
+						}
+						
 						//when less than duration
 						if ( t < duration) {
 							//less than time to max means we are building up
 							if (t< timeToMax) {
-								sensors[iter] = testingLevels[j]* (1+t) / timeToMax;
+								sensors[sensorNum] = testingLevels[r]* (1+t) / timeToMax;
 							} else {
 								//once at max, then we stay at max
-								sensors[iter] = testingLevels[j];							
+								sensors[sensorNum] = testingLevels[r];							
 							}
 						} else {
 							//baseline when the attack is over
-							sensors[iter] = baseline;
+							sensors[sensorNum] = baseline;
 						}
 						
-						System.err.print(sensors[0]+ " ");
+						if (logger.isDebugEnabled()) {
+							for (int s=0; s< sensors.length; s++) {
+								System.err.print( round(sensors[s])+ "\t");
+								
+							}
+							System.err.print(  " | ");
+						}
+							
 						motors = activator.next( sensors );
+						int motorIndex = sensorNum*rounds*timePerRound + r*timePerRound + t;
 						//copy value
-						motorData[iter*j*rounds + j*rounds + t][0] = motors[0];
+						motorData[motorIndex][0] = motors[0];
+						if (logger.isDebugEnabled()) {
+							System.err.print(  "-> "+ round(motors[0] ) +" ["+ motorIndex +"]" );
+						}
+					}
+					if (logger.isDebugEnabled()) {
+						System.err.println("");
 					}
 				} catch (TranscriberException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
+			if (logger.isDebugEnabled()) {
+				System.err.println("----");
+			}
 		}
-		
-		System.err.println(" ------------- ");
+		if (logger.isDebugEnabled()) {
+			System.err.println("------------- ");
+		}
 		
 		
 		//middle loop test all sensors with a different level of threat
-		for (int j=0; j< testingLevels.length; j++ ) {
+		for (int r=0; r< rounds; r++ ) {
 			
 			try {
 				//create a new activator for final test
@@ -432,10 +464,10 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 						for (int k=0; k < sensors.length; k++) {
 							//less than time to max means we are building up ALL sensors
 							if (t< timeToMax) {
-								sensors[k] = testingLevels[j]* (1+t) / timeToMax;
+								sensors[k] = testingLevels[r]* (1+t) / timeToMax;
 							} else {
 								//once at max, then we stay at max for ALL sensors
-								sensors[k] = testingLevels[j];							
+								sensors[k] = testingLevels[r];							
 							}
 						}
 					}else {
@@ -444,16 +476,39 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 							sensors[k] = baseline;
 						}
 					}
-					System.err.print(sensors[0]+ " ");
+					if (logger.isDebugEnabled()) {
+						for (int s=0; s< sensors.length; s++) {
+							System.err.print( round(sensors[s])+ "\t");
+							
+						}
+						System.err.print(  " | ");
+					}
 					motors = activator.next( sensors );
+					/*
+					System.err.println("");
+					System.err.println((iterations-1)+ " iterations-1");
+					System.err.println(rounds+ " rounds");
+					System.err.println(timePerRound+ " timePerRound");
+					System.err.println(j+ " j");
+					System.err.println(t+ " t");
+					
+					System.err.println(((iterations-1) * rounds*timePerRound+   j*timePerRound + t)+ " total");
+					*/
+					
 					//copy value
-					motorData[(iterations-1) * rounds*timePerRound+   j*rounds + t][0] = motors[0];
+					motorData[(iterations-1) * rounds*timePerRound+   r*timePerRound + t][0] = motors[0];
+				}
+				if (logger.isDebugEnabled()) {
+					System.err.println("");
 				}
 			} catch (TranscriberException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
+		
+		
 				
 		for (int s=0; s< iterations; s++) {
 			System.out.println("---------------------------------------------------");
@@ -536,14 +591,14 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 					
 					for (int t=0; t< timePerRound; t++) {
 						
-						int colorNumber = (int) (255 - 255*motorData[ s*rounds*timePerRound + r*timePerRound + t  ][0]) ;
+						int colorNumber = (int) (255*motorData[ s*rounds*timePerRound + r*timePerRound + t  ][0]) ;
 						if (colorNumber < 0) {
 							colorNumber= 0;
 						} else if (colorNumber > 255){
 							colorNumber  = 255;
 						}
 						
-						g2d.setColor(new Color(255, colorNumber,255 )  );
+						g2d.setColor(new Color(colorNumber, 0,0 )  );
 						g2d.fillOval(indentX + t*20 , indentY +s* verticalSpacing + 20 *r , 10, 10);
 						
 						
