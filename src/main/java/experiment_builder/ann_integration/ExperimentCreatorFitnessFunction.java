@@ -248,9 +248,9 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 				}
 				
 				if (visibleMode) {
-					if (logger.isDebugEnabled() ){
-						logger.debug(  c.getId() + " Trial "+ gridView.getCellGrid().getTrialNumber() +" score: "+ value  );
-					}
+					
+					logger.info(  c.getId() + " Trial "+ gridView.getCellGrid().getTrialNumber() +" score: "+ value  );
+					
 				} else {
 					if (logger.isDebugEnabled() ){
 						logger.debug(  c.getId() + " Trial "+ cellGrid.getTrialNumber() +" score: "+ value  );
@@ -493,7 +493,9 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 					logger.info("Trial has been set to be over! Ending Current Trial Now!");
 					break;
 				} else {
-					logger.info("cellGrid.isTrialOver() = " + gridView.getCellGrid().isTrialOver() );
+					if (logger.isDebugEnabled() ) {
+						logger.debug("cellGrid.isTrialOver() = " + gridView.getCellGrid().isTrialOver() );
+					}
 				}
 			} else {
 				if ( cellGrid.isTrialOver() ) {
@@ -512,8 +514,9 @@ public class ExperimentCreatorFitnessFunction implements DisplayableBulkFitnessF
 			logger.debug("TIMESTEP END OF LOOP: "+ currentTimestep);
 		}
 		fitness = (int) ParametersCalculator.getFitnessScore();
-		if (logger.isDebugEnabled() ) {
-			logger.debug("FITNESS AT END OF LOOP: "+ fitness );
+		
+		if (visibleMode) {
+			logger.info("FITNESS AT END OF LOOP: "+ fitness );
 		}
 		return fitness;
 	}

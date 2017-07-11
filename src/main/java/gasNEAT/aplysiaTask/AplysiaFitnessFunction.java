@@ -1,8 +1,17 @@
 package gasNEAT.aplysiaTask;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -32,19 +41,19 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 	 * 
 	 *  AGENT MUST AVOID PREDATORS AND MAINTAIN ENERGY
 	 *
-	 *  INPUT: TOUCH SENSORS, OPTIONAL PAIN SENSOR
-	 *  OUTPUT: ESCAPE (WITHDRAWAL) MECHANISM 
+	 *  INPUT: [DONE] TOUCH SENSORS, OPTIONAL PAIN SENSOR
+	 *  OUTPUT: [DONE] ESCAPE (WITHDRAWAL) MECHANISM 
 	 * 
 	 *  FITNESS: MAXIMIZE LIFE
 	 *  
-	 *  BODY: ENERGY 100
-	 *        HEALTH 100
+	 *  BODY: [DONE] ENERGY 100
+	 *        [DONE] HEALTH 100
 	 *  
 	 *  Notes: 
-	 *        ALL PARAMETERS TO BE SET VIA PROPERTIES FILE 
+	 *        [DONE] ALL PARAMETERS TO BE SET VIA PROPERTIES FILE 
 	 *         
 	 *  Bonus:
-	 *         May want a visualizer!
+	 *        [DONE] May want a visualizer!
 	 *         
 	 */
 	
@@ -60,6 +69,8 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 	private int maxFitnessValue;
 	private ActivatorTranscriber activatorFactory;
 	private Randomizer randomizer;
+	
+	private Random repeatableRand;
 	private @Getter @Setter boolean enableDisplay;
 	
 	//Aplysia experiment set properties
@@ -70,12 +81,10 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 	private final static String LOWER_FAKE_ATTACK_SIGNAL_BOUND_KEY = "gasneat.aplysia.lowerFakeAttackSignalBound";
 	private final static String GAUSSIAN_DISTRIBUTION_OF_NOISE_KEY = "gasneat.aplysia.gaussianDistributionOfNoise";
 	private final static String RANDOM_EVENTS_KEY = "gasneat.aplysia.randomEvents";
-	
 	//
 	private final static String REAL_ATTACK_DYNAMIC_SENSOR_KEY = "gasneat.aplysia.real.attack.dynamic.sensor";
 	private final static String REAL_ATTACK_MULTI_SENSOR_DELAY_KEY= "gasneat.aplysia.real.attack.multi.sensor.delay";
 	private final static String REAL_ATTACK_DAMAGE_DELAY_KEY= "gasneat.aplysia.real.attack.damage.delay";
-	
 	
 	private final static String REAL_ATTACK_RATE_KEY = "gasneat.aplysia.realAttackRate";
 	private final static String FAKE_ATTACK_RATE_KEY = "gasneat.aplysia.fakeAttackRate";
@@ -96,8 +105,6 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 	private final static String ENERGY_COST_OF_ESCAPE_ACTIVATION_KEY = "gasneat.aplysia.energyCostOfEscapeActivation";
 	//*/
 	private final static String FITNESS_TARGET_KEY = "fitness.target";
-	
-	
 	//////NEW
 	private final static String ENERGY_REGEN_RATE_KEY = "gasneat.aplysia.energy.regeneration.rate";
 	private final static String REST_THRESHHOLD_KEY = "gasneat.aplysia.rest.threshhold";
@@ -113,7 +120,6 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 	private final static String PREDATOR_ACC_UPPER_KEY = "gasneat.aplysia.predator.acc.upper";
 	private final static String PREDATOR_ACC_LOWER_KEY = "gasneat.aplysia.predator.acc.lower";
 	private final static String EVASION_ACC_UPPER_KEY = "gasneat.aplysia.evasionAccUpper";
-	
 	
 	private final static String HABITUATION_ANALYSIS_MODE_KEY = "gasneat.aplysia.habituation.mode";
 	
@@ -211,6 +217,9 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 
 	private int displayDelay = 1000; 
 	
+	
+	private Properties props;
+	
 	/**
 	 * See <a href=" {@docRoot}/params.htm" target="anji_params">Parameter Details </a> for
 	 * specific property settings.
@@ -219,7 +228,9 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 	 */
 	public void init( Properties props ) {
 		try {
+			this.props = props;
 			randomizer = (Randomizer) props.singletonObjectProperty( Randomizer.class );
+			repeatableRand = randomizer.getRand();
 			activatorFactory = (ActivatorTranscriber) props
 					.singletonObjectProperty( ActivatorTranscriber.class );
 
@@ -330,7 +341,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 	
 	
 	
-	public void habituationAnalysis(Activator activator ) {
+	public void habituationAnalysis(Chromosome genotype ) {
 		
 		//touch sensors for agent
 		double[] sensors;
@@ -344,9 +355,9 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 
 		
 		int rounds = 10;
-		int timePerRound = 10;
+		int timePerRound = 20;
 		int duration = 5;
-		int timeToMax = 2;
+		int timeToMax = 3;
 		
 		int iterations = (1 + sensors.length );
 		
@@ -367,21 +378,29 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 		for (int iter=0; iter < iterations-1; iter++) {
 			
 			for (int j=0; j< testingLevels.length; j++ ) {
-				for (int t=0; t< timePerRound; t++) {
-					if ( t < duration) {
-						if (t< timeToMax) {
-							sensors[iter] = testingLevels[j]* (1+t) / timeToMax;
+				Activator activator;
+				try {
+					activator = activatorFactory.newActivator( genotype );
+				
+					for (int t=0; t< timePerRound; t++) {
+						if ( t < duration) {
+							if (t< timeToMax) {
+								sensors[iter] = testingLevels[j]* (1+t) / timeToMax;
+							} else {
+								sensors[iter] = testingLevels[j];							
+							}
 						} else {
-							sensors[iter] = testingLevels[j];							
+							sensors[iter] = baseline;
 						}
-					} else {
-						sensors[iter] = baseline;
+						
+						
+						motors = activator.next( sensors );
+						//copy value
+						motorData[iter*j*rounds + t][0] = motors[0];
 					}
-					
-					
-					motors = activator.next( sensors );
-					//copy value
-					motorData[iter*j*rounds + t][0] = motors[0];
+				} catch (TranscriberException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
@@ -390,34 +409,34 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 		
 		
 		for (int j=0; j< testingLevels.length; j++ ) {
+			Activator activator;
+			try {
+				activator = activatorFactory.newActivator( genotype );
 			
-			for (int t=0; t< rounds; t++) {
-				if ( t < duration) {
-					for (int k=0; k < sensors.length; k++) {
-						if (k< timeToMax) {
-							sensors[k] = testingLevels[j]* (1+k) / timeToMax;
-						} else {
-							sensors[k] = testingLevels[j];							
+				for (int t=0; t< rounds; t++) {
+					if ( t < duration) {
+						for (int k=0; k < sensors.length; k++) {
+							if (k< timeToMax) {
+								sensors[k] = testingLevels[j]* (1+k) / timeToMax;
+							} else {
+								sensors[k] = testingLevels[j];							
+							}
+						}
+					}else {
+						for (int k=0; k < sensors.length; k++) {
+							sensors[k] = baseline;
 						}
 					}
-				}else {
-					for (int k=0; k < sensors.length; k++) {
-						sensors[k] = baseline;
-					}
+					motors = activator.next( sensors );
+					//copy value
+					motorData[(iterations-1) * rounds*timePerRound+   j*rounds + t][0] = motors[0];
 				}
-				motors = activator.next( sensors );
-				//copy value
-				motorData[(iterations-1) * rounds*timePerRound+   j*rounds + t][0] = motors[0];
+			} catch (TranscriberException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		
-		
-
-		
-		
-		
-		
-		
+				
 		for (int s=0; s< iterations; s++) {
 			System.out.println("---------------------------------------------------");
 			if (s+1 == iterations) {
@@ -433,17 +452,98 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 				}
 				System.out.println("");				
 			}
+		}
+		
+		//create JFrame and draw to canvas a representation based in color from black to white 
+		//(red to green indicating colors)
+		
+		JFrame frame = new JFrame();
+		
+		frame.setSize(new Dimension(800, 800) );
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		
+		ActivationMapPanel panel = new ActivationMapPanel(iterations, rounds, timePerRound, testingLevels, motorData );
+		panel.setLayout(new BorderLayout());
+		
+		frame.add(panel);
+		
+		
+		//panel.repaint();
+		
+		
+	}
+	
+	class ActivationMapPanel extends JPanel {
+		
+		private double[][] motorData;
+		private int iterations;
+		private int rounds;
+		private int timePerRound;
+		private double[] testingLevels;
+		
+		
+		public ActivationMapPanel(int iterations, int rounds, int timePerRound, double[] testingLevels, double[][] motorData ) {
+			
+			this.motorData = motorData;
+			this.iterations = iterations;
+			this.rounds = rounds;
+			this.timePerRound = timePerRound;
+			this.testingLevels = testingLevels;
+			
+			
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g)  {
+			super.paintComponent(g);
+			Graphics2D g2d = (Graphics2D) g;
+			
+			int verticalSpacing = 250;
+			int indentX = 100;
+			int indentY = 50;
+			
+			for (int s=0; s< iterations; s++) {
+				if (s+1 == iterations) {
+					g2d.setColor( Color.BLACK  );
+					g2d.drawString("Test w/ALL :" , 0  , s * verticalSpacing + indentY -10 );
+				} else {
+					g2d.setColor( Color.BLACK  );
+					g2d.drawString("Test w/sensor"+s+":" , 0  , s * verticalSpacing + indentY- 10  );
+				}
+				
+				for (int r=0; r< rounds; r++) {
+					g2d.setColor( Color.BLACK  );
+					g2d.drawString("Test level "+ testingLevels[r]+": " , 0  , indentY +s * verticalSpacing + 20 * r + 10  );
+					
+					for (int t=0; t< timePerRound; t++) {
+						
+						int colorNumber = (int) (255 - 255*motorData[ s*rounds*timePerRound + r*timePerRound + t  ][0]) ;
+						if (colorNumber < 0) {
+							colorNumber= 0;
+						} else if (colorNumber > 255){
+							colorNumber  = 255;
+						}
+						
+						g2d.setColor(new Color(255, colorNumber,255 )  );
+						g2d.fillOval(indentX + t*20 , indentY +s* verticalSpacing + 20 *r , 10, 10);
+						
+						
+						//System.out.print( round( motorData[ s*rounds*timePerRound + r*timePerRound + t  ][0], 3 ) +" \t" );
+					}
+					//System.out.println("");				
+				}
+			}
+			
+			
+			
+			
 			
 			
 		}
 		
 		
-		
-		
-		
 	}
-	
-	
 	
 	
 	
@@ -464,8 +564,12 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 		while ( it.hasNext() ) {
 			Chromosome genotype = (Chromosome) it.next();
 			
+			//randomizer = (Randomizer) props.singletonObjectProperty( Randomizer.class );
 			
+			//force the results of the experiment to be reproducible
+			repeatableRand.setSeed( randomizer.getSeed() );
 			
+			//System.out.println("RANDOM VALUE: "+  repeatableRand.nextInt(1000)  );
 			
 			
 			//make deterministic
@@ -474,502 +578,525 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 			firstRealAttackSensor=-10;
 			fakeAttackTimeRemaining=0;
 			realAttackDuration=0;
+			predatorSpeed = 0;
 			evasionSpeed = startingEvasionSpeed;
+			predatorProximity = escapeDistance;
 			
+			//if ( genotype.getId() == 1466) {
+			//	logger.setLevel( Level.DEBUG);
+			//}
 			
-			try {
-				Activator activator = activatorFactory.newActivator( genotype );
-				
-				if ( habituationAnalysisMode ) {
-					System.out.println("HABITUATION MODE ENABLED!");
-					habituationAnalysis( activator);
-					System.out.println("HABITUATION ANALYSIS COMPLETE... EXITING NOW");
-					System.exit(1);
-				}
+			//if evolving we will have multiple chromosomes and we do not want to launch habituation
+			//testing mode!
+			if ( habituationAnalysisMode && genotypes.size() == 1) {
 				
 				
-				NetworkViewFrame frame = null;
-				if (enableDisplay) {
-					activator = (GasNeatActivator)activatorFactory.newActivator( genotype );
-					((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork().setLabeled(true);
-					frame = new NetworkViewFrame(((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork(), ((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork().getSimulator() );
-				}
+				//if (genotypes.size() > 1) {
+				//	System.err.print("DO NOT RUN HABITUATION MODE IN EVOLVER");
+				//	System.exit(1);
+				//}
+				
+				
+				
+				System.out.println("HABITUATION MODE ENABLED!");
+				habituationAnalysis( genotype);
+				System.out.println("HABITUATION ANALYSIS COMPLETE... EXITING NOW");
+				
 
+			
+			} else {
 				
-				predatorProximity = escapeDistance;
-				
-				//NON PROPS- JUST USED FOR SIMULATION
-				ArrayList<Integer> realAttackTimes = new ArrayList<Integer> ();
-				ArrayList<Integer> fakeAttackTimes = new ArrayList<Integer> ();
-
-				//turn rates into intervals
-				int realAttackInterval = (int) (1/realAttackRate );
-				int fakeAttackInterval = (int) (1/fakeAttackRate );
-				
-				//add attack close to beginning
-				realAttackTimes.add( 5 );
-				
-				for (int i=1; i < 10; i++) {
-					if (!randomEvents) {
-						//off set increasingly far apart so its not too predictable in non-random version
-						realAttackTimes.add( realAttackInterval + i );
-						fakeAttackTimes.add( fakeAttackInterval + i );	
-					} else {
-						//if random events we want this to be even noisier
-						realAttackTimes.add( realAttackInterval + randomizer.getRand().nextInt( realAttackInterval ) );
-						fakeAttackTimes.add( fakeAttackInterval + randomizer.getRand().nextInt( fakeAttackInterval ) );
+				try {
+					Activator activator = activatorFactory.newActivator( genotype );
+					
+					
+					
+					
+					NetworkViewFrame frame = null;
+					if (enableDisplay) {
+						activator = (GasNeatActivator)activatorFactory.newActivator( genotype );
+						((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork().setLabeled(true);
+						frame = new NetworkViewFrame(((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork(), ((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork().getSimulator() );
 					}
-				}
-				
-				if (logger.isDebugEnabled()) {
-					logger.debug( realAttackTimes  );
-					logger.debug( fakeAttackTimes  );
-				}
-				
-				//pull from head, push to end for re-use
-				int realAttackCountdown = realAttackTimes.remove(0);
-				realAttackTimes.add( realAttackCountdown );
-				int fakeAttackCountdown = fakeAttackTimes.remove(0);
-				fakeAttackTimes.add( fakeAttackCountdown );
-				
-				//touch sensors for agent
-				double[] sensors;
-				
-				if (painDelay >= 0) {
-					//extra sensor for pain
-					sensors = new double[numberSensors + 1];
-				}else {
-					sensors = new double[numberSensors];
-				}
-				
-				//could later work on setting up CPG for locomotive escape
-				//alternating flapping tail one way and then the other
-				double[] motors = new double[1];
-				
-				//start of experiment set everything
-				timeFitness = 0;
-				aplysiaHealth = aplysiaMaxHealth;
-				aplysiaEnergy = aplysiaMaxEnergy;
-				int durationSinceDamageFirstOccurred = -1;
-				
-				double[] fakeAttackSensorValues = new double[0];
-				
-				
-				//Aplysia dies when health or energy drop to zero
-				while (aplysiaHealth > 0 && aplysiaEnergy > 0 && timeFitness <= maxFitnessTime ) {
+	
 					
+					predatorProximity = escapeDistance;
 					
+					//NON PROPS- JUST USED FOR SIMULATION
+					ArrayList<Integer> realAttackTimes = new ArrayList<Integer> ();
+					ArrayList<Integer> fakeAttackTimes = new ArrayList<Integer> ();
+	
+					//turn rates into intervals
+					int realAttackInterval = (int) (1/realAttackRate );
+					int fakeAttackInterval = (int) (1/fakeAttackRate );
 					
+					//add attack close to beginning
+					realAttackTimes.add( 5 );
 					
-					//ADD REGULAR NOISY DATA TO SENSORS
-					timeFitness++;
-					
-					//fill in random noise into sensors
-					//set each touch sensor to random value according to params
-					//only up to numSensors, pain should not be detectable!
-					for (int i=0; i< numberSensors; i++) {
-						//baseline + noise * random ( 0.0-1.0 )
-						sensors[i] = baselineSignal + (baselineSignalNoise * randomizer.getRand().nextDouble() );
-					}
-					
-				
-					
-					// SETUP /  START FAKE ATTACK
-					//
-					// could be setup as event driven instead, but this is faster for now
-					//
-					//When countdown reaches zero we need to start fake attack
-					if ( fakeAttackCountdown <= 0 ) {
-						
-						
-						//TRIGGER FAKE ATTACK and start countdown until it is over!
-						//must add 1 so that upper is reachable, otherwise 0,1 always returns 0
-						fakeAttackTimeRemaining = fakeAttackDurationLower 
-								+ randomizer.getRand().nextInt( 1 + fakeAttackDurationUpper - fakeAttackDurationLower );
-						
-						//array of sensors values equal to the length of the fakeattacktime
-						fakeAttackSensorValues = new double[fakeAttackTimeRemaining];
-						
-						// lower + 0-1*(range)
-						//double predatorSpeed = predatorSpeedLower + randomizer.getRand().nextDouble() * (predatorSpeedUpper -predatorSpeedLower);
-						
-						//random slope based on predator speed
-						double fakeAttackSpeed = predatorSpeedLower + randomizer.getRand().nextDouble() * (predatorSpeedUpper -predatorSpeedLower);
-						
-						//if escape distance is 10, then if speed is 4
-						// slope = 4/10  0.4
-						double slope = fakeAttackSpeed / escapeDistance;
-						double maxFakeSensorValue = getFakeAttackSensorSignal();
-						
-						//System.out.println("fakeAttackSpeed " +fakeAttackSpeed );
-						//System.out.println("slope " + slope);
-						//System.out.println("maxFakeSensorValue " + maxFakeSensorValue);
-						//System.out.println("fakeAttackTimeRemaining " +fakeAttackTimeRemaining );
-						
-						for (int i=0; i < fakeAttackTimeRemaining; i++) {
-							int j=i+1;
-							//before maximum (maxFakeSensorValue) is reached
-							if ( slope *j <= maxFakeSensorValue ) {
-								fakeAttackSensorValues[i] = slope * j;
-							//at the end have the value trail off
-							} else if ( slope * (fakeAttackTimeRemaining-j) <= maxFakeSensorValue  ) {
-								fakeAttackSensorValues[i] = slope * (fakeAttackTimeRemaining-j);
-							//in between the value should be maxed out
-							} else {
-								fakeAttackSensorValues[i] = maxFakeSensorValue;
-							}
-							
-						}
-						
-						/*
-						//print to verify
-						System.out.println("FAKE ATTACK STARTED WITH SIGNALS: ");
-						for (int i=0; i < fakeAttackTimeRemaining; i++) {
-							System.out.println("["+i+"] "+ fakeAttackSensorValues[i] );
-						}
-						*/
-						
-						//pick random sensor for first time, then rotate so that all are hit
-						if( singleFakeAttackSensor == -10 ) {
-							singleFakeAttackSensor = timeFitness  % numberSensors;
+					for (int i=1; i < 10; i++) {
+						if (!randomEvents) {
+							//off set increasingly far apart so its not too predictable in non-random version
+							realAttackTimes.add( realAttackInterval + i );
+							fakeAttackTimes.add( fakeAttackInterval + i );	
 						} else {
-							singleFakeAttackSensor = (singleFakeAttackSensor + 1) % numberSensors;
+							//if random events we want this to be even noisier
+							realAttackTimes.add( realAttackInterval + randomizer.getRand().nextInt( realAttackInterval ) );
+							fakeAttackTimes.add( fakeAttackInterval + randomizer.getRand().nextInt( fakeAttackInterval ) );
+						}
+					}
+					
+					if (logger.isDebugEnabled()) {
+						logger.debug( realAttackTimes  );
+						logger.debug( fakeAttackTimes  );
+					}
+					
+					//pull from head, push to end for re-use
+					int realAttackCountdown = realAttackTimes.remove(0);
+					realAttackTimes.add( realAttackCountdown );
+					int fakeAttackCountdown = fakeAttackTimes.remove(0);
+					fakeAttackTimes.add( fakeAttackCountdown );
+					
+					//touch sensors for agent
+					double[] sensors;
+					
+					if (painDelay >= 0) {
+						//extra sensor for pain
+						sensors = new double[numberSensors + 1];
+					}else {
+						sensors = new double[numberSensors];
+					}
+					
+					//could later work on setting up CPG for locomotive escape
+					//alternating flapping tail one way and then the other
+					double[] motors = new double[1];
+					
+					//start of experiment set everything
+					timeFitness = 0;
+					aplysiaHealth = aplysiaMaxHealth;
+					aplysiaEnergy = aplysiaMaxEnergy;
+					int durationSinceDamageFirstOccurred = -1;
+					
+					double[] fakeAttackSensorValues = new double[0];
+					
+					
+					//Aplysia dies when health or energy drop to zero
+					while (aplysiaHealth > 0 && aplysiaEnergy > 0 && timeFitness <= maxFitnessTime ) {
+						
+						//if ( genotype.getId() == 1466 && timeFitness == 2) {
+						////	System.exit(1);
+						//}
+						
+						
+						//ADD REGULAR NOISY DATA TO SENSORS
+						timeFitness++;
+						
+						//fill in random noise into sensors
+						//set each touch sensor to random value according to params
+						//only up to numSensors, pain should not be detectable!
+						for (int i=0; i< numberSensors; i++) {
+							//baseline + noise * random ( 0.0-1.0 )
+							sensors[i] = baselineSignal + (baselineSignalNoise * randomizer.getRand().nextDouble() );
 						}
 						
+					
 						
-						fakeAttackCountdown = fakeAttackTimes.remove(0);
-						fakeAttackTimes.add( fakeAttackCountdown );
-						if (logger.isDebugEnabled()) {
-							logger.debug( "FAKE ATTACK AT:" + timeFitness   );
-						}
-						
-						
-						
-						//System.err.println("singleFakeAttackSensor " + singleFakeAttackSensor);
-						///System.err.println("fakeAttackSensorValues.length " + fakeAttackSensorValues.length);
-						//System.err.println("fakeAttackTimeRemaining " + fakeAttackTimeRemaining);
-						//System.err.println(" " + );
-						//System.err.println(" " + );
-						
-						
-						
-						
-						//UPDATE SENSOR DATA TO INCLUDE FAKE ATTACK SENSING
-						sensors[ singleFakeAttackSensor ] = 
-								// 8 -8 = 0
-								fakeAttackSensorValues[ fakeAttackSensorValues.length - fakeAttackTimeRemaining ];
-						
-						////////////////////
-					} else {
-						
-						
-						
-						if ( fakeAttackTimeRemaining > 0 ) {
+						// SETUP /  START FAKE ATTACK
+						//
+						// could be setup as event driven instead, but this is faster for now
+						//
+						//When countdown reaches zero we need to start fake attack
+						if ( fakeAttackCountdown <= 0 ) {
 							
-							if (fakeAttackSensorValues.length == 0 ) {
-								System.err.println("NO cannot have initialized fakesensordata!");
-								System.exit(1);
+							
+							//TRIGGER FAKE ATTACK and start countdown until it is over!
+							//must add 1 so that upper is reachable, otherwise 0,1 always returns 0
+							fakeAttackTimeRemaining = fakeAttackDurationLower 
+									+ randomizer.getRand().nextInt( 1 + fakeAttackDurationUpper - fakeAttackDurationLower );
+							
+							//array of sensors values equal to the length of the fakeattacktime
+							fakeAttackSensorValues = new double[fakeAttackTimeRemaining];
+							
+							// lower + 0-1*(range)
+							//double predatorSpeed = predatorSpeedLower + randomizer.getRand().nextDouble() * (predatorSpeedUpper -predatorSpeedLower);
+							
+							//random slope based on predator speed
+							double fakeAttackSpeed = predatorSpeedLower + randomizer.getRand().nextDouble() * (predatorSpeedUpper -predatorSpeedLower);
+							
+							//if escape distance is 10, then if speed is 4
+							// slope = 4/10  0.4
+							double slope = fakeAttackSpeed / escapeDistance;
+							double maxFakeSensorValue = getFakeAttackSensorSignal();
+							
+							//System.out.println("fakeAttackSpeed " +fakeAttackSpeed );
+							//System.out.println("slope " + slope);
+							//System.out.println("maxFakeSensorValue " + maxFakeSensorValue);
+							//System.out.println("fakeAttackTimeRemaining " +fakeAttackTimeRemaining );
+							
+							for (int i=0; i < fakeAttackTimeRemaining; i++) {
+								int j=i+1;
+								//before maximum (maxFakeSensorValue) is reached
+								if ( slope *j <= maxFakeSensorValue ) {
+									fakeAttackSensorValues[i] = slope * j;
+								//at the end have the value trail off
+								} else if ( slope * (fakeAttackTimeRemaining-j) <= maxFakeSensorValue  ) {
+									fakeAttackSensorValues[i] = slope * (fakeAttackTimeRemaining-j);
+								//in between the value should be maxed out
+								} else {
+									fakeAttackSensorValues[i] = maxFakeSensorValue;
+								}
+								
 							}
 							
-							//when fakeattacktimeremainig = 1, then will hit length-1
+							/*
+							//print to verify
+							System.out.println("FAKE ATTACK STARTED WITH SIGNALS: ");
+							for (int i=0; i < fakeAttackTimeRemaining; i++) {
+								System.out.println("["+i+"] "+ fakeAttackSensorValues[i] );
+							}
+							*/
+							
+							//pick random sensor for first time, then rotate so that all are hit
+							if( singleFakeAttackSensor == -10 ) {
+								singleFakeAttackSensor = timeFitness  % numberSensors;
+							} else {
+								singleFakeAttackSensor = (singleFakeAttackSensor + 1) % numberSensors;
+							}
+							
+							
+							fakeAttackCountdown = fakeAttackTimes.remove(0);
+							fakeAttackTimes.add( fakeAttackCountdown );
+							if (logger.isDebugEnabled()) {
+								logger.debug( "FAKE ATTACK AT:" + timeFitness   );
+							}
+							
+							
+							
+							//System.err.println("singleFakeAttackSensor " + singleFakeAttackSensor);
+							///System.err.println("fakeAttackSensorValues.length " + fakeAttackSensorValues.length);
+							//System.err.println("fakeAttackTimeRemaining " + fakeAttackTimeRemaining);
+							//System.err.println(" " + );
+							//System.err.println(" " + );
+							
+							
+							
+							
+							//UPDATE SENSOR DATA TO INCLUDE FAKE ATTACK SENSING
 							sensors[ singleFakeAttackSensor ] = 
+									// 8 -8 = 0
 									fakeAttackSensorValues[ fakeAttackSensorValues.length - fakeAttackTimeRemaining ];
 							
-							//update this AFTER so we dont go out of bounds
-							fakeAttackTimeRemaining--;
-							
+							////////////////////
 						} else {
-							fakeAttackCountdown--;
 							
-						}
-						
-					}
-					
-					//could happen same time as fake attack
-					if ( realAttackCountdown <= 0 ) {
-						
-						//TRIGGER ATTACK!
-						realAttackCountdown = realAttackTimes.remove(0);
-						realAttackTimes.add( realAttackCountdown );
-						if (logger.isDebugEnabled()) {
-							logger.debug( "ATTACK AT:" + timeFitness   );
-						}
-						//UPDATE SENSOR DATA TO INCLUDE REAL ATTACK SENSING
-						
-						if (enableDisplay ) {
-							System.out.println("PREDATOR ATTACK STARTS");
-						}
-						
-						//CONTINUE HERE
-						/////NEED TO HAVE PREDATOR ACCELERATE
-						//THIS WILL HUGELY REWARD EARLY DETECTION
-						//NEED TO KEEP TRACK OF DAMAGE AND DELAY PAIN SIGNAL BASED ON IT
-						//DAMAGE SHOULD HAPPEN AT DISTANCE
-						//MULTIMODAL SHOULD HAPPEN AT DISTANCE
-						evasionSpeed = startingEvasionSpeed;
-						
-						
-						predatorSpeed = predatorSpeedLower 
-								+ randomizer.getRand().nextDouble() 
-								* (predatorSpeedUpper -predatorSpeedLower);
-						
-						//NEED TO ADD THIS
-						predatorAcc = predatorAccLower 
-								+ randomizer.getRand().nextDouble() 
-								* (predatorAccUpper -predatorAccLower);
-						
-						
-						//starting at boundary, predator moves in to attack
-						predatorProximity = escapeDistance - predatorSpeed;
-						
-						//starting new attack so duration resets
-						realAttackDuration = 0;
-						
-						//pick random sensor for attack signal to come from
-						//after the first time though, incrementally move through sensors
-						//making sure attack happen on each sensor
-						if (firstRealAttackSensor == -10) {
 							
-							//if stochastic events then randomize starting real sensor
-							if (randomEvents) {
-								firstRealAttackSensor = randomizer.getRand().nextInt( numberSensors );
-							} else {
-								firstRealAttackSensor = timeFitness % numberSensors;	
-							}
 							
-						} else {
-							firstRealAttackSensor = (firstRealAttackSensor + 1) % numberSensors;
-						}
-						
-						
-						
-						//   predatorProximity = 8
-						//   escapeDistance = 10
-						//   1.0  - ( 8 / 10)
-						//   0.2
-						//   don't go above 1 even if negative proximity
-						double attackSignal = Math.min( 
-								1.0 - (predatorProximity/escapeDistance), 
-								1.0);
-						
-						sensors[firstRealAttackSensor] = attackSignal;
-						
-						
-						
-						/////////////////
-					} else {
-						
-						//System.err.println( "predatorProximity" + predatorProximity  );
-						//System.err.println( "escapeDistance" + escapeDistance  );
-						// sensitization
-						//  - multiple different sensors firing 
-						//  - drastically different strong signals are strong indication of attack 
-						//  - innocuous bumping is likely to stay in the same sensor
-						// the attack takes a while before damage is actually incurred
-						
-						//attack ongoing condition
-						if ( predatorProximity < escapeDistance) {
-							//attack has been going on longer period of time
-							durationSinceDamageFirstOccurred = -1;
-							realAttackDuration++;
-							
-							//randomize the attack sensors and increase number of sensors...
-							//singleRealAttackSensor
-							
-							if (randomEvents) {
+							if ( fakeAttackTimeRemaining > 0 ) {
 								
-								if (realAttackDynamicSensor) {
-									firstRealAttackSensor = randomizer.getRand().nextInt( numberSensors );
-									secondRealAttackSensor = randomizer.getRand().nextInt( numberSensors );
-									//pick random once, but otherwise increment
-									if (secondRealAttackSensor == firstRealAttackSensor) {
-										secondRealAttackSensor = (firstRealAttackSensor + 1) % numberSensors;
-									}
-								} 
-							} else {
-								
-								if (realAttackDynamicSensor) {
-									//just rotate sensors forward
-									firstRealAttackSensor = (firstRealAttackSensor + timeFitness) % numberSensors;
-									secondRealAttackSensor = (firstRealAttackSensor + 1) % numberSensors;
+								if (fakeAttackSensorValues.length == 0 ) {
+									System.err.println("NO cannot have initialized fakesensordata!");
+									System.exit(1);
 								}
+								
+								//when fakeattacktimeremainig = 1, then will hit length-1
+								sensors[ singleFakeAttackSensor ] = 
+										fakeAttackSensorValues[ fakeAttackSensorValues.length - fakeAttackTimeRemaining ];
+								
+								//update this AFTER so we dont go out of bounds
+								fakeAttackTimeRemaining--;
+								
+							} else {
+								fakeAttackCountdown--;
+								
+							}
+							
+						}
+						
+						//could happen same time as fake attack
+						if ( realAttackCountdown <= 0 ) {
+							
+							//TRIGGER ATTACK!
+							realAttackCountdown = realAttackTimes.remove(0);
+							realAttackTimes.add( realAttackCountdown );
+							if (logger.isDebugEnabled()) {
+								logger.debug( "ATTACK AT:" + timeFitness   );
+							}
+							//UPDATE SENSOR DATA TO INCLUDE REAL ATTACK SENSING
+							
+							if (enableDisplay ) {
+								System.out.println("PREDATOR ATTACK STARTS");
+							}
+							
+							//CONTINUE HERE
+							/////NEED TO HAVE PREDATOR ACCELERATE
+							//THIS WILL HUGELY REWARD EARLY DETECTION
+							//NEED TO KEEP TRACK OF DAMAGE AND DELAY PAIN SIGNAL BASED ON IT
+							//DAMAGE SHOULD HAPPEN AT DISTANCE
+							//MULTIMODAL SHOULD HAPPEN AT DISTANCE
+							evasionSpeed = startingEvasionSpeed;
+							
+							
+							predatorSpeed = predatorSpeedLower 
+									+ randomizer.getRand().nextDouble() 
+									* (predatorSpeedUpper -predatorSpeedLower);
+							
+							//NEED TO ADD THIS
+							predatorAcc = predatorAccLower 
+									+ randomizer.getRand().nextDouble() 
+									* (predatorAccUpper -predatorAccLower);
+							
+							
+							//starting at boundary, predator moves in to attack
+							predatorProximity = escapeDistance - predatorSpeed;
+							
+							//starting new attack so duration resets
+							realAttackDuration = 0;
+							
+							//pick random sensor for attack signal to come from
+							//after the first time though, incrementally move through sensors
+							//making sure attack happen on each sensor
+							if (firstRealAttackSensor == -10) {
+								
+								//if stochastic events then randomize starting real sensor
+								if (randomEvents) {
+									firstRealAttackSensor = randomizer.getRand().nextInt( numberSensors );
+								} else {
+									firstRealAttackSensor = timeFitness % numberSensors;	
+								}
+								
+							} else {
+								firstRealAttackSensor = (firstRealAttackSensor + 1) % numberSensors;
 							}
 							
 							
-							//if damage has occurred long enough ago, then pain sensor activates the remainder of attack
-							if (painDelay >= 0 && durationSinceDamageFirstOccurred >= painDelay ) {
-								sensors[ numberSensors +1 ] = painActivation;
-							}
 							
-							//predator accelerates each time step
-							predatorSpeed += predatorAcc;
-							
-							//predator moves closer and potentially damages Aplysia
-							predatorProximity += evasionSpeed/2 - predatorSpeed/2;
-							
-							//sensors[firstRealAttackSensor] = getRealAttackSensorSignal();
-							
+							//   predatorProximity = 8
+							//   escapeDistance = 10
+							//   1.0  - ( 8 / 10)
+							//   0.2
+							//   don't go above 1 even if negative proximity
 							double attackSignal = Math.min( 
 									1.0 - (predatorProximity/escapeDistance), 
 									1.0);
 							
 							sensors[firstRealAttackSensor] = attackSignal;
-							if ( predatorProximity <= multimodalDistance ) {
-								//ADD SENSITIZATION WITH SECOND SIGNALS CO-OCCURING
-								sensors[secondRealAttackSensor] = attackSignal;
-							}
-							
-							
-							//if in range....
-							if ( predatorProximity <= damageDistance 
-									
-									//OR IF THE ATTACK GOES ON FOR TOO LONG!
-									//THIS PREVENTS EQUILIBRIUM PARALLEL ACCELERATION OF
-									//PREDATOR AND PREY
-									//( ALTHOUGH THIS WOULD CAUSE ENERGY TO RUN OUT)
-									|| realAttackDuration > realAttackDamageDelay
-									
-									) {
-								aplysiaHealth -= predatorDamage;
-								if (durationSinceDamageFirstOccurred < 0) {
-									durationSinceDamageFirstOccurred = 0;
-								}
-							}
-							
-							if (durationSinceDamageFirstOccurred >= 0) {
-								durationSinceDamageFirstOccurred++;
-							}
 							
 							
 							
-							
+							/////////////////
 						} else {
 							
-							//if attack not occurring, then countdown to the next real attack
-							realAttackCountdown--;
-						}
-					}
-					
-					//SHOW ACTUAL OUTPUTS
-					if (logger.isDebugEnabled()) {
-						logger.debug("len: " + motors.length );
-						logger.debug("M: ");
-						for (int i=0; i< motors.length; i++) {
-							logger.debug( motors[i]+ " " );
-						}
-						logger.debug("len: " + sensors.length );
-						logger.debug("S: ");
-						for (int i=0; i< sensors.length; i++) {
-							logger.debug( sensors[i]+ " " );
-						}
-						logger.debug("END");
-						
-					}
-					//Entire ANN abstraction
-					motors = activator.next( sensors );
-					
-					double escapeActivation = motors[0];
-					
-					
-					boolean needsToEscape = predatorProximity < escapeDistance; 
-					
-					//if we have a linear or tanh activation
-					//then we need to zero it to prevent moving towards predator and gaining energy
-					if (escapeActivation < 0) {
-						
-						logger.debug("CANT HAVE NEGATIVE ESCAPE! SET TO ZERO");
-						escapeActivation = 0;
-					}
-					
-					//escape acceleration to escapeSpeed
-					//MUST be setup to make high values early more valuable...
-					//currently is
-					evasionSpeed += escapeActivation * evasionAccUpper;
-					
-					
-					if (needsToEscape) {
-						predatorProximity += evasionSpeed/2 - predatorSpeed/2;
-					}
-					
-					//it takes energy to escape which lowers energy and lifespan
-					if (escapeActivation > restThreshhold) {
-						aplysiaEnergy -= energyCostOfEscapeActivation * escapeActivation;
-					} else {
-						//if not escaping, then recovering health instead
-						aplysiaEnergy += regenerationRate;
-						if (aplysiaEnergy > aplysiaMaxEnergy) {
-							aplysiaEnergy = aplysiaMaxEnergy;
-						}
-					}
-
-					
-					//end of timestep, agent has been damaged and moved
-					
-					if ( enableDisplay  ) {
-						
-						frame.updateNeuralNetworkPanel(ViewConstants.PLAY_STATUS_TEXT, ((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork() );
-						
-						for (int j=0; j< sensors.length; j++) {
+							//System.err.println( "predatorProximity" + predatorProximity  );
+							//System.err.println( "escapeDistance" + escapeDistance  );
+							// sensitization
+							//  - multiple different sensors firing 
+							//  - drastically different strong signals are strong indication of attack 
+							//  - innocuous bumping is likely to stay in the same sensor
+							// the attack takes a while before damage is actually incurred
 							
-							System.out.print(" [ "+round( sensors[j]) +  "] "  );
-						}
-						System.out.println("");
-						System.out.println("");
-						
-						
-						//show agent, predator via text output
-						System.out.println( "Health: " + round(aplysiaHealth) + 
-								"\tEnergy: " + round(aplysiaEnergy) + 
-								"\tPredProx: " + round(predatorProximity) + 
-								"\tFalsAlrmRm: " + fakeAttackTimeRemaining + 
-								"\tEscp: " + round(escapeActivation) +
-								"\tEscSpeed: " + round(evasionSpeed) +
-								"\tPredSpeed: " + round(predatorSpeed) 
-								//"\tFakeS: " + round(sensors[ singleFakeAttackSensor ]) +
-								//"\tRealS: " + round(sensors[ firstRealAttackSensor ])
+							//attack ongoing condition
+							if ( predatorProximity < escapeDistance) {
+								//attack has been going on longer period of time
+								durationSinceDamageFirstOccurred = -1;
+								realAttackDuration++;
 								
-								);
-						
-						System.out.print("A*");
-						for (int k=0; k< 10*(predatorProximity/escapeDistance); k++ ) {
-							System.out.print("-----"+k+"-----");
+								//randomize the attack sensors and increase number of sensors...
+								//singleRealAttackSensor
+								
+								if (randomEvents) {
+									
+									if (realAttackDynamicSensor) {
+										firstRealAttackSensor = randomizer.getRand().nextInt( numberSensors );
+										secondRealAttackSensor = randomizer.getRand().nextInt( numberSensors );
+										//pick random once, but otherwise increment
+										if (secondRealAttackSensor == firstRealAttackSensor) {
+											secondRealAttackSensor = (firstRealAttackSensor + 1) % numberSensors;
+										}
+									} 
+								} else {
+									
+									if (realAttackDynamicSensor) {
+										//just rotate sensors forward
+										firstRealAttackSensor = (firstRealAttackSensor + timeFitness) % numberSensors;
+										secondRealAttackSensor = (firstRealAttackSensor + 1) % numberSensors;
+									}
+								}
+								
+								
+								//if damage has occurred long enough ago, then pain sensor activates the remainder of attack
+								if (painDelay >= 0 && durationSinceDamageFirstOccurred >= painDelay ) {
+									sensors[ numberSensors +1 ] = painActivation;
+								}
+								
+								//predator accelerates each time step
+								predatorSpeed += predatorAcc;
+								
+								//predator moves closer and potentially damages Aplysia
+								predatorProximity += evasionSpeed/2 - predatorSpeed/2;
+								
+								//sensors[firstRealAttackSensor] = getRealAttackSensorSignal();
+								
+								double attackSignal = Math.min( 
+										1.0 - (predatorProximity/escapeDistance), 
+										1.0);
+								
+								sensors[firstRealAttackSensor] = attackSignal;
+								if ( predatorProximity <= multimodalDistance ) {
+									//ADD SENSITIZATION WITH SECOND SIGNALS CO-OCCURING
+									sensors[secondRealAttackSensor] = attackSignal;
+								}
+								
+								
+								//if in range....
+								if ( predatorProximity <= damageDistance 
+										
+										//OR IF THE ATTACK GOES ON FOR TOO LONG!
+										//THIS PREVENTS EQUILIBRIUM PARALLEL ACCELERATION OF
+										//PREDATOR AND PREY
+										//( ALTHOUGH THIS WOULD CAUSE ENERGY TO RUN OUT)
+										|| realAttackDuration > realAttackDamageDelay
+										
+										) {
+									aplysiaHealth -= predatorDamage;
+									if (durationSinceDamageFirstOccurred < 0) {
+										durationSinceDamageFirstOccurred = 0;
+									}
+								}
+								
+								if (durationSinceDamageFirstOccurred >= 0) {
+									durationSinceDamageFirstOccurred++;
+								}
+								
+								
+								
+								
+							} else {
+								
+								//if attack not occurring, then countdown to the next real attack
+								realAttackCountdown--;
+							}
 						}
-						System.out.println("P");
 						
-						
-						if (needsToEscape && predatorProximity >= escapeDistance) {
-							System.out.println("ESCAPE OCCURRED!");
-							evasionSpeed = startingEvasionSpeed;
-							
+						//SHOW ACTUAL OUTPUTS
+						if (logger.isDebugEnabled()) {
+							logger.debug("len: " + motors.length );
+							logger.debug("M: ");
+							for (int i=0; i< motors.length; i++) {
+								logger.debug( motors[i]+ " " );
+							}
+							logger.debug("len: " + sensors.length );
+							logger.debug("S: ");
+							for (int i=0; i< sensors.length; i++) {
+								logger.debug( sensors[i]+ " " );
+							}
+							logger.debug("END");
 							
 						}
-						System.out.println("-----------------TIME:"+timeFitness+"-----------------------------------------");
+						//Entire ANN abstraction
+						motors = activator.next( sensors );
 						
-						try {
+						double escapeActivation = motors[0];
+						
+						
+						boolean needsToEscape = predatorProximity < escapeDistance; 
+						
+						//if we have a linear or tanh activation
+						//then we need to zero it to prevent moving towards predator and gaining energy
+						if (escapeActivation < 0) {
+							
+							logger.debug("CANT HAVE NEGATIVE ESCAPE! SET TO ZERO");
+							escapeActivation = 0;
+						}
+						
+						//escape acceleration to escapeSpeed
+						//MUST be setup to make high values early more valuable...
+						//currently is
+						evasionSpeed += escapeActivation * evasionAccUpper;
+						
+						
+						if (needsToEscape) {
+							predatorProximity += evasionSpeed/2 - predatorSpeed/2;
+						}
+						
+						//it takes energy to escape which lowers energy and lifespan
+						if (escapeActivation > restThreshhold) {
+							aplysiaEnergy -= energyCostOfEscapeActivation * escapeActivation;
+						} else {
+							//if not escaping, then recovering health instead
+							aplysiaEnergy += regenerationRate;
+							if (aplysiaEnergy > aplysiaMaxEnergy) {
+								aplysiaEnergy = aplysiaMaxEnergy;
+							}
+						}
+	
+						
+						//end of timestep, agent has been damaged and moved
+						
+						if ( enableDisplay  ) {
+							
+							frame.updateNeuralNetworkPanel(ViewConstants.PLAY_STATUS_TEXT, ((GasNeatActivator)activator).getGasNeatNet().getGasNeatNeuralNetwork() );
+							
+							for (int j=0; j< sensors.length; j++) {
+								
+								System.out.print(" [ "+round( sensors[j]) +  "] "  );
+							}
+							System.out.println("");
+							System.out.println("");
 							
 							
-							Thread.sleep( displayDelay );
+							//show agent, predator via text output
+							System.out.println( "Health: " + round(aplysiaHealth) + 
+									"\tEnergy: " + round(aplysiaEnergy) + 
+									"\tPredProx: " + round(predatorProximity) + 
+									"\tFalsAlrmRm: " + fakeAttackTimeRemaining + 
+									"\tEscp: " + round(escapeActivation) +
+									"\tEscSpeed: " + round(evasionSpeed) +
+									"\tPredSpeed: " + round(predatorSpeed) 
+									//"\tFakeS: " + round(sensors[ singleFakeAttackSensor ]) +
+									//"\tRealS: " + round(sensors[ firstRealAttackSensor ])
+									
+									);
+							
+							System.out.print("A*");
+							for (int k=0; k< 10*(predatorProximity/escapeDistance); k++ ) {
+								System.out.print("-----"+k+"-----");
+							}
+							System.out.println("P");
 							
 							
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							if (needsToEscape && predatorProximity >= escapeDistance) {
+								System.out.println("ESCAPE OCCURRED!");
+								evasionSpeed = startingEvasionSpeed;
+								
+								
+							}
+							System.out.println("-----------------TIME:"+timeFitness+"-----------------------------------------");
+							
+							try {
+								
+								
+								Thread.sleep( displayDelay );
+								
+								
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
 						}
 						
 					}
+						
+					//ASSIGN FITNESS BASED UPON LIFE OF AGENT
+					//REDUCE SCORE BASED UPON SIZE OF GENOME
+					double sizePenalty = genotype.size() * adjustForNetworkSizeFactor;
+					genotype.setFitnessValue( (int)(timeFitness - sizePenalty) );
 					
 				}
-					
-				//ASSIGN FITNESS BASED UPON LIFE OF AGENT
-				//REDUCE SCORE BASED UPON SIZE OF GENOME
-				double sizePenalty = genotype.size() * adjustForNetworkSizeFactor;
-				genotype.setFitnessValue( (int)(timeFitness - sizePenalty) );
-				
-			}
-			catch ( TranscriberException e ) {
-				logger.error( "transcriber error: " + e.getMessage() );
-				genotype.setFitnessValue( 1 );
-				System.exit(1);
+				catch ( TranscriberException e ) {
+					logger.error( "transcriber error: " + e.getMessage() );
+					genotype.setFitnessValue( 1 );
+					System.exit(1);
+				}
 			}
 		}
 		

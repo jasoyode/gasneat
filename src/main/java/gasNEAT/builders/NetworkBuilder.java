@@ -241,7 +241,7 @@ public class NetworkBuilder {
 					if (cell.getColumnIndex() == 2) {
 						gas.setPropagationSpeed((int) cell.getNumericCellValue());
 					} else if (cell.getColumnIndex() == 3) {
-						gas.setDecayFactor(cell.getNumericCellValue());
+						//gas.setDecayFactor(cell.getNumericCellValue());
 					} else if (cell.getColumnIndex() == 5) {
 						r = (float) cell.getNumericCellValue();
 					} else if (cell.getColumnIndex() == 6) {

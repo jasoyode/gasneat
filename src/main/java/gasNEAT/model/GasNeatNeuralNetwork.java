@@ -207,7 +207,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 				
 				
 				gas.setPropagationSpeed( props.getDoubleProperty( GasNeatConfiguration.GAS_SPEED_KEY ) );
-				gas.setDecayFactor(  props.getDoubleProperty( GasNeatConfiguration.GAS_DECAY_KEY )   );
+				//gas.setDecayFactor(  props.getDoubleProperty( GasNeatConfiguration.GAS_DECAY_KEY )   );
 				
 				int number = neuron.getGasProductionTypeInt();
 				

@@ -316,11 +316,13 @@ public class TargetSequenceFitnessFunction implements DisplayableBulkFitnessFunc
 							e.printStackTrace();
 						}
 					} else {
-						sb.append( String.format("Output= %.2f    ~   %.2f =Target   | Difference: %.2f", responses[i][0], targets[i][0], Math.abs( responses[i][0]- targets[i][0]   )       )  );						
+						if (logger.isDebugEnabled()) {
+							sb.append( String.format("Output= %.2f    ~   %.2f =Target   | Difference: %.2f", responses[i][0], targets[i][0], Math.abs( responses[i][0]- targets[i][0]   )       )  );
+						}
 					}
 					
 				}
-				if (!viewEnabled) {
+				if (!viewEnabled && logger.isDebugEnabled()) {
 					logger.debug( sb );
 				}
 				
@@ -372,18 +374,25 @@ public class TargetSequenceFitnessFunction implements DisplayableBulkFitnessFunc
 				}
 			}
 		}
-		
-		logger.debug("total matches: " + totalTargetsMatching );
-		logger.debug("total misses: " + totalTargetsMissing );
+		if (logger.isDebugEnabled()) {
+			logger.debug("total matches: " + totalTargetsMatching );
+			logger.debug("total misses: " + totalTargetsMissing );
+		}
 		
 		double matchRatio = 1.0 * totalTargetsMatching / ( totalTargetsMatching + totalTargetsMissing );
 		int fitness = (int)( MAX_FITNESS * matchRatio);
 		
-		logger.debug("FITNESS:"+ fitness);
+		//TEMP HACK
+		//fitness = totalTargetsMatching;
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("FITNESS:"+ fitness);
+		}
 		
 		fitness -= (int) ( adjustForNetworkSizeFactor * genotypeLength );
-		logger.debug("Penalty for size: " + (adjustForNetworkSizeFactor * genotypeLength) );
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug("Penalty for size: " + (adjustForNetworkSizeFactor * genotypeLength) );
+		}
 		return fitness;
 	}
 	
@@ -421,8 +430,9 @@ public class TargetSequenceFitnessFunction implements DisplayableBulkFitnessFunc
 				
 			}
 		}
-		
-		logger.debug("total error: " + totalError );
+		if (logger.isDebugEnabled()) {
+			logger.debug("total error: " + totalError );
+		}
 		double averageError = totalError / (totalOutputNeurons*totalTimeSteps);
 		int fitness = (int)( MAX_FITNESS - averageError);
 		
@@ -436,7 +446,9 @@ public class TargetSequenceFitnessFunction implements DisplayableBulkFitnessFunc
 		//System.out.println( fitness );
 		
 		fitness -= (int) ( adjustForNetworkSizeFactor * genotypeLength );
-		logger.debug("Penalty for size: " + (adjustForNetworkSizeFactor * genotypeLength) );
+		if (logger.isDebugEnabled()) {
+			logger.debug("Penalty for size: " + (adjustForNetworkSizeFactor * genotypeLength) );
+		}
 		
 		return fitness;
 	}

@@ -18,7 +18,7 @@ public class Gas implements Cloneable {
 	private double propagationSpeed;
 	
 	/** Decay factor of Gas */
-	private double decayFactor;
+	//private double decayFactor;
 	
 	/** Gas Dispersion Type */
 	private String gasDispersionType;
@@ -108,9 +108,9 @@ public class Gas implements Cloneable {
 	 * 
 	 * @param decayFactor
 	 */
-	public void setDecayFactor(double decayFactor) {
-		this.decayFactor = decayFactor;
-	}
+	//public void setDecayFactor(double decayFactor) {
+	//	this.decayFactor = decayFactor;
+	//}
 
 	/**
 	 * Creates a Clone of Gas object
