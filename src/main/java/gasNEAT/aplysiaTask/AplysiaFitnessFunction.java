@@ -355,7 +355,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 
 		
 		int rounds = 10;
-		int timePerRound = 20;
+		int timePerRound = 10;
 		int duration = 5;
 		int timeToMax = 3;
 		
@@ -375,28 +375,38 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 			sensors[k] = baseline;
 		}
 		
+		//outer loop one test for each individual non-pain sensor
 		for (int iter=0; iter < iterations-1; iter++) {
 			
+			//middle loop test each individual sensor with a different level of threat
 			for (int j=0; j< testingLevels.length; j++ ) {
-				Activator activator;
-				try {
-					activator = activatorFactory.newActivator( genotype );
 				
+				try {
+					//create a new activator for each test
+					Activator activator = activatorFactory.newActivator( genotype );
+					
+					//inner loop, for each individual simulated attack 
+					//we want to start at zero and increment up to the max sensor value
+					//then drop off to baseline level after reaching the maximum duration
 					for (int t=0; t< timePerRound; t++) {
+						//when less than duration
 						if ( t < duration) {
+							//less than time to max means we are building up
 							if (t< timeToMax) {
 								sensors[iter] = testingLevels[j]* (1+t) / timeToMax;
 							} else {
+								//once at max, then we stay at max
 								sensors[iter] = testingLevels[j];							
 							}
 						} else {
+							//baseline when the attack is over
 							sensors[iter] = baseline;
 						}
 						
-						
+						System.err.print(sensors[0]+ " ");
 						motors = activator.next( sensors );
 						//copy value
-						motorData[iter*j*rounds + t][0] = motors[0];
+						motorData[iter*j*rounds + j*rounds + t][0] = motors[0];
 					}
 				} catch (TranscriberException e) {
 					// TODO Auto-generated catch block
@@ -405,28 +415,36 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 			}
 		}
 		
+		System.err.println(" ------------- ");
 		
 		
-		
+		//middle loop test all sensors with a different level of threat
 		for (int j=0; j< testingLevels.length; j++ ) {
-			Activator activator;
-			try {
-				activator = activatorFactory.newActivator( genotype );
 			
-				for (int t=0; t< rounds; t++) {
+			try {
+				//create a new activator for final test
+				Activator activator = activatorFactory.newActivator( genotype );
+				
+				for (int t=0; t< timePerRound; t++) {
+					
 					if ( t < duration) {
+						
 						for (int k=0; k < sensors.length; k++) {
-							if (k< timeToMax) {
-								sensors[k] = testingLevels[j]* (1+k) / timeToMax;
+							//less than time to max means we are building up ALL sensors
+							if (t< timeToMax) {
+								sensors[k] = testingLevels[j]* (1+t) / timeToMax;
 							} else {
+								//once at max, then we stay at max for ALL sensors
 								sensors[k] = testingLevels[j];							
 							}
 						}
 					}else {
+						//otherwise event is over and set baseline for ALL sensors
 						for (int k=0; k < sensors.length; k++) {
 							sensors[k] = baseline;
 						}
 					}
+					System.err.print(sensors[0]+ " ");
 					motors = activator.next( sensors );
 					//copy value
 					motorData[(iterations-1) * rounds*timePerRound+   j*rounds + t][0] = motors[0];
@@ -589,29 +607,15 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 			//if evolving we will have multiple chromosomes and we do not want to launch habituation
 			//testing mode!
 			if ( habituationAnalysisMode && genotypes.size() == 1) {
-				
-				
-				//if (genotypes.size() > 1) {
-				//	System.err.print("DO NOT RUN HABITUATION MODE IN EVOLVER");
-				//	System.exit(1);
-				//}
-				
-				
-				
 				System.out.println("HABITUATION MODE ENABLED!");
 				habituationAnalysis( genotype);
 				System.out.println("HABITUATION ANALYSIS COMPLETE... EXITING NOW");
-				
-
 			
 			} else {
 				
 				try {
 					Activator activator = activatorFactory.newActivator( genotype );
-					
-					
-					
-					
+
 					NetworkViewFrame frame = null;
 					if (enableDisplay) {
 						activator = (GasNeatActivator)activatorFactory.newActivator( genotype );
