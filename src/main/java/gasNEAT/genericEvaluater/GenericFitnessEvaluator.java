@@ -97,9 +97,6 @@ public static void main( String[] args ) throws Exception {
 		
 	}
 	
-	
-	
-	
 
 	Chromosome chrom = db.loadChromosome( args[ 1 ], config );
 	XmlPersistableChromosome x = new XmlPersistableChromosome(chrom);

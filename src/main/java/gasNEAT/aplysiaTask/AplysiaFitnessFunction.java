@@ -359,19 +359,22 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 		//determines number of rounds
 		double[] testingLevels = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
 		
-		//WIDTH - columns
-		int timePerRound = 10;
+		
 		
 		//WIDTH OF STIMULUS
-		int duration = 5;
+		int duration = fakeAttackDurationUpper;
+		
+		//WIDTH - columns
+		int timePerRound = duration*2;
 		
 		//HOW QUICKLY DOES STIMULUS PEAK
-		int timeToMax = 3;
+		int timeToMax = (int) (10/ predatorAccUpper) ;
 		
 		//EACH SENSOR PLUS 1 FOR ALL
 		int iterations = (1 + sensors.length );
 		
-		double baseline = 0.0;
+		//set from properties
+		double baseline = baselineSignal;
 		
 		
 		//HEIGHT - rows
@@ -484,6 +487,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 						System.err.print(  " | ");
 					}
 					motors = activator.next( sensors );
+					
 					/*
 					System.err.println("");
 					System.err.println((iterations-1)+ " iterations-1");
@@ -536,7 +540,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		
-		ActivationMapPanel panel = new ActivationMapPanel(iterations, rounds, timePerRound, testingLevels, motorData );
+		ActivationMapPanel panel = new ActivationMapPanel(iterations, rounds, timePerRound, testingLevels, motorData, duration, timeToMax );
 		panel.setLayout(new BorderLayout());
 		
 		frame.add(panel);
@@ -554,16 +558,19 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 		private int rounds;
 		private int timePerRound;
 		private double[] testingLevels;
+		private int duration;
+		private int timeToMax;
 		
 		
-		public ActivationMapPanel(int iterations, int rounds, int timePerRound, double[] testingLevels, double[][] motorData ) {
+		public ActivationMapPanel(int iterations, int rounds, int timePerRound, double[] testingLevels, double[][] motorData, int duration, int timeToMax ) {
 			
 			this.motorData = motorData;
 			this.iterations = iterations;
 			this.rounds = rounds;
 			this.timePerRound = timePerRound;
 			this.testingLevels = testingLevels;
-			
+			this.duration = duration;
+			this.timeToMax = timeToMax;
 			
 		}
 		
@@ -572,11 +579,44 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g;
 			
-			int verticalSpacing = 250;
+			
 			int indentX = 100;
 			int indentY = 50;
+			int verticalSpacing = 20*rounds +indentY ;
 			
 			for (int s=0; s< iterations; s++) {
+				
+				StringBuilder sb = new StringBuilder();
+				
+				
+				if (s+1 == iterations) {
+					sb.append( "Test w/ALL :"   );
+				} else {
+					sb.append( "Test w/sensor "+s+":"   );
+				}
+				
+				/*
+				for (int t=0; t< timePerRound; t++) {
+					if ( t < duration) {
+						//less than time to max means we are building up
+						if (t< timeToMax) {
+							sensors[sensorNum] = testingLevels[r]* (1+t) / timeToMax;
+						} else {
+							//once at max, then we stay at max
+							sensors[sensorNum] = testingLevels[r];							
+						}
+					} else {
+						//baseline when the attack is over
+						sensors[sensorNum] = baseline;
+					}
+				}
+				*/
+				
+				
+				g2d.setColor( Color.BLACK  );
+				g2d.drawString( sb.toString() , 0  , s * verticalSpacing + indentY- 10  );
+				
+				/*
 				if (s+1 == iterations) {
 					g2d.setColor( Color.BLACK  );
 					g2d.drawString("Test w/ALL :" , 0  , s * verticalSpacing + indentY -10 );
@@ -584,6 +624,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 					g2d.setColor( Color.BLACK  );
 					g2d.drawString("Test w/sensor"+s+":" , 0  , s * verticalSpacing + indentY- 10  );
 				}
+				*/
 				
 				for (int r=0; r< rounds; r++) {
 					g2d.setColor( Color.BLACK  );
@@ -598,7 +639,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 							colorNumber  = 255;
 						}
 						
-						g2d.setColor(new Color(colorNumber, 0,0 )  );
+						g2d.setColor(new Color(255, 255-colorNumber,255-colorNumber )  );
 						g2d.fillOval(indentX + t*20 , indentY +s* verticalSpacing + 20 *r , 10, 10);
 						
 						
@@ -606,6 +647,13 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 					}
 					//System.out.println("");				
 				}
+				
+				//draw line showing end of fake attack
+				
+				g2d.setColor(new Color(100, 100, 100 )  );
+				g2d.fillRect(indentX + ((timePerRound/2))*20 -5 , indentY , 2, +iterations * verticalSpacing);
+				
+				
 			}
 			
 			
