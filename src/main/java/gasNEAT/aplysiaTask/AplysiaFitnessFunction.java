@@ -2,15 +2,20 @@ package gasNEAT.aplysiaTask;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -545,8 +550,38 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 		
 		frame.add(panel);
 		
+		frame.repaint();
 		
-		//panel.repaint();
+		/*
+		//write the contents to a file
+		Container c = frame.getContentPane();
+		BufferedImage im = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		
+		c.paint(im.getGraphics());
+		
+		
+		try {
+			ImageIO.write(im, "PNG", new File("sampleOutput.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		/*/
+		
+		/*/
+		
+		Dimension componentSize = frame.getPreferredSize();
+		frame.setSize(componentSize); // need to make sure that both sizes are equal
+		BufferedImage image = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
+		
+		Graphics g = image.createGraphics();
+		g.fillRect(0, 0, image.getWidth(), image.getHeight());
+		frame.print(g);
+		
+		/*/
+		
+		
+		
 		
 		
 	}
@@ -574,14 +609,11 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 			
 		}
 		
-		@Override
-		protected void paintComponent(Graphics g)  {
-			super.paintComponent(g);
-			Graphics2D g2d = (Graphics2D) g;
-			
+		//created method since this code gets called twice
+		private void drawPanel(Graphics2D g2d) {
 			
 			int indentX = 100;
-			int indentY = 50;
+			int indentY = 30;
 			int verticalSpacing = 20*rounds +indentY ;
 			
 			for (int s=0; s< iterations; s++) {
@@ -645,25 +677,43 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 						
 						//System.out.print( round( motorData[ s*rounds*timePerRound + r*timePerRound + t  ][0], 3 ) +" \t" );
 					}
-					//System.out.println("");				
 				}
-				
+	
 				//draw line showing end of fake attack
-				
 				g2d.setColor(new Color(100, 100, 100 )  );
 				g2d.fillRect(indentX + ((timePerRound/2))*20 -5 , indentY , 2, +iterations * verticalSpacing);
-				
-				
 			}
-			
-			
-			
-			
 			
 			
 		}
 		
 		
+		
+		@Override
+		protected void paintComponent(Graphics g)  {
+			super.paintComponent(g);
+			Graphics2D g2d = (Graphics2D) g;
+			
+			drawPanel(g2d);
+			
+			//Terrible, but re-drawing a second time because I cannot get it to invoke it properly and not enough time to debug
+			// this is stupid but it will work
+			BufferedImage image = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
+			g2d = (Graphics2D) image.getGraphics();
+			super.paintComponent( g2d );
+			
+			drawPanel( g2d);
+			
+			try {
+				ImageIO.write(image, "PNG", new File("habituation_dynamics.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+		}
 	}
 	
 	
@@ -953,7 +1003,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 							
 							
 							//starting at boundary, predator moves in to attack
-							predatorProximity = escapeDistance - predatorSpeed;
+							predatorProximity = escapeDistance - predatorSpeed/2;
 							
 							//starting new attack so duration resets
 							realAttackDuration = 0;
@@ -1006,6 +1056,11 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 								durationSinceDamageFirstOccurred = -1;
 								realAttackDuration++;
 								
+								//if (realAttackDuration > 4) {
+								//	System.err.print("TEMP EXIT FOR LOOKING AT ACC");
+								//	System.exit(1);
+								//}
+								
 								//randomize the attack sensors and increase number of sensors...
 								//singleRealAttackSensor
 								
@@ -1045,6 +1100,9 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 								double attackSignal = Math.min( 
 										1.0 - (predatorProximity/escapeDistance), 
 										1.0);
+								
+								
+								//System.err.println( attackSignal );
 								
 								sensors[firstRealAttackSensor] = attackSignal;
 								if ( predatorProximity <= multimodalDistance ) {
@@ -1104,6 +1162,10 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 						double escapeActivation = motors[0];
 						
 						
+						//if ( realAttackDuration > 0) {
+						//	escapeActivation = 1;
+						//}
+						
 						boolean needsToEscape = predatorProximity < escapeDistance; 
 						
 						//if we have a linear or tanh activation
@@ -1121,6 +1183,7 @@ public class AplysiaFitnessFunction implements DisplayableBulkFitnessFunction, C
 						
 						
 						if (needsToEscape) {
+							//System.out.println( (evasionSpeed/2) + " -  " + (predatorSpeed/2));
 							predatorProximity += evasionSpeed/2 - predatorSpeed/2;
 						}
 						

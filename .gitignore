@@ -3,7 +3,7 @@
 *.~
 bin/*
 
-
+src/test/java/images/image-normalizer/*
 src/test/java/images/matches/*
 
 # Log file
