@@ -269,7 +269,6 @@ public GasNeatNet newGasNeatNet( Chromosome chromosome, Properties props ) throw
 		
 		SynapseBuilder builder = new SynapseBuilder(src.getId(), dest.getId(), connAllele.getWeight(), modulatory, a,b,c,d,lr, props );
 		
-		//ULTRATODO int big enough
 		synapseMap.put( SynapseBuilder.elegantPairing( src.getId(), dest.getId()), new GasNeatSynapse(builder) );
 		
 	}

@@ -109,6 +109,9 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 	while ( ( i++ < numMutations ) && iter.hasNext() ) {
 		GasNeatNeuronAllele origAllele = (GasNeatNeuronAllele) iter.next();
 		int nextGas = ( config.getRandomGenerator().nextInt(gasCount+1) ) ;
+		
+		///MEGATODO - make sure its different
+		
 		GasNeatNeuronAllele newAllele = (GasNeatNeuronAllele) origAllele.cloneAllele();
 		newAllele.setSynapticGasEmissionType( nextGas);
 		genesToRemove.add( origAllele );

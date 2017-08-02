@@ -476,13 +476,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 			printState();
 			
 		}
-		
-		
-		//HERE   TEMP TURN OFF!!!!!
-		//TODO FIXME #GASNEATMODEL
-		//this.LOG.info("this.modulateSynapses();");
-		//this.updateSynapticPlasticityAndWeights();
-		
+				
 
 		logger.debug("--------------------------------STEP ENDED");
 		
@@ -544,6 +538,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 				this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
 			}
 			*/
+			//REMOVEBUFFER
 			this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
 			
 		}
@@ -607,6 +602,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	private void loadBufferedConcentrationsInSynapses(GasNeatNeuron tempNeuron) {
 		
 		// #GASNEATMODEL
+		//REMOVEBUFFER
 		
 		ArrayList<Long> outgoingSynapses = tempNeuron.getOutgoingSynapses();
 		//String gasType = tempNeuron.getSynapseProductionType();

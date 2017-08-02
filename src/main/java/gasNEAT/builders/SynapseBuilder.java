@@ -79,8 +79,12 @@ public class SynapseBuilder {
 	public static long elegantPairing(long x, long y) {
 		
 		if (x > 1000000000 || y > 1000000000) {
-			System.err.println( "too big!");
-			System.exit( -1 );
+			try {
+				throw new Exception("network must be too large, ids are beyond the maximum allowable size!");
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit( -1 );
+			}
 		}
 		
 		
@@ -173,6 +177,10 @@ public class SynapseBuilder {
 	 * @return GasNeatSynapse
 	 */
 	public GasNeatSynapse buildRandomSynapse() {
+		
+		System.err.println("NOT READY!");
+		System.exit(-1);
+		
 		//TODO FIXME - ConnectioNAllele goes from -1 to +1
 		Randomizer randomizer = (Randomizer) props.singletonObjectProperty( Randomizer.class );
 		Random rand = randomizer.getRand();

@@ -159,13 +159,15 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 			if ( ! receptorType.equals( other.getReceptorType() ) ) {
 				//ULTRATODO calculate the important differences in receptor types
 				distance += 1.0;
+				
 				//because of being activated by gas, distance is important
 				//#GASNEATMODEL  ULTRATODO
 				//this needs to be distinguished between how different receptors are!
-				//distance += cartesianDistance;
+				//distance += cartesianDistance/gasspeed?;
+				//ULTRATODO
+				//should be based on overlap of gases possible and also the activaton type
 				
-				//System.out.println("THIS SHOULD NOT HAPPEN diff receptors dont exist yet");
-				//System.exit(-1);
+
 				
 			} else {
 				//position is less important if both are electrically activated

@@ -41,6 +41,9 @@ public class SpreadsheetFreeNetworkBuilder {
 	 * @return Chromosome
 	 */
 	public ChromosomeMaterial buildBaseNetworkAlleles(int numInputNeurons) {
+		System.err.println("NOT READY!");
+		System.exit(-1);
+		
 		ArrayList<Allele> alleles = new ArrayList<Allele>();
 		ArrayList<GasNeatNeuron> inputNeurons = new ArrayList<GasNeatNeuron>();
 		

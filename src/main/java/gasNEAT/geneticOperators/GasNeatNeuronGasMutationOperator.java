@@ -115,6 +115,8 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 
 		GasNeatNeuronAllele newAllele = (GasNeatNeuronAllele) origAllele.cloneAllele();
 		newAllele.setGasEmissionType( nextGas);
+		
+		///?MEGATODO RADIUS from config 
 		newAllele.setGasEmissionRadius( 300); //CHANGE_RADIUS
 		
 		//System.out.println( "SET INSIDE OF MUTATE"   );
