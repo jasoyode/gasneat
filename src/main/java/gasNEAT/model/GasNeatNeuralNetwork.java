@@ -248,7 +248,6 @@ public class GasNeatNeuralNetwork implements Cloneable {
 			if ( !receptorMap.containsKey( neuron.getReceptor().getReceptorID())  ) {
 				receptorMap.put( neuron.getReceptor().getReceptorID()  , neuron.getReceptor() );
 			}
-			//ULTRATODO is int enough?
 			neuronMap.put( neuron.getId(), neuron);
 		}
 

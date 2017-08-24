@@ -312,11 +312,6 @@ public class GasNeatNeuron extends Neuron {
 	 * @return neuronID Neuron ID
 	 */
 	public long getNeuronID() {
-		//Use the historical marker instead
-		//#ULTRATODO test and see if this has to be this way
-		//return "N"+getId();
-		//ULTRATODO is int big enough?
-		//return neuronIDLong;
 		return getId();
 	}
 

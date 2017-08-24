@@ -40,7 +40,7 @@ import gasNEAT.geneticEncoding.GasNeatNeuronAllele;
 /**
  * Implements a Mutation that changes the Neuron from producing one gas to another...
  * 
- * @author Philip Tucker
+ * @author Jason Yoder
  */
 public class GasNeatNeuronGasMutationOperator extends MutationOperator implements Configurable {
 

@@ -40,7 +40,7 @@ import gasNEAT.geneticEncoding.GasNeatNeuronAllele;
 /**
  * Implements a Mutation that changes the Neuron from producing one gas to another...
  * 
- * @author Philip Tucker
+ * @author Jason Yoder
  */
 public class GasNeatNeuronSynapticGasMutationOperator extends MutationOperator implements Configurable {
 
@@ -110,10 +110,23 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 		GasNeatNeuronAllele origAllele = (GasNeatNeuronAllele) iter.next();
 		int nextGas = ( config.getRandomGenerator().nextInt(gasCount+1) ) ;
 		
-		///MEGATODO - make sure its different
+		///Make sure new synapticgastype is different
+		if ( origAllele.getSynapticGasEmissionType() == nextGas ) {
+			nextGas = (nextGas + 1) % gasCount; 
+		}
 		
 		GasNeatNeuronAllele newAllele = (GasNeatNeuronAllele) origAllele.cloneAllele();
 		newAllele.setSynapticGasEmissionType( nextGas);
+		
+		if ( origAllele.getSynapticGasEmissionType() == newAllele.getSynapticGasEmissionType()) {
+			try {
+				throw new Exception("New Synaptic Gas was not different!");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+				
 		genesToRemove.add( origAllele );
 		genesToAdd.add( newAllele );
 		 

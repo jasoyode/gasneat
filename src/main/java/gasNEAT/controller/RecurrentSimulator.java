@@ -530,14 +530,6 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		// We must take the current loaded values in buffer and update our activation levels
 		// This is reverse from previous
 		for (GasNeatNeuron tempNeuron : neuralNetwork.getNeuronMap().values()) {
-			/*
-			if (!tempNeuron.isGasEmitter() ) {
-				this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
-			} else {
-				//ULTRATODO not sure why this handle was here, but we might need to change...
-				this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
-			}
-			*/
 			//REMOVEBUFFER
 			this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
 			
