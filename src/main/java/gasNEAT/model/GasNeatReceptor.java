@@ -40,7 +40,7 @@ public class GasNeatReceptor {
 	//private HashMap<String, Double> builtUpConcentrations2 = new HashMap<String, Double>();
 	
 	private double[] bufferedConcentrations = new double[NUMBER_GASES];
-	private double[] builtUpConcentrations = new double[NUMBER_GASES];
+	//private double[] builtUpConcentrations = new double[NUMBER_GASES];
 	
 	private static ArrayList<String> receptorMap;
 	//
@@ -161,7 +161,6 @@ public class GasNeatReceptor {
 	public void setupReceptorMap() {
 		
 		if (receptorMap == null ) {
-		
 			receptorMap = new ArrayList<String>(); 
 			try {
 				BufferedReader receptorList = new BufferedReader( new FileReader( receptorMapFilePath ));
@@ -171,53 +170,12 @@ public class GasNeatReceptor {
 					currentLine = receptorList.readLine();
 				}
 				receptorList.close();
-				
 			
 			} catch ( IOException e) {
-				// TODO Auto-generated catch block
 				System.out.println("Could not read file:" +receptorMapFilePath );
 				e.printStackTrace();
-				System.exit(1);
 			}
-			
-			
 		}
-		
-		//receptorMap.put("NO_NO_NO_NO_NO", "NO_NO_NO_NO_NO");
-		//receptorMap.put("0", "NO_G1_G2_G3_G4");
-
-		//#GASNEATMODEL
-		//ONLY INCLUDE PLASTICITY MODULATION WITH TWO GASES
-		
-		//receptorMap.put("0",   "NO_G3_G4_G1_G2");
-		//receptorMap.put("0",   "G0_NO_NO_NO_NO");
-		
-		//receptorMap.put("1",   "G1_NO_NO_NO_NO");
-		//receptorMap.put("1",   "G0_G1_G2_G3_G4");
-
-
-		//POSSIBLYTODO
-		//Need to define the various neuromodulation modes
-		//To allow for each variations on receptors
-		
-		//MODULATION_MODE ENUM:
-		//modulation mode    ACT-MOD, PLA-SYN, BOTH, NONE
-		//gasmode
-		
-		//GAS-MODE     flat vs. concentration
-		
-		//if ACT-MOD enabled:
-		//receptorMap.put("*",  "NO_G1_G2_NO_NO");
-				
-		//if PLA-MOD enabled:
-		//receptorMap.put("*",  "NO_NO_NO_G3_G4");
-		
-		//if BOTH ENABLED
-		//receptorMap.put("*",  "NO_G1_G2_G3_G4");
-		//receptorMap.put("*",  "NO_NO_NO_NO_NO");
-			
-		//abstract polynomial unlimited mode
-		
 	}
 	
 	
@@ -306,7 +264,7 @@ public class GasNeatReceptor {
 
 		//#ARRAYMAP
 		//activationLevelPreSquash = builtUpConcentrations.get(activationType2);
-		activationLevelPreSquash = builtUpConcentrations[activationTypeInt];
+		activationLevelPreSquash = bufferedConcentrations[activationTypeInt];
 		
 		checkReasonableValue(activationLevelPreSquash);
 		
@@ -315,18 +273,9 @@ public class GasNeatReceptor {
 	/**
 	 * Set the concentration to zero
 	 */
-	public void clearBuiltUpConcentrations() {
-		//#ARRAYMAP
-		//The bufferedConcentrations should stay between steps
-		/*
-		for (String concentration: builtUpConcentrations2.keySet()) {
-			builtUpConcentrations2.put(concentration, 0.0);
-		}
-		//*/
-		
+	public void clearBufferedConcentrations() {
 		//builtUpConcentrations = new double[NUMBER_GASES];		
-		Arrays.fill(builtUpConcentrations, 0.0);
-
+		Arrays.fill(bufferedConcentrations, 0.0);
 		//checkAndKill("clearBuiltUpConcentrations");
 		
 	}
@@ -342,7 +291,7 @@ public class GasNeatReceptor {
 		//#BOTTLENECK
 		
 		//#SPEEDTEST
-		activationLevelPreSquash = activationLevelPreSquash * (1 + activationModFunction.evaluate( builtUpConcentrations) ); 
+		activationLevelPreSquash = activationLevelPreSquash * (1 + activationModFunction.evaluate( bufferedConcentrations) ); 
 		
 		
 		//add a parameter?
@@ -390,9 +339,6 @@ public class GasNeatReceptor {
 	 */
 	public void modulatePlasticityFromConcentrations() {
 		//checkAndKill("modulatePlasticityFromConcentrations");
-		
-		
-		
 		if (exclusiveNeuromodulatedPlasticity && minimumPlasticity > 0) {
 			System.err.println("You must allow plasticity to reach zero if you have enabled neuromodulated plasticity");
 			System.err.println("because if there is no modulation present, the plasticity must be zero!");
@@ -410,13 +356,13 @@ public class GasNeatReceptor {
 			//way way faster for the time being
 			//adding simple option to squash the modulation signal 
 			if (tanhSquashModulationSignal) {
-				plasticity = Math.tanh( receptorStrength * plasticityModFunction.evaluate( builtUpConcentrations  ) / 2 );
+				plasticity = Math.tanh( receptorStrength * plasticityModFunction.evaluate( bufferedConcentrations  ) / 2 );
 				
 				//System.out.println("squashed: " + plasticity);
 				//System.out.println("non-squahsed: "  + plasticityModFunction.evaluate( builtUpConcentrations  ) );
 				
 			} else {
-				plasticity = receptorStrength * plasticityModFunction.evaluate( builtUpConcentrations  );
+				plasticity = receptorStrength * plasticityModFunction.evaluate( bufferedConcentrations  );
 				
 				//System.out.println("non-squashed: " + plasticity);
 				//System.out.println("squashed: "  + Math.tanh(  plasticityModFunction.evaluate( builtUpConcentrations  ) / 2 )	);
@@ -427,10 +373,10 @@ public class GasNeatReceptor {
 		} else {
 			
 			if (tanhSquashModulationSignal) {
-				plasticity = ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( builtUpConcentrations) / 2 ) );
+				plasticity = ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( bufferedConcentrations) / 2 ) );
 			} else {
 				//#SPEEDTEST
-				plasticity =  ( 1.0 + receptorStrength * plasticityModFunction.evaluate( builtUpConcentrations) );
+				plasticity =  ( 1.0 + receptorStrength * plasticityModFunction.evaluate( bufferedConcentrations) );
 			}
 		}
 
@@ -507,7 +453,7 @@ public class GasNeatReceptor {
 			this.builtUpConcentrations2.put(gas, 0.0);
 		}
 		//*/
-		builtUpConcentrations = new double[NUMBER_GASES];
+		bufferedConcentrations = new double[NUMBER_GASES];
 		
 		//checkAndKill("setGasList");
 		
@@ -555,7 +501,7 @@ public class GasNeatReceptor {
 		
 		//#ARRAYMAP
 		//checkAndKill("getActivationConcentration");
-		return builtUpConcentrations[activationTypeInt];
+		return bufferedConcentrations[activationTypeInt];
 		//return builtUpConcentrations.get(activationType);
 	}
 	
@@ -643,7 +589,7 @@ public class GasNeatReceptor {
 		this.activationType = activationType;
 		
 		//this.builtUpConcentrations2.put(this.getActivationType(), 0.0);
-		this.builtUpConcentrations[activationTypeInt]= 0.0;
+		this.bufferedConcentrations[activationTypeInt]= 0.0;
 		
 		
 		//checkAndKill("setActivationType");
@@ -654,8 +600,8 @@ public class GasNeatReceptor {
 	 * @return builtUpConcentrations
 	 */
 	//public HashMap<String, Double> getBuiltUpConcentrations() {
-	public double[] getBuiltUpConcentrations() {
-		return builtUpConcentrations;
+	public double[] getBufferedConcentrations() {
+		return bufferedConcentrations;
 		//#ARRAYMAP
 		//return builtUpConcentrations2;
 	}
@@ -667,10 +613,10 @@ public class GasNeatReceptor {
 	 * and significantly, it also sets the buffered concentrations to zero
 	 * @return void
 	 */
-	public void pushBufferedConcentrations() {
+	public void pushBufferedConcentrationsX() {
 		
 		//#ARRAYMAP
-		builtUpConcentrations = bufferedConcentrations.clone();
+		//builtUpConcentrations = bufferedConcentrations.clone();
 		
 		//bufferedConcentrations = new double[NUMBER_GASES];
 		
@@ -723,11 +669,11 @@ public class GasNeatReceptor {
 		return sb.toString();
 	}
 	
-	public String getBuiltUpConcentrationsText() {
+	public String getBuiltUpConcentrationsTextX() {
 		StringBuilder sb = new StringBuilder();
-		for (int i=0; i< builtUpConcentrations.length; i++) {
-			sb.append( "["+i+"]: "+ builtUpConcentrations[i] +"   "    );
-		}
+		//for (int i=0; i< builtUpConcentrations.length; i++) {
+		//	sb.append( "["+i+"]: "+ builtUpConcentrations[i] +"   "    );
+		//}
 		return sb.toString();
 	}
 
@@ -758,7 +704,7 @@ public class GasNeatReceptor {
 		//*/
 		//#ARRAYMAP
 		//builtUpConcentrations = new double[NUMBER_GASES];
-		Arrays.fill(builtUpConcentrations,  0.0);
+		Arrays.fill(bufferedConcentrations,  0.0);
 	}
 
 	public void clear() {
@@ -772,7 +718,7 @@ public class GasNeatReceptor {
 		//builtUpConcentrations = new double[NUMBER_GASES];
 		//bufferedConcentrations = new double[NUMBER_GASES];
 		
-		Arrays.fill(builtUpConcentrations,  0.0);
+		//Arrays.fill(builtUpConcentrations,  0.0);
 		Arrays.fill(bufferedConcentrations,  0.0);
 		
 	}

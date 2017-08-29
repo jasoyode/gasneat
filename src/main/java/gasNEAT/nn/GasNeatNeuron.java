@@ -232,7 +232,7 @@ public class GasNeatNeuron extends Neuron {
 		receptor.modulateActivationLevelFromConcentrations();
 		
 		//May need to be altered
-		receptor.clearBuiltUpConcentrations();
+		receptor.clearBufferedConcentrations();
 	}
 
 	/**
@@ -385,22 +385,6 @@ public class GasNeatNeuron extends Neuron {
 	public double getActivationConcentrationBuffer() {
 		return receptor.getActivationConcentrationBuffer();
 	}
-	
-	
-
-	/**
-	 * Sets activationConcentration
-	 * 
-	 * @param concentration
-	 *            Activation concentration
-	 */
-	/*
-	public void setActivationConcentration(double concentration) {
-		receptor.setGasConcentration( receptor.getActivationType(), concentration);
-		System.out.println( "Should add to buffer instead!"  );
-		System.exit(-1);
-	}
-	*/
 	
 	public void addToActivationConcentrationGasBuffer( double concentrationToAdd) {
 		receptor.addBufferedConcentration( receptor.getActivationType()  , concentrationToAdd);

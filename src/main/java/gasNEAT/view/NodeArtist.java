@@ -175,7 +175,7 @@ public class NodeArtist {
 			String str = ""+ neuron.getActivationConcentration();
 			g2d.drawString("activation con: "+str, x-8, y+10);			str = LoggingUtilities.getStringFormat( neuron.getReceptor().getBufferedConcentration() );
 			g2d.drawString("buffered   con:"+ str, x-8, y+25);
-			str = LoggingUtilities.getStringFormat( neuron.getReceptor().getBuiltUpConcentrations() );
+			str = LoggingUtilities.getStringFormat( neuron.getReceptor().getBufferedConcentrations() );
 			g2d.drawString("builtup    con:"+str, x-8, y+40);
 		}
 	}

@@ -402,7 +402,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 				logger.debug("");
 				
 				logger.debug("    " + neuronID +"buffer |" +  neuron.getReceptor().getBufferedConcentrationText() );
-				logger.debug("    " + neuronID +"built^ |" +  neuron.getReceptor().getBuiltUpConcentrationsText() );
+				//logger.debug("    " + neuronID +"built^ |" +  neuron.getReceptor().getBuiltUpConcentrationsText() );
 			}
 		}
 	}
@@ -529,11 +529,11 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		
 		// We must take the current loaded values in buffer and update our activation levels
 		// This is reverse from previous
-		for (GasNeatNeuron tempNeuron : neuralNetwork.getNeuronMap().values()) {
+		//for (GasNeatNeuron tempNeuron : neuralNetwork.getNeuronMap().values()) {
 			//MEGATODO #1 REMOVEBUFFER
-			this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
+			//this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
 			
-		}
+		//}
 		
 		logger.debug("STATE AFTER pushBufferedSynapsesToBuiltUpConcentrations");
 		printState();
@@ -649,11 +649,11 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	/**
 	 * @param tempNeuron
 	 */
-	private void pushBufferedConcentrationsToBuiltUpConcentrations(GasNeatNeuron tempNeuron) {
+	private void pushBufferedConcentrationsToBuiltUpConcentrationsX(GasNeatNeuron tempNeuron) {
 		
 		// #GASNEATMODEL
 		//MEGATODO #1 REMOVEBUFFER
-		neuralNetwork.getNeuron( tempNeuron.getId()  ).getReceptor().pushBufferedConcentrations();
+		//neuralNetwork.getNeuron( tempNeuron.getId()  ).getReceptor().pushBufferedConcentrations();
 	}
 	
 	/**
