@@ -39,6 +39,7 @@ public class GasNeatReceptor {
 	//Stores the current concentration of gases and synaptic activations
 	//private HashMap<String, Double> builtUpConcentrations2 = new HashMap<String, Double>();
 	
+	//MEGATODO #1 cleanup buffer vs. builtup make just concentration!
 	private double[] bufferedConcentrations = new double[NUMBER_GASES];
 	//private double[] builtUpConcentrations = new double[NUMBER_GASES];
 	
@@ -607,24 +608,6 @@ public class GasNeatReceptor {
 	}
 
 
-	
-	/**
-	 * This method moves the buffered concentrations into the builtUpConcentrations
-	 * and significantly, it also sets the buffered concentrations to zero
-	 * @return void
-	 */
-	public void pushBufferedConcentrationsX() {
-		
-		//#ARRAYMAP
-		//builtUpConcentrations = bufferedConcentrations.clone();
-		
-		//bufferedConcentrations = new double[NUMBER_GASES];
-		
-		Arrays.fill(bufferedConcentrations,  0.0);
-		
-		//checkAndKill("pushBufferedConcentrations");
-		
-	}
 
 	/**
 	 * This method will add concentrations to be buffered until the next timestep
