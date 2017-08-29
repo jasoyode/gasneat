@@ -220,9 +220,14 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 		int verticalPadding =20;
 		int outputLayerX = 200;
 		
-		//ULTRATODO this is can be set from file, for now leave as is
+		//setGasEmissionRadius( GasNeatConfiguration.getInitialEmissionRadius()  ); 
+		setGasEmissionRadius( GasNeatConfiguration.getMinEmissionRadius() + 
+				rand.nextInt(  1 + 
+						GasNeatConfiguration.getMaxEmissionRadius() - GasNeatConfiguration.getMinEmissionRadius() )   
+				);   
+
 		
-		setGasEmissionRadius( GasNeatConfiguration.getInitialEmissionRadius()  ); 
+		
 		setGasSpeed( GasNeatConfiguration.getGasSpeed()  );
 		//unless its emitting gas leave at 0
 		setGasEmissionStrength( 0.1 );
@@ -436,6 +441,22 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 
 	public void setGasEmissionRadius(int gasEmissionRadius) {
 		this.gasEmissionRadius = gasEmissionRadius;
+		
+		if ( gasEmissionRadius > GasNeatConfiguration.getMaxEmissionRadius()) {
+			try {
+				throw new Exception("gas emission radius too large!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if ( gasEmissionRadius < GasNeatConfiguration.getMinEmissionRadius()) {
+			try {
+				throw new Exception("gas emission radius too small!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
 	}
 	
 	public void setSynapticGasEmissionType(int synapticGasEmissionType) {

@@ -189,8 +189,14 @@ public final static String INITIAL_TOPOLOGY_ACTIVATION_OUTPUT_KEY = "initial.top
 public final static String GAS_COUNT_KEY = "gasneat.gas.count";
 public final static String GAS_SPEED_KEY = "gasneat.gas.speed";
 public final static String GAS_DECAY_KEY = "gasneat.gas.decay";
-public final static String INIT_GAS_EMISSION_RADIUS_KEY = "gasneat.init.emission.radius";
+//public final static String INIT_GAS_EMISSION_RADIUS_KEY = "gasneat.init.emission.radius";
+public final static String MIN_GAS_EMISSION_RADIUS_KEY = "gasneat.min.emission.radius";
+public final static String MAX_GAS_EMISSION_RADIUS_KEY = "gasneat.max.emission.radius";
+
+
 public final static String CUSTOM_INIT_KEY = "gasneat.custom.init";
+
+
 
 /**
  *  recurrent cycles properties key
@@ -240,7 +246,10 @@ private static @Getter boolean topologicalNeuromodulationEnabled;
 private static @Getter boolean flatConcentrationGradient;
 
 
-private static @Getter int initialEmissionRadius;
+//private static @Getter int initialEmissionRadius;
+private static @Getter int minEmissionRadius;
+private static @Getter int maxEmissionRadius;
+
 private static @Getter double gasSpeed;
 
 
@@ -790,7 +799,9 @@ private void init( Properties newProps ) throws InvalidConfigurationException {
 	randomizeGasEmittedRate = props.getDoubleProperty( RANDOMIZE_GAS_EMITTED_KEY, 0.5 );
 	randomizeSynapticGasRate = props.getDoubleProperty( RANDOMIZE_SYNAPTIC_GAS_KEY, 0.5 );
 	
-	initialEmissionRadius = props.getIntProperty( INIT_GAS_EMISSION_RADIUS_KEY, 300 );
+	
+	minEmissionRadius = props.getIntProperty( MIN_GAS_EMISSION_RADIUS_KEY, 300 );
+	maxEmissionRadius = props.getIntProperty( MAX_GAS_EMISSION_RADIUS_KEY, 300 );
 	gasSpeed = props.getDoubleProperty( GAS_SPEED_KEY, 33 );
 	
 	
@@ -929,8 +940,27 @@ public void initializeAlleles( SortedSet alleles ) {
 			//should all be standard speed for now
 			neuronAllele.setGasSpeed( gasSpeed  );
 			
-			//radius mutation needs to be added, does not exist currently
-			neuronAllele.setGasEmissionRadius(  initialEmissionRadius ); 
+			if ( minEmissionRadius == maxEmissionRadius ) {
+				neuronAllele.setGasEmissionRadius(  minEmissionRadius );
+			} else {
+				neuronAllele.setGasEmissionRadius( minEmissionRadius + rand.nextInt( 1 + maxEmissionRadius - minEmissionRadius)  );
+			}
+			
+			if ( neuronAllele.getGasEmissionRadius() > maxEmissionRadius) {
+				try {
+					throw new Exception("gas emission radius too large!");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (neuronAllele.getGasEmissionRadius() < minEmissionRadius) {
+				try {
+					throw new Exception("gas emission radius too small!");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			 
 			
 			//all standard neurons to start
 			neuronAllele.setSynapticGasEmissionType( 0 );

@@ -35,6 +35,7 @@ import com.anji.neat.WeightMutationOperator;
 import com.anji.util.Configurable;
 import com.anji.util.Properties;
 
+import gasNEAT.configurations.GasNeatConfiguration;
 import gasNEAT.geneticEncoding.GasNeatNeuronAllele;
 
 /**
@@ -93,9 +94,9 @@ public GasNeatNeuronGasMutationOperator( float newMutationRate ) {
  * @param genesToRemove <code>Set</code> contains <code>Gene</code> objects
  */
 protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target, Set genesToAdd, Set genesToRemove,  int currentGeneration, int maxGenerations ) {
-	if ( ( jgapConfig instanceof NeatConfiguration ) == false )
+	if ( ( jgapConfig instanceof GasNeatConfiguration ) == false )
 		throw new AnjiRequiredException( NeatConfiguration.class.toString() );
-	NeatConfiguration config = (NeatConfiguration) jgapConfig;
+	GasNeatConfiguration config = (GasNeatConfiguration) jgapConfig;
 
 	//List conns = NeatChromosomeUtility.getConnectionList( target.getAlleles() );
 	//Collections.shuffle( conns, config.getRandomGenerator() );
@@ -116,8 +117,11 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 		GasNeatNeuronAllele newAllele = (GasNeatNeuronAllele) origAllele.cloneAllele();
 		newAllele.setGasEmissionType( nextGas);
 		
-		///?MEGATODO RADIUS from config 
-		newAllele.setGasEmissionRadius( 300); //CHANGE_RADIUS
+		newAllele.setGasEmissionRadius( GasNeatConfiguration.getMinEmissionRadius() + 
+				config.getRandomGenerator().nextInt(  1 + 
+						GasNeatConfiguration.getMaxEmissionRadius() - GasNeatConfiguration.getMinEmissionRadius() )   
+				);
+				
 		
 		//System.out.println( "SET INSIDE OF MUTATE"   );
 		///must make sure strength is not set to zero, otherwise it does nothing!

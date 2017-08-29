@@ -269,7 +269,12 @@ public class GasNeatAddSpatialModulatingNeuronMutationOperation extends AddNeuro
 		newGasNeuron.setGasEmissionType( gasEmittedType );
 		
 		//use default
-		newGasNeuron.setGasEmissionRadius( GasNeatConfiguration.getInitialEmissionRadius() );
+		newGasNeuron.setGasEmissionRadius( GasNeatConfiguration.getMinEmissionRadius() + 
+				config.getRandomGenerator().nextInt(  1 + 
+						GasNeatConfiguration.getMaxEmissionRadius() - GasNeatConfiguration.getMinEmissionRadius() )   
+				);
+		
+		
 		
 		int xCoord = (src.getXCoordinate() + dest.getXCoordinate() ) /2;
 		int yCoord = (src.getYCoordinate() + dest.getYCoordinate() ) /2;
