@@ -20,7 +20,7 @@ import gasNEAT.configurations.GasNeatConfiguration;
  */
 public class GasNeatReceptor {
 	
-	//ULTRATODO need to load this from the config not hardcode
+	//MEGATODO #3need to load this from the config not hardcode
 	private final static int NUMBER_GASES = 5;
 	
 	private String receptorMapFilePath;
@@ -196,7 +196,7 @@ public class GasNeatReceptor {
 		//receptorMap.put("1",   "G0_G1_G2_G3_G4");
 
 
-		//ULTRATODO
+		//POSSIBLYTODO
 		//Need to define the various neuromodulation modes
 		//To allow for each variations on receptors
 		
@@ -480,7 +480,7 @@ public class GasNeatReceptor {
 	 */
 	public ArrayList<Integer> getGasList() {
 		ArrayList<Integer> gases = new ArrayList<Integer>();
-		//ULTRATODO
+		//MEGATODOBUG? #3
 		//test out if everything is handled properly in setup by just
 		//returning gas list without adding inside the function here
 		gases.add(1);

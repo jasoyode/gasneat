@@ -132,7 +132,7 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 		 
 	}
 	
-	//#ULTRATODO
+	//MEGATODOBUG? #1 double check this and see if there is an issue 
 	//consistently is 0
 	//System.out.println("SYNP GAS MUTATION OCCURED");
 	//System.out.println(genesToAdd);

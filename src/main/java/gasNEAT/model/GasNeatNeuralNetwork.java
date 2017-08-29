@@ -128,7 +128,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 		
 		flatConcentrationGradient = props.getBooleanProperty( GasNeatConfiguration.FLAT_CONCENTRATION_GRADIENT_KEY, true );
 		
-		//ULTRATODO - find a way to short cut this when it happens, don't waste time simulating it
+		//MEGATODOCTRNN #5 - find a way to short cut this when it happens, don't waste time simulating it
 		if (recurrentSteps  > 99) {
 			recurrentSteps = 1;
 		}
@@ -167,8 +167,7 @@ public class GasNeatNeuralNetwork implements Cloneable {
 		ArrayList<Integer> gases = new ArrayList<Integer>();
 
 		
-		//ULTRATODO
-		//TODO FIXME - need to pass through the configuration here so that we can determine number of gases
+		//MEGATODO #3 - need to pass through the configuration here so that we can determine number of gases
 		int numberGases = 4;
 		
 		for (int i=0; i <= numberGases; i++ ) {

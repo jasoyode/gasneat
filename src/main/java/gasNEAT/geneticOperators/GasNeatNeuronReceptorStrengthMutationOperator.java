@@ -103,7 +103,7 @@ public class GasNeatNeuronReceptorStrengthMutationOperator extends MutationOpera
 			newAllele.setReceptorTypeToRandom( config.getRandomGenerator()  );
 			
 			
-			//ULTRAJULYTODO
+			//MEGATODOJULY #3
 			// create mutation and add the std as well to mutate this
 			//decide if discrete levels of receptor strength or not
 			//currently can be fully on or fully off at least

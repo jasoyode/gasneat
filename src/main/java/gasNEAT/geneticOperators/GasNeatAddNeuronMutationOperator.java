@@ -162,8 +162,10 @@ public boolean addNeuronAtConnection( NeatConfiguration config, Map neurons,
 	
 	
 	//#GASNEATEVOLUTION
-	//ULTRATODO probably best
+	//MEGATODO #1 - whether to randomize receptor or set to default for all should be a config setting
 	newNeuronAllele.setReceptorTypeToDefault();
+	
+	
 	
 	int newX = (src.getXCoordinate() + dest.getXCoordinate() )/2;
 	int newY = (src.getYCoordinate() + dest.getYCoordinate() )/2;

@@ -229,7 +229,7 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 					System.err.println("You have receptors for gases that are not supposed to ever be introduced!");
 					System.exit(1);
 				}
-				//ULTRATODO - calculate the distance between and make sure in range!!!!!
+				//MEGATODOSPEED #2- calculate the distance between and make sure in range!!!!!
 				
 				validDestNeuronFound = true;
 				break; //we found an appropriate gas to emit!

@@ -20,7 +20,7 @@ import com.anji.util.Properties;
 import gasNEAT.geneticEncoding.GasNeatNeuronAllele;
 
 /**
- * Mutates A,B,C,D or LR for ALL neurons
+ * Mutates Timing Constant ALL neurons
  * 
  * @author Jason Yoder
  */
@@ -114,7 +114,7 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 			GasNeatNeuronAllele newAllele = (GasNeatNeuronAllele) origAllele.cloneAllele();
 			
 			
-			//ULTRAJULYTODO
+			//MEGATODOCTRNN #5
 			//need to implment this method in allele
 			//oldValue = origAllele.getTimingConstant();
 			
@@ -125,7 +125,7 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 			if (newValue > 1.0) 
 				newValue = 1;
 			
-			//ULTRAJULYTODO
+			//MEGATODOCTRNN #5
 			//need to implment this method in allele
 			//newAllele.setTimingConstant( newValue  );
 			

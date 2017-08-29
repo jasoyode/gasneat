@@ -108,7 +108,7 @@ public class GasNeatPruneMutationOperator extends PruneMutationOperator  {
 			Set genesToRemove, int currentGeneration, int maxGenerations ) {
 		List candidatesToRemove = new ArrayList();
 		
-		//ULTRATODO -  decide how to change pruning or mutations
+		//MEGATODOBUG? #4 -  decide how to change pruning or mutations
 		//comment this out to stop pruning
 		findUnvisitedAlleles( target, candidatesToRemove);
 		

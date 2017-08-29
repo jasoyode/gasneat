@@ -70,7 +70,7 @@ public class GasDispersionUnit implements Cloneable {
 	 *            gas dispersion type
 	 */
 	public GasDispersionUnit(double emissionRadius, double currentStrength, double propagationSpeed, String gasDispersionType){
-		//ULTRATODO - do I need to make the gas emit based upon strength?
+		//MEGATODOBUG? #2 - do I need to make the gas emit based upon strength?
 		//Or use a purely stepwise function 0 or 1
 		//, double decayRate) {
 		this.gasDispersionSlotList = new ArrayList<GasDispersionSlot>();

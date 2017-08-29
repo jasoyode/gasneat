@@ -102,16 +102,10 @@ public class GasNeatNeuron extends Neuron {
 	public GasNeatNeuron(ActivationFunction activationFunction, Properties props) {
 		super(activationFunction);
 		this.props = props;
-
-		
 		this.x = -1;
 		this.y = -1;
 		outgoingSynapsesList = new ArrayList<Long>();
 		
-		//ULTRATODO
-		//synapticGasType = "G0"; 
-		//gasType = "G0";
-
 	}
 	
 	

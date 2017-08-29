@@ -530,7 +530,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		// We must take the current loaded values in buffer and update our activation levels
 		// This is reverse from previous
 		for (GasNeatNeuron tempNeuron : neuralNetwork.getNeuronMap().values()) {
-			//REMOVEBUFFER
+			//MEGATODO #1 REMOVEBUFFER
 			this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
 			
 		}
@@ -594,7 +594,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	private void loadBufferedConcentrationsInSynapses(GasNeatNeuron tempNeuron) {
 		
 		// #GASNEATMODEL
-		//REMOVEBUFFER
+		//MEGATODO #1 REMOVEBUFFER
 		
 		ArrayList<Long> outgoingSynapses = tempNeuron.getOutgoingSynapses();
 		//String gasType = tempNeuron.getSynapseProductionType();
@@ -652,7 +652,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	private void pushBufferedConcentrationsToBuiltUpConcentrations(GasNeatNeuron tempNeuron) {
 		
 		// #GASNEATMODEL
-		//REMOVEBUFFER
+		//MEGATODO #1 REMOVEBUFFER
 		neuralNetwork.getNeuron( tempNeuron.getId()  ).getReceptor().pushBufferedConcentrations();
 	}
 	

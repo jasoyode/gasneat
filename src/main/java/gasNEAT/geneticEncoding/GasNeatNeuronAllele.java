@@ -116,7 +116,7 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 	@Override
 	public double distance(Allele target) {
 		
-		//ULTRATODO include calculation for difference in ABCDLR
+		//MEGATODOSPEED #2 include calculation for difference in ABCDLR
 		
 		
 		//TODO - implement an algorithm, maybe review the others...
@@ -157,14 +157,14 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 			
 			//This means these are both standard electric emitting neurons
 			if ( ! receptorType.equals( other.getReceptorType() ) ) {
-				//ULTRATODO calculate the important differences in receptor types
+				//MEGATODOSPEED #2 calculate the important differences in receptor types
 				distance += 1.0;
 				
 				//because of being activated by gas, distance is important
-				//#GASNEATMODEL  ULTRATODO
+				//#GASNEATMODEL  MEGATODO #2
 				//this needs to be distinguished between how different receptors are!
 				//distance += cartesianDistance/gasspeed?;
-				//ULTRATODO
+				//MEGATODO #2
 				//should be based on overlap of gases possible and also the activaton type
 				
 

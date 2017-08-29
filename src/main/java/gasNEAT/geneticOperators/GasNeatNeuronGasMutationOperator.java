@@ -125,7 +125,8 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 		
 		//System.out.println( "SET INSIDE OF MUTATE"   );
 		///must make sure strength is not set to zero, otherwise it does nothing!
-		//ULTRATODO - set lower and upper bounds on these values reasonably
+		//MEGATODO #1 - set lower and upper bounds on these values reasonably
+		//MEGATODO #1 should add min/max gasEmissionStrength to config 
 		newAllele.setGasEmissionStrength( Math.min( Math.max(newAllele.getGasEmissionStrength() + config.getRandomGenerator().nextDouble()*0.5-0.25 , 0.01), 1.0) );
 		//newAllele.setGasEmissionStrength( Math.min( Math.max(newAllele.getGasEmissionStrength() + Math.random()*0.5-0.25 , 0.01), 1.0) );
 		//newAllele.setIsG
