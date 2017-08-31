@@ -136,9 +136,15 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 						Math.max( 
 								newAllele.getGasEmissionStrength() + 
 								config.getRandomGenerator().nextDouble()* 
-									( 2*config.getStdDevGasEmissionStrength() - config.getStdDevGasEmissionStrength()   ) , 
+									 2*config.getStdDevGasEmissionStrength() - config.getStdDevGasEmissionStrength()    , 
 						config.getMinGasEmissionStrength() ), 
 				config.getMaxGasEmissionStrength() ) );
+		
+		//newAllele.setGasEmissionStrength( Math.min( Math.max(newAllele.getGasEmissionStrength() + config.getRandomGenerator().nextDouble()*0.5-0.25 , 0.01), 1.0) );
+		
+		//System.err.println(newAllele.getGasEmissionStrength() );
+		//System.exit(1);
+		
 		
 		if (newAllele.getGasEmissionStrength() < 0.01) {
 			System.out.println("Gas Emission Strenght incorrectly set");
