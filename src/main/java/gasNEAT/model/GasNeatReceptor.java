@@ -32,19 +32,13 @@ public class GasNeatReceptor {
 	private double receptorStrength;
 	
 	//#ARRAYMAP
-	
 	//Stores the buffered concentration of gases before actually updating the values
 	//private HashMap<String, Double> bufferedConcentrations2 = new HashMap<String, Double>();
 	
-	//Stores the current concentration of gases and synaptic activations
-	//private HashMap<String, Double> builtUpConcentrations2 = new HashMap<String, Double>();
-	
-	//MEGATODO #1 cleanup buffer vs. builtup make just concentration!
+
 	private double[] bufferedConcentrations = new double[NUMBER_GASES];
-	//private double[] builtUpConcentrations = new double[NUMBER_GASES];
-	
 	private static ArrayList<String> receptorMap;
-	//
+
 	private double activationLevelPreSquash = 0;
 	
 	private double maximumPlasticity = -1.0;
@@ -315,12 +309,12 @@ public class GasNeatReceptor {
 				System.err.println("modulateActivationLevelFromConcentrations");
 				System.err.println("activationLevelPreSquash is NaN in Receptor");
 				System.err.println( act );
-				throw new Exception("value is NaN");
+				throw new Exception("concentration value is NaN");
 			} else if (act > 10000 || act < -10000) {
 				System.err.println("modulateActivationLevelFromConcentrations");
 				System.err.println("activationLevelPreSquash is NaN in Receptor");
 				System.err.println( act );
-				throw new Exception("value is >10000 or < -10000");
+				throw new Exception("concentration value is >10000 or < -10000");
 			}
 		
 		} catch (Exception e) {

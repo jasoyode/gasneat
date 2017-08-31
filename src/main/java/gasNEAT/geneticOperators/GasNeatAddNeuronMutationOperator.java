@@ -148,6 +148,7 @@ public boolean addNeuronAtConnection( NeatConfiguration config, Map neurons,
 	GasNeatNeuronAllele src  = (GasNeatNeuronAllele)neurons.get( oldConnectAllele.getSrcNeuronId() );
 	GasNeatNeuronAllele dest = (GasNeatNeuronAllele)neurons.get( oldConnectAllele.getDestNeuronId() );
 	
+	GasNeatConfiguration gasConfig = (GasNeatConfiguration)config;
 
 	
 	newNeuronAllele.setToRandomValue( config.getRandomGenerator() );
@@ -162,9 +163,12 @@ public boolean addNeuronAtConnection( NeatConfiguration config, Map neurons,
 	
 	
 	//#GASNEATEVOLUTION
-	//MEGATODO #1 - whether to randomize receptor or set to default for all should be a config setting
-	newNeuronAllele.setReceptorTypeToDefault();
-	
+	//determine whether to randomize receptor or set to default for all
+	if (gasConfig.isUsingDefaultReceptor() ) {
+		newNeuronAllele.setReceptorTypeToDefault();
+	} else {
+		newNeuronAllele.setReceptorTypeToRandom( gasConfig.getRandomGenerator() );
+	}
 	
 	
 	int newX = (src.getXCoordinate() + dest.getXCoordinate() )/2;

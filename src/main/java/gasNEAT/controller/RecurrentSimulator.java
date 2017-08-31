@@ -527,14 +527,6 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	public void simulateNetwork() {
 		// #GASNEATMODEL
 		
-		// We must take the current loaded values in buffer and update our activation levels
-		// This is reverse from previous
-		//for (GasNeatNeuron tempNeuron : neuralNetwork.getNeuronMap().values()) {
-			//MEGATODO #1 REMOVEBUFFER
-			//this.pushBufferedConcentrationsToBuiltUpConcentrations(tempNeuron);
-			
-		//}
-		
 		logger.debug("STATE AFTER pushBufferedSynapsesToBuiltUpConcentrations");
 		printState();
 		
@@ -594,8 +586,6 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 	private void loadBufferedConcentrationsInSynapses(GasNeatNeuron tempNeuron) {
 		
 		// #GASNEATMODEL
-		//MEGATODO #1 REMOVEBUFFER
-		
 		ArrayList<Long> outgoingSynapses = tempNeuron.getOutgoingSynapses();
 		//String gasType = tempNeuron.getSynapseProductionType();
 		
@@ -612,30 +602,8 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 			GasNeatNeuron targetNeuron = neuralNetwork.getNeuronMap().get(targetNeuronID);
 			
 			double concentrationToAdd = tempSynapse.getSynapticWeight() * tempNeuron.calculateActivation();
-			/*
-			System.out.println("BEFORE[0]:" + targetNeuron.getBufferedConcentration()[0] );
-			System.out.println("BEFORE[1]:" + targetNeuron.getBufferedConcentration()[1] );
-			System.out.println("BEFORE[2]:" + targetNeuron.getBufferedConcentration()[2] );
-			System.out.println("BEFORE[3]:" + targetNeuron.getBufferedConcentration()[3] );
-			
-			System.out.println("tempSynapse.getSynapticWeight() " + tempSynapse.getSynapticWeight());
-			System.out.println("tempNeuron.calculateActivation() " + tempNeuron.calculateActivation());
-			System.out.println("concentrationToAdd " + concentrationToAdd);
-			//*/
 			targetNeuron.getReceptor().addBufferedConcentration(gasType, concentrationToAdd);
-			/*
-			System.out.println("target "+ targetNeuron);
-			System.out.println("AFTER[0]:" + targetNeuron.getBufferedConcentration()[0] );
-			System.out.println("AFTER[1]:" + targetNeuron.getBufferedConcentration()[1] );
-			System.out.println("AFTER[2]:" + targetNeuron.getBufferedConcentration()[2] );
-			System.out.println("AFTER[3]:" + targetNeuron.getBufferedConcentration()[3] );
-			
-			//*/
-			
 			GasNeatReceptor.checkReasonableValue(  concentrationToAdd  );
-			
-			
-			
 			
 		}
 		//System.out.println("tempNeuron " + tempNeuron );
@@ -644,17 +612,7 @@ public class RecurrentSimulator extends Simulator implements SimulatorInterface 
 		
 		
 	}
-	
-	
-	/**
-	 * @param tempNeuron
-	 */
-	private void pushBufferedConcentrationsToBuiltUpConcentrationsX(GasNeatNeuron tempNeuron) {
-		
-		// #GASNEATMODEL
-		//MEGATODO #1 REMOVEBUFFER
-		//neuralNetwork.getNeuron( tempNeuron.getId()  ).getReceptor().pushBufferedConcentrations();
-	}
+
 	
 	/**
 	 * This method takes the passed GasNeatNeuron and makes sure its dispersion is distributed

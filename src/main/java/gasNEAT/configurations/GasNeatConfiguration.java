@@ -193,8 +193,15 @@ public final static String GAS_DECAY_KEY = "gasneat.gas.decay";
 public final static String MIN_GAS_EMISSION_RADIUS_KEY = "gasneat.min.emission.radius";
 public final static String MAX_GAS_EMISSION_RADIUS_KEY = "gasneat.max.emission.radius";
 
-
 public final static String CUSTOM_INIT_KEY = "gasneat.custom.init";
+
+//#ADDCONFIGOPT
+public final static String USE_DEFAULT_RECEPTOR_KEY = "gasneat.use.default.receptor";
+
+public final static String MIN_GAS_EMISSION_STRENGTH_KEY = "gasneat.min.gas.emission.strength";
+public final static String MAX_GAS_EMISSION_STRENGTH_KEY = "gasneat.max.gas.emission.strength";
+public final static String STD_DEV_MIN_GAS_EMISSION_STRENGTH_KEY = "gasneat.std.dev.gas.emission.strength";
+
 
 
 
@@ -277,10 +284,18 @@ private static @Getter double defaultPlasticityC;
 private static @Getter double defaultPlasticityD;
 private static @Getter double defaultPlasticityLR;
 
-
 //#ADDPROPS
 private static @Getter double defaultTimingConstant;
 private static @Getter double defaultReceptorStrength;
+
+//#ADDCONFIGOPT
+private static @Getter boolean usingDefaultReceptor;
+
+
+private static @Getter double minGasEmissionStrength;
+private static @Getter double maxGasEmissionStrength;
+private static @Getter double stdDevGasEmissionStrength;
+
 
 //TODO: can we use this as is?
 private GasNeatIdMap gasNeatIdMap;
@@ -778,6 +793,8 @@ private void init( Properties newProps ) throws InvalidConfigurationException {
 	flatConcentrationGradient = props.getBooleanProperty( FLAT_CONCENTRATION_GRADIENT_KEY, true );
 	
 	
+	
+	
 	defaultPlasticityA = props.getDoubleProperty( PLASTICITY_PARAMETER_A_KEY );
 	defaultPlasticityB = props.getDoubleProperty( PLASTICITY_PARAMETER_B_KEY );
 	defaultPlasticityC = props.getDoubleProperty( PLASTICITY_PARAMETER_C_KEY );
@@ -803,6 +820,15 @@ private void init( Properties newProps ) throws InvalidConfigurationException {
 	minEmissionRadius = props.getIntProperty( MIN_GAS_EMISSION_RADIUS_KEY, 300 );
 	maxEmissionRadius = props.getIntProperty( MAX_GAS_EMISSION_RADIUS_KEY, 300 );
 	gasSpeed = props.getDoubleProperty( GAS_SPEED_KEY, 33 );
+	
+	//#ADDCONFIGOPT
+	usingDefaultReceptor = props.getBooleanProperty( USE_DEFAULT_RECEPTOR_KEY, true );
+	
+	
+	minGasEmissionStrength = props.getDoubleProperty( MIN_GAS_EMISSION_STRENGTH_KEY, 0.01 );
+	maxGasEmissionStrength = props.getDoubleProperty( MIN_GAS_EMISSION_STRENGTH_KEY, 1.0 );
+	stdDevGasEmissionStrength = props.getDoubleProperty( MIN_GAS_EMISSION_STRENGTH_KEY, 0.25 );
+	
 	
 	
 	if (numberGases >0 ) {
