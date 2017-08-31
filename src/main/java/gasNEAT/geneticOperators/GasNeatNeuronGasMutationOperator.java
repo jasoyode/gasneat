@@ -117,10 +117,16 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 		GasNeatNeuronAllele newAllele = (GasNeatNeuronAllele) origAllele.cloneAllele();
 		newAllele.setGasEmissionType( nextGas);
 		
-		newAllele.setGasEmissionRadius( GasNeatConfiguration.getMinEmissionRadius() + 
-				config.getRandomGenerator().nextInt(  1 + 
-						GasNeatConfiguration.getMaxEmissionRadius() - GasNeatConfiguration.getMinEmissionRadius() )   
-				);
+		
+		if ( GasNeatConfiguration.getMinEmissionRadius() == GasNeatConfiguration.getMaxEmissionRadius() ) {
+			newAllele.setGasEmissionRadius(  GasNeatConfiguration.getMinEmissionRadius() );
+		} else {
+			newAllele.setGasEmissionRadius( GasNeatConfiguration.getMinEmissionRadius() + 
+					config.getRandomGenerator().nextInt(  1 + 
+							GasNeatConfiguration.getMaxEmissionRadius() - GasNeatConfiguration.getMinEmissionRadius() )   
+					);
+		}
+
 				
 		
 		//System.out.println( "SET INSIDE OF MUTATE"   );

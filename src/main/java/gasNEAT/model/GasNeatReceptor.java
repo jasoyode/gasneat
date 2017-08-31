@@ -368,10 +368,16 @@ public class GasNeatReceptor {
 		} else {
 			
 			if (tanhSquashModulationSignal) {
-				plasticity = ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( bufferedConcentrations) / 2 ) );
+				//MEGATODO #1 change back after verify
+				//plasticity = ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( bufferedConcentrations) / 2 ) );
+				plasticity = plasticity * ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( bufferedConcentrations) / 2 ) );
+				
 			} else {
 				//#SPEEDTEST
-				plasticity =  ( 1.0 + receptorStrength * plasticityModFunction.evaluate( bufferedConcentrations) );
+				//MEGATODO #1 change back after verify
+				//plasticity =  ( 1.0 + receptorStrength * plasticityModFunction.evaluate( bufferedConcentrations) );
+				plasticity = plasticity * ( 1.0 + receptorStrength * plasticityModFunction.evaluate( bufferedConcentrations) );
+				
 			}
 		}
 

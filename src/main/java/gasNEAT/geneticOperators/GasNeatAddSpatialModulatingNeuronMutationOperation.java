@@ -268,11 +268,18 @@ public class GasNeatAddSpatialModulatingNeuronMutationOperation extends AddNeuro
 		//from above
 		newGasNeuron.setGasEmissionType( gasEmittedType );
 		
+		//dont invoke rand
+		if ( GasNeatConfiguration.getMinEmissionRadius() == GasNeatConfiguration.getMaxEmissionRadius() ) {
+			newGasNeuron.setGasEmissionRadius( GasNeatConfiguration.getMinEmissionRadius() );   
+		} else {
+			newGasNeuron.setGasEmissionRadius( GasNeatConfiguration.getMinEmissionRadius() + 
+					config.getRandomGenerator().nextInt(  1 + 
+							GasNeatConfiguration.getMaxEmissionRadius() - GasNeatConfiguration.getMinEmissionRadius() )   
+					);
+		}
+		
 		//use default
-		newGasNeuron.setGasEmissionRadius( GasNeatConfiguration.getMinEmissionRadius() + 
-				config.getRandomGenerator().nextInt(  1 + 
-						GasNeatConfiguration.getMaxEmissionRadius() - GasNeatConfiguration.getMinEmissionRadius() )   
-				);
+		
 		
 		
 		

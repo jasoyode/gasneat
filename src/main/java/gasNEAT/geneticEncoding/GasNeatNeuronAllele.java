@@ -221,10 +221,19 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 		int outputLayerX = 200;
 		
 		//setGasEmissionRadius( GasNeatConfiguration.getInitialEmissionRadius()  ); 
-		setGasEmissionRadius( GasNeatConfiguration.getMinEmissionRadius() + 
-				rand.nextInt(  1 + 
-						GasNeatConfiguration.getMaxEmissionRadius() - GasNeatConfiguration.getMinEmissionRadius() )   
-				);   
+		
+		//dnot invoke rand
+		if ( GasNeatConfiguration.getMinEmissionRadius() == GasNeatConfiguration.getMaxEmissionRadius() ) {
+			setGasEmissionRadius(  GasNeatConfiguration.getMinEmissionRadius() );
+		} else {
+			setGasEmissionRadius( GasNeatConfiguration.getMinEmissionRadius() + 
+					rand.nextInt(  1 + 
+							GasNeatConfiguration.getMaxEmissionRadius() - GasNeatConfiguration.getMinEmissionRadius() )   
+					);
+		}
+		
+		
+		   
 
 		
 		
@@ -441,6 +450,11 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 
 	public void setGasEmissionRadius(int gasEmissionRadius) {
 		this.gasEmissionRadius = gasEmissionRadius;
+		
+		if (gasEmissionRadius != 300) {
+			System.err.println("emissionr adius is: " + gasEmissionRadius);
+			System.exit(1);
+		}
 		
 		if ( gasEmissionRadius > GasNeatConfiguration.getMaxEmissionRadius()) {
 			try {

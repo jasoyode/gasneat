@@ -88,6 +88,9 @@ public void testEvolver() throws Exception {
 			uut.run();
 
 			champ = uut.getChamp();
+			
+			logText.append( "champ id: [").append( champ.getId() ).append("] "); 
+			
 			if ( champ == null ) {
 				logText.append(" "+ i ).append( ": no champ\n" );
 				++failCount;

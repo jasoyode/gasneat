@@ -111,13 +111,15 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 		int nextGas = ( config.getRandomGenerator().nextInt(gasCount+1) ) ;
 		
 		///Make sure new synapticgastype is different
-		if ( origAllele.getSynapticGasEmissionType() == nextGas ) {
-			nextGas = (nextGas + 1) % gasCount; 
-		}
+		//MEGATODO #1 fix after verify
+		//if ( origAllele.getSynapticGasEmissionType() == nextGas ) {
+		//	nextGas = (nextGas + 1) % gasCount; 
+		//}
 		
 		GasNeatNeuronAllele newAllele = (GasNeatNeuronAllele) origAllele.cloneAllele();
 		newAllele.setSynapticGasEmissionType( nextGas);
 		
+		/* //MEGATODO #1 fix after verify
 		if ( origAllele.getSynapticGasEmissionType() == newAllele.getSynapticGasEmissionType()) {
 			try {
 				throw new Exception("New Synaptic Gas was not different!");
@@ -126,6 +128,7 @@ protected void mutate( Configuration jgapConfig, final ChromosomeMaterial target
 				e.printStackTrace();
 			}
 		}
+		*/
 				
 		genesToRemove.add( origAllele );
 		genesToAdd.add( newAllele );
