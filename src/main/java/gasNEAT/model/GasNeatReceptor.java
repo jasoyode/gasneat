@@ -236,17 +236,11 @@ public class GasNeatReceptor {
 	public GasNeatReceptor(String receptorType, double receptorStrength) {
 		
 		this.receptorType = receptorType;
-		
 		//#ADDPROPS
 		this.receptorStrength = receptorStrength;
-		
 		//NEED TO SETUP TO READ FROM PROP
 		// #GASNEATMODEL
-		
 		gasList = new ArrayList<String>();
-		
-		
-
 			
 	}
 
@@ -256,11 +250,7 @@ public class GasNeatReceptor {
 	public void updateActivationLevelFromBuiltUpConcentrations() {
 		// #GASNEATMODEL
 		//activation level depends upon the concentration of the given activationType gas
-
-		//#ARRAYMAP
-		//activationLevelPreSquash = builtUpConcentrations.get(activationType2);
 		activationLevelPreSquash = bufferedConcentrations[activationTypeInt];
-		
 		checkReasonableValue(activationLevelPreSquash);
 		
 	}
@@ -269,10 +259,8 @@ public class GasNeatReceptor {
 	 * Set the concentration to zero
 	 */
 	public void clearBufferedConcentrations() {
-		//builtUpConcentrations = new double[NUMBER_GASES];		
+	
 		Arrays.fill(bufferedConcentrations, 0.0);
-		//checkAndKill("clearBuiltUpConcentrations");
-		
 	}
 	
 	/**
@@ -368,15 +356,13 @@ public class GasNeatReceptor {
 		} else {
 			
 			if (tanhSquashModulationSignal) {
-				//MEGATODO #1 change back after verify
-				//plasticity = ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( bufferedConcentrations) / 2 ) );
-				plasticity = plasticity * ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( bufferedConcentrations) / 2 ) );
+				plasticity = ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( bufferedConcentrations) / 2 ) );
+				//plasticity = plasticity * ( 1.0 + receptorStrength * Math.tanh(  plasticityModFunction.evaluate( bufferedConcentrations) / 2 ) );
 				
 			} else {
 				//#SPEEDTEST
-				//MEGATODO #1 change back after verify
-				//plasticity =  ( 1.0 + receptorStrength * plasticityModFunction.evaluate( bufferedConcentrations) );
-				plasticity = plasticity * ( 1.0 + receptorStrength * plasticityModFunction.evaluate( bufferedConcentrations) );
+				plasticity =  ( 1.0 + receptorStrength * plasticityModFunction.evaluate( bufferedConcentrations) );
+				//plasticity = plasticity * ( 1.0 + receptorStrength * plasticityModFunction.evaluate( bufferedConcentrations) );
 				
 			}
 		}
@@ -455,9 +441,7 @@ public class GasNeatReceptor {
 		}
 		//*/
 		bufferedConcentrations = new double[NUMBER_GASES];
-		
-		//checkAndKill("setGasList");
-		
+
 	}
 
 	/**
@@ -499,11 +483,7 @@ public class GasNeatReceptor {
 	 * @return activationConcentration
 	 */
 	public double getActivationConcentration() {
-		
-		//#ARRAYMAP
-		//checkAndKill("getActivationConcentration");
 		return bufferedConcentrations[activationTypeInt];
-		//return builtUpConcentrations.get(activationType);
 	}
 	
 	
@@ -534,30 +514,10 @@ public class GasNeatReceptor {
 	 * @return activationConcentration
 	 */
 	public double getActivationConcentrationBuffer() {
-		
-		//#ARRAYMAP
-		//checkAndKill("getActivationConcentrationBuffer");
-		
-		//System.out.println( bufferedConcentrations );
-		//System.out.println( activationType );
 		return bufferedConcentrations[activationTypeInt];
-				
-		//return bufferedConcentrations.get(activationType);
+
 	}
 
-	/*
-	public void setGasConcentration(String gasType, double concentration) {
-		//builtUpConcentrations.put(gasType,  concentration);
-		builtUpConcentrations[ new Integer(gasType.substring(1)) ]=  concentration;
-		
-		//this.activationConcentration = activationConcentration;
-		System.out.println("I expect this to error when using actual gasSlots.");
-		System.out.println("You must decide if you want to add gasSlot gases to buffer or not");
-		System.exit(-1);
-	}
-	*/
-	
-	
 	
 	/**
 	 * @param activationConcentration
@@ -579,32 +539,20 @@ public class GasNeatReceptor {
 	 * @param activationType
 	 */
 	public void setActivationType(String activationType) {
-		
-		//#ARRAYMAP
-		//System.out.println( "activationType " + activationType  );
 		//must truncate G from "G1" "G0" etc
 		this.activationTypeInt = new Integer( activationType.substring(1)  );
-		
-		//System.out.println( "activationTypeInt " + activationTypeInt  );
-		
 		this.activationType = activationType;
-		
-		//this.builtUpConcentrations2.put(this.getActivationType(), 0.0);
 		this.bufferedConcentrations[activationTypeInt]= 0.0;
-		
-		
-		//checkAndKill("setActivationType");
+
 		
 	}
 
 	/**
 	 * @return builtUpConcentrations
 	 */
-	//public HashMap<String, Double> getBuiltUpConcentrations() {
 	public double[] getBufferedConcentrations() {
 		return bufferedConcentrations;
-		//#ARRAYMAP
-		//return builtUpConcentrations2;
+
 	}
 
 
@@ -615,31 +563,15 @@ public class GasNeatReceptor {
 	 * @param Double concentration amount of gas to be added
 	 */
 	public void addBufferedConcentration(int gasType, Double concentration) {
-		
-		//checkAndKill("addBufferedConcentration1");
-		
-		//#ARRAYMAP
-		/*
-		double newValue = 0.0;
-		if ( bufferedConcentrations2.containsKey(gasType)  ) {
-			newValue = bufferedConcentrations2.get(gasType);
-		}
-		newValue+= concentration;
-		bufferedConcentrations2.put(gasType, newValue);
-		//*/
-		
+
 		double newValue = bufferedConcentrations[ gasType ];
 		newValue+= concentration;
-		
 		bufferedConcentrations[ gasType] = newValue;
-		
-		//checkAndKill("addBufferedConcentration2");
+
 		
 	}
 	
 	public double[] getBufferedConcentration() {
-		//public HashMap<String, Double> getBufferedConcentration() {
-		//#ARRAYMAP
 		return bufferedConcentrations;
 	}
 	
@@ -652,15 +584,7 @@ public class GasNeatReceptor {
 		return sb.toString();
 	}
 	
-	public String getBuiltUpConcentrationsTextX() {
-		StringBuilder sb = new StringBuilder();
-		//for (int i=0; i< builtUpConcentrations.length; i++) {
-		//	sb.append( "["+i+"]: "+ builtUpConcentrations[i] +"   "    );
-		//}
-		return sb.toString();
-	}
 
-	
 
 	/**
 	 * @return plasticity
@@ -680,28 +604,12 @@ public class GasNeatReceptor {
 	 * @param gasList2
 	 */
 	public void initGasList(ArrayList<String> gasList2) {
-		/*
-		for (String gas: gasList2) {
-			this.builtUpConcentrations2.put(gas, 0.0);
-		}
-		//*/
-		//#ARRAYMAP
-		//builtUpConcentrations = new double[NUMBER_GASES];
+
 		Arrays.fill(bufferedConcentrations,  0.0);
 	}
 
 	public void clear() {
-		/*
-		for (String id: bufferedConcentrations2.keySet() ) {
-			bufferedConcentrations2.put(id, 0.0);
-			builtUpConcentrations2.put(id, 0.0);
-		}
-		//*/
-		//#ARRAYMAP
-		//builtUpConcentrations = new double[NUMBER_GASES];
-		//bufferedConcentrations = new double[NUMBER_GASES];
-		
-		//Arrays.fill(builtUpConcentrations,  0.0);
+
 		Arrays.fill(bufferedConcentrations,  0.0);
 		
 	}
