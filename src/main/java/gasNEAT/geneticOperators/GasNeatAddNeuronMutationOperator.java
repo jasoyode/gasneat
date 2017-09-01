@@ -168,8 +168,6 @@ public boolean addNeuronAtConnection( NeatConfiguration config, Map neurons,
 		newNeuronAllele.setReceptorTypeToDefault();
 	} else {
 		newNeuronAllele.setReceptorTypeToRandom( gasConfig.getRandomGenerator() );
-		System.err.println("WHY???");
-		System.exit(1);
 	}
 	
 	newNeuronAllele.setReceptorTypeToDefault();
