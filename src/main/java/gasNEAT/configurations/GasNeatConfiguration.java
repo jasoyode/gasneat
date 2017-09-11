@@ -73,6 +73,7 @@ import gasNEAT.geneticOperators.GasNeatSingleTopologicalMutationOperator;
 import gasNEAT.geneticOperators.GasNeatWeightMutationOperator;
 import gasNEAT.persistence.GasNeatIdMap;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Extension of JGAP configuration with NEAT-specific features added.
@@ -254,8 +255,8 @@ private static @Getter boolean flatConcentrationGradient;
 
 
 //private static @Getter int initialEmissionRadius;
-private static @Getter int minEmissionRadius;
-private static @Getter int maxEmissionRadius;
+private static @Setter @Getter int minEmissionRadius;
+private static @Setter @Getter int maxEmissionRadius;
 
 private static @Getter double gasSpeed;
 
