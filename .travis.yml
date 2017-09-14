@@ -10,10 +10,10 @@ jdk:
 
 #script: "mvn -e cobertura:cobertura"
 
-script: "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar \
-    -Dsonar.host.url=https://sonarcloud.io \
-    -Dsonar.organization=40bf7ad69b79cef08b5681691c699ffa17381186 \
-    -Dsonar.login=jasoyode-github"
+#script: "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar \
+#    -Dsonar.host.url=https://sonarcloud.io \
+#    -Dsonar.organization=40bf7ad69b79cef08b5681691c699ffa17381186 \
+#    -Dsonar.login=jasoyode-github"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
@@ -23,3 +23,21 @@ after_success:
 cache:
   directories:
   - $HOME/.m2
+
+language: java
+sudo: false
+install: true
+addons:
+  sonarcloud:
+    organization: "jasoyode-github"
+    token:
+      secure: "40bf7ad69b79cef08b5681691c699ffa17381186"
+jdk:
+  - oraclejdk8
+script:
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
+
