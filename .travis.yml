@@ -8,7 +8,12 @@ jdk:
 # - oraclejdk7
 # - openjdk6
 
-script: "mvn -e cobertura:cobertura"
+#script: "mvn -e cobertura:cobertura"
+
+script: "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar \
+    -Dsonar.host.url=https://sonarcloud.io \
+    -Dsonar.organization=40bf7ad69b79cef08b5681691c699ffa17381186 \
+    -Dsonar.login=jasoyode-github"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
