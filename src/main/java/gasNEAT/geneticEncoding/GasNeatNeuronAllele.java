@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.jgap.Allele;
 
 import com.anji.neat.NeuronAllele;
@@ -62,29 +63,21 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 	
 	private double gasSpeed = -999;
 	
-	
-	//maybe should be done with receptor map singleton
-	
-	//private ArrayList<String> receptorList;
-	
-	
 	/**
 	 * @param gasNeatNeuronGene
 	 */
 	public GasNeatNeuronAllele(GasNeatNeuronGene gasNeatNeuronGene) {
 		super(gasNeatNeuronGene);
 		this.gasNeatNeuronGene = gasNeatNeuronGene;
-		
-	
-		
 	}
+	
+	private static Logger logger = Logger.getLogger( GasNeatNeuronAllele.class );
 	
 	/**
 	 * @see jgap.Allele#cloneAllele()
 	 */
 	@Override
 	public Allele cloneAllele() {
-		
 		GasNeatNeuronAllele allele = new GasNeatNeuronAllele( this.gasNeatNeuronGene );
 		allele.setFiringThreshold( getFiringThreshold() );
 		allele.setGasEmissionRadius( getGasEmissionRadius() );
@@ -100,11 +93,9 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 		allele.setPlasticityParameterD(plasticityParameterD);
 		allele.setPlasticityParameterLR(plasticityParameterLR);
 		allele.setGasSpeed( getGasSpeed() );
-		
-		//#ADDPROPS
+		//#ADDPROPS  not used currently
 		allele.setTimingConstant( getTimingConstant() );
 		allele.setReceptorStrength( getReceptorStrength() );
-		
 		return allele;
 	}
 
@@ -115,93 +106,142 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 	 */
 	@Override
 	public double distance(Allele target) {
+		//Distance 1.0 should mean 100% certain different functionality
+		//Distance 0.0 should be identical function
+		//Distance 0.5 should have a 50% chance of producing same function
+		//Distance 0.25 should have 75% chance of same function
 		
-		//MEGATODOSPEED #2 include calculation for difference in ABCDLR
-		
-		
-		//TODO - implement an algorithm, maybe review the others...
 		GasNeatNeuronAllele other = (GasNeatNeuronAllele)target;
 		
-		double distance = 0.0;
+		if ( gasSpeed < 0 || other.gasSpeed < 0) {
+			logger.error("Gas Speed cannot be zero!");
+			System.exit(-1);
+		}
 		
+		
+		//initially distance is zero, increase as relevant properties differ
+		double distance = 0.0;
 		double xDiff =  Math.abs( xCoordinate - other.getXCoordinate() );
 		double yDiff =  Math.abs( yCoordinate - other.getYCoordinate() );
-		
 		//based on distance formula - should be based upon gasSpeed
-		//TODO: constant to represent gasSpeed in configuration file
-		double cartesianDistance = Math.sqrt(  xDiff * xDiff + yDiff *yDiff ) / gasSpeed;
-		
+		double cartesianDistance = Math.sqrt(  xDiff * xDiff + yDiff *yDiff );
 		//regardless of activation type, this increases relative distance
-		//TODO maybe not even bother with this
-		distance += Math.abs( firingThreshold - other.getFiringThreshold()  );
 		
-		if (synapticGasEmissionType != other.getSynapticGasEmissionType() ) {
-			distance += 1.0;
-			
-			//System.out.println("THIS SHOULD NOT HAPPEN- all neurons produce 0 gas");
-			//System.exit(-1);
-			
-		} else if (  gasEmissionType != other.getGasEmissionType() ) {
-			
-			//This mean these neurons produce different gases (or only one produced gas)
-			distance += 1.0;
-			
-			//distance is important if they are not both synaptic
-			//if they are synaptic, then gasEmission type is 0
-			distance += cartesianDistance;
-			
-			//System.out.println("THIS SHOULD NOT HAPPEN diff gases cant be produced");
-			//System.exit(-1);
-			
-		} else if (gasEmissionType == 0 ) {
-			
-			//This means these are both standard electric emitting neurons
-			if ( ! receptorType.equals( other.getReceptorType() ) ) {
-				//MEGATODOSPEED #2 calculate the important differences in receptor types
-				distance += 1.0;
-				
-				//because of being activated by gas, distance is important
-				//#GASNEATMODEL  MEGATODO #2
-				//this needs to be distinguished between how different receptors are!
-				//distance += cartesianDistance/gasspeed?;
-				//MEGATODO #2
-				//should be based on overlap of gases possible and also the activaton type
-				
+		//Could add a constant to represent the weight of this distance calculation
+		//to many parameters as it is, if difference is 1.0+ almost guaranteed different
+		distance += Math.abs( firingThreshold - other.getFiringThreshold() );
+		
+		//If one neuron produces gas and the other does not
+		//there is a fundamental difference in their connectivity and likely timescale
+		//maximize the calculated difference!
+		if (  gasEmissionType != other.getGasEmissionType() ) {
+			//This mean these neurons produce different gases (or only one produces gas)
+			return 1.0;
+		
+		
+		} else if (gasEmissionType == 0 ){ 
+			//Inside of this block means these are both standard electric emitting neurons
 
+			if ( synapticGasEmissionType != other.getSynapticGasEmissionType() ) {
+				//This means the neuron is producing electric BUT different signal, necess. different function
+				return 1.0;
 				
-			} else {
-				//position is less important if both are electrically activated
-				//TODO THIS DISTANCE IS MEANINGLESS except for modulation 
-				distance += cartesianDistance/100.0;
-			}
-			
+			} else { 
+				//This means they produce the same synaptic gas
+				double receptorDistance = receptorDistance(getReceptorType(), other.getReceptorType(), cartesianDistance/gasSpeed ) ;
+				distance += receptorDistance;
+			} 			
 		} else {
 			
 			//This means these are both gas emitting neurons of the same gas
-			distance += cartesianDistance/10.0;
+			distance += ((cartesianDistance / gasSpeed) / 10.0);
+			
+			//gas difference in strength is very important
 			distance += Math.abs( gasEmissionStrength - other.getGasEmissionStrength()  );
-			//emission radius is important based upon gas speed, and also only a little bit
+
+			//emission radius is based upon gas speed, and also only a little bit
 			distance += Math.abs( gasEmissionRadius - other.getGasEmissionRadius()  ) / gasSpeed/ 10.0;
 
-			if (receptorType != other.getReceptorType() ) {
-				//This means that the neurons are activated differently
-				distance += 1.0;
-			}
-			
-			//System.out.println("THIS SHOULD NOT HAPPEN until we have gas emitters");
-			//System.exit(-1);
+			double receptorDistance = receptorDistance(getReceptorType(), other.getReceptorType(), cartesianDistance/gasSpeed ) ;
+			distance += receptorDistance;
 			
 		}
 		
-		//if the neurons are activated in different ways
-		/*  I don't think we want to do this, but it needs to be though of further
-		if ( receptorType != other.getReceptorType() ){
-			distance += 0.9;
-			
-			System.out.println("THIS SHOULD NOT HAPPEN until we are ready for different receptors");
-			System.exit(-1);
+		distance += plasticityDistance(this, other);
+		
+		//maximum return value of 1.0
+		if (distance >= 1.0) {
+			return 1.0;
+		} else {
+			return distance;
 		}
-		*/
+
+	}
+	
+	
+	//when two neurons have different plasticity parameters that can count for genetic distance\
+	//should only count when plasticity can happen, but plasticity rules should not evolve
+	//when there is no plasticity allowed
+	//technically we should bypass this somethow
+	private static double plasticityDistance(GasNeatNeuronAllele n1, GasNeatNeuronAllele n2) {
+		
+		//ULTRATODO #3 SPEED UP make config to save these checks
+		//if ( !GasNeatConfiguration.getPlasticityEnabled() ) {
+		//	return 0.0;
+		//}
+		
+		double distance= 0.0;
+		
+		//maximum -1 to +1 for distance of 2/10 = 0.2 x 5 = 1.0
+		distance += Math.abs( n1.plasticityParameterA - n2.plasticityParameterA )/10.0;
+		distance += Math.abs( n1.plasticityParameterB - n2.plasticityParameterB )/10.0;
+		distance += Math.abs( n1.plasticityParameterC - n2.plasticityParameterC )/10.0;
+		distance += Math.abs( n1.plasticityParameterD - n2.plasticityParameterD )/10.0;
+		distance += Math.abs( n1.plasticityParameterLR - n2.plasticityParameterLR ) /1000.0;
+		if (distance >= 1.0) {
+			return 1.0;
+		} else {
+			return distance;
+		}
+	}
+	
+	
+
+	private static double receptorDistance(String type1, String type2, double cartesianDistanceTime) {
+		double distance = 0.0;
+		if ( !type1.substring(0, 2).equals( type2.substring(0, 2)) ) {
+			//if they have different activation types then max distance
+			return 1.0;
+		}
+		
+		//Below here means we have the same activation type
+		
+		//#RECEPTORHARDCODE
+		for (int i=3; i<13; i+=3) {
+			if ( !type1.substring(i, i+2).equals( type2.substring(i, i+2)) ) {
+				//if they have different modulating receiver types change them
+				//maximum 50% distance
+				distance += 0.1;
+			}			
+		}
+		
+		//if there are no modulations possible cartesianDistanceTime does not matter
+		if (type1.equals("G0_NO_NO_NO_NO") &&  type2.equals("G0_NO_NO_NO_NO")) {
+			return distance;
+		}
+		
+		//this may mean that our cartesian distance could have an impact
+		
+		//effectively if there is a potental 1 time unit delay make that a 0.1
+		//difference - greater than 10 should be totally different function
+		//#RECEPTORHARDCODE
+		if (type1.substring(0,2).equals("G0")) {
+			//position is less important if both are electrically activated					
+			distance += (cartesianDistanceTime / 100.0);
+		} else {
+			//if they are gas activated then distance is more important!
+			distance += (cartesianDistanceTime / 10.0);	
+		}
 		return distance;
 	}
 
@@ -231,10 +271,6 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 							GasNeatConfiguration.getMaxEmissionRadius() - GasNeatConfiguration.getMinEmissionRadius() )   
 					);
 		}
-		
-		
-		   
-
 		
 		
 		setGasSpeed( GasNeatConfiguration.getGasSpeed()  );
@@ -301,33 +337,33 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 				}
 			}
 			//only change rceptor if this is great than 0
-			if (GasNeatConfiguration.getRandomizeReceptorsRate() > 0) {
-				if ( rand.nextDouble() < GasNeatConfiguration.getRandomizeReceptorsRate() ) {
+			if (GasNeatConfiguration.getRandomizeReceptorsRate() > 0 &&
+				 rand.nextDouble() < GasNeatConfiguration.getRandomizeReceptorsRate() ) {
 					setReceptorType(  receptorList.get( rand.nextInt(receptorList.size()) ) );
-				}
+				
 			}
 			
 		//HIDDEN NEURONS
 		} else {
 
 			//only change to gas type if this is > 0
-			if ( GasNeatConfiguration.getRandomizeGasEmittedRate() > 0 ) {
-				if ( rand.nextDouble() < GasNeatConfiguration.getRandomizeGasEmittedRate() ) {
+			if ( GasNeatConfiguration.getRandomizeGasEmittedRate() > 0  &&
+				rand.nextDouble() < GasNeatConfiguration.getRandomizeGasEmittedRate() ) {
 					setGasEmissionType( 1 + rand.nextInt( GasNeatConfiguration.getNumberGases())  );
 					setGasEmissionStrength( rand.nextDouble() );
-				}
+				
 			}
 			//only change synaptic gas if this is > 0
-			if ( GasNeatConfiguration.getRandomizeSynapticGasRate() > 0) {
-				if ( rand.nextDouble() < GasNeatConfiguration.getRandomizeSynapticGasRate() ) {
+			if ( GasNeatConfiguration.getRandomizeSynapticGasRate() > 0 &&
+				 rand.nextDouble() < GasNeatConfiguration.getRandomizeSynapticGasRate() ) {
 					setSynapticGasEmissionType( 1 + rand.nextInt( GasNeatConfiguration.getNumberGases())  );
-				}
+				
 			}
 			//only change rceptor if this is great than 0
-			if (GasNeatConfiguration.getRandomizeReceptorsRate() > 0) {
-				if ( rand.nextDouble() < GasNeatConfiguration.getRandomizeReceptorsRate() ) {
+			if (GasNeatConfiguration.getRandomizeReceptorsRate() > 0 &&
+				 rand.nextDouble() < GasNeatConfiguration.getRandomizeReceptorsRate() ) {
 					setReceptorType(  receptorList.get( rand.nextInt(receptorList.size() )) );
-				}
+				
 			}
 		}
 		setPlasticityParameterA(  GasNeatConfiguration.getDefaultPlasticityA() );
@@ -367,13 +403,6 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 		this.xCoordinate = x;
 	}
 
-	public double getFiringThreshold() {
-		return firingThreshold;
-	}
-
-	public void setFiringThreshold(double threshold) {
-		this.firingThreshold = threshold;
-	}
 
 	public String getReceptorType() {
 		return receptorType;
@@ -385,15 +414,15 @@ public class GasNeatNeuronAllele extends NeuronAllele {
 	
 	public void setReceptorTypeToDefault() {
 		ArrayList<String> receptorList = GasNeatConfiguration.getReceptorMap();
-		String receptorType = receptorList.get( 0 );
-		setReceptorType( receptorType );
+		String type = receptorList.get( 0 );
+		setReceptorType( type );
 
 	}
 	
 	public void setReceptorTypeToRandom(Random rand) {
 		ArrayList<String> receptorList = GasNeatConfiguration.getReceptorMap();
-		String receptorType = receptorList.get(  rand.nextInt( receptorList.size() ) );
-		setReceptorType( receptorType );
+		String type = receptorList.get(  rand.nextInt( receptorList.size() ) );
+		setReceptorType( type );
 
 	}
 	
